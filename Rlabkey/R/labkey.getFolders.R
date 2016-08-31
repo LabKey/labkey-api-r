@@ -14,12 +14,14 @@
 # limitations under the License.
 ##
 
-labkey.getFolders <- function(baseUrl, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50)
+labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 ## Empty string/NULL checking
 
 ## Error if either baseUrl or folderPath
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
 stop (paste("A value must be specified for both baseUrl and folderPath"))
 
 ## URL encoding of folder path  (if not already encoded)

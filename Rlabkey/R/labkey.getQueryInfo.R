@@ -15,8 +15,10 @@
 ##
 
 ##labkey.getLookupDetails
-labkey.getLookupDetails <- function(baseUrl, folderPath, schemaName, queryName, lookupKey)
+labkey.getLookupDetails <- function(baseUrl=NULL, folderPath, schemaName, queryName, lookupKey)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 if(exists("lookupKey")==FALSE )
 {stop ("You must supply the key (name) value of a query field defined as a lookup type field.")}
 
@@ -25,24 +27,27 @@ return(lookupFields)
 }
 
 ##Public getQueryDetails
-labkey.getQueryDetails <- function(baseUrl, folderPath, schemaName, queryName)
+labkey.getQueryDetails <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
 queryDetails <- getQueryInfo(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName, queryName=queryName,showDefaultView=FALSE)
 return(queryDetails)
 }
 
 ## Public getDefaultViewDetails
-labkey.getDefaultViewDetails <- function(baseUrl, folderPath, schemaName, queryName)
+labkey.getDefaultViewDetails <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
 viewDetails <- getQueryInfo(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName, queryName=queryName,showDefaultView=TRUE)
 return(viewDetails)
 }
 
 ## internal reoutine that handles all of these
-getQueryInfo <- function(baseUrl, folderPath, schemaName, queryName, showDefaultView=FALSE, lookupKey=NULL)
+getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDefaultView=FALSE, lookupKey=NULL)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
 ## Error if any of baseUrl, folderPath, schemName or queryName are missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("queryName")==FALSE )
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("queryName")==FALSE )
 {stop ("A value must be specified for each of baseUrl, folderPath, schemaName, and queryName.")}
 
 if(is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }

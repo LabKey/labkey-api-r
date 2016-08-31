@@ -14,13 +14,14 @@
 #  limitations under the License.
 ##
 
-labkey.deleteRows <- function(baseUrl, folderPath, schemaName, queryName, toDelete) 
+labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toDelete) 
 {  
+baseUrl=labkey.getBaseUrl(baseUrl)  
 ## Default showAllRows=TRUE
 showAllRows=TRUE
 
 ## Error if any of baseUrl, folderPath, schemName or toDelete are missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toDelete")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toDelete")==FALSE)
 stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toDelete."))
 
 ## Formatting

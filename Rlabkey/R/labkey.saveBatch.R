@@ -14,11 +14,12 @@
 #  limitations under the License.
 ##
 
-labkey.saveBatch <- function(baseUrl, folderPath, assayName, resultDataFrame, batchPropertyList=NULL, runPropertyList=NULL)
+labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFrame, batchPropertyList=NULL, runPropertyList=NULL)
 {  
-
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 ## Error if any of baseUrl, folderPathare missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("assayName")==FALSE  || exists("resultDataFrame")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("assayName")==FALSE  || exists("resultDataFrame")==FALSE)
 stop (paste("A value must be specified for each of baseUrl, folderPath, assayName, and resultDataFrame"))
 ## TODO.check for at least one of the instert blocks is not null
 

@@ -17,10 +17,16 @@
 .lkdefaults <- new.env(parent=emptyenv());
 
 # Set the credentials used for all http or https requests
-# For now, just apiKey. TODO: Add email, password, baseUrl, folderPath, and maybe curlOptions & lkOptions
-labkey.setDefaults <- function(apiKey=NULL)
+# For now, just apiKey. TODO: Add email, password, folderPath, and maybe curlOptions & lkOptions
+labkey.setDefaults <- function(apiKey="",baseUrl="")
 {
-    .lkdefaults[["apiKey"]] = apiKey;
+    if (apiKey != "")
+        .lkdefaults[["apiKey"]] = apiKey;
+    if (baseUrl != "")
+        .lkdefaults[["baseUrl"]] = baseUrl;
+    # clear defaults if setDefaults() is called with NO arguments
+    if (apiKey == "" && baseUrl=="")
+      .lkdefaults <- new.env(parent=emptyenv());
 }
 
 ifApiKey <- function()
@@ -29,6 +35,15 @@ ifApiKey <- function()
         get("labkey.apiKey", envir = .GlobalEnv)
     } else {
         .lkdefaults[["apiKey"]];
+    }
+}
+
+labkey.getBaseUrl <- function(baseUrl=NULL)
+{
+    if (!is.null(baseUrl) && baseUrl != "") {
+      return (baseUrl)
+    } else {
+        return (.lkdefaults[["baseUrl"]])
     }
 }
 

@@ -22,8 +22,10 @@
 # See https://www.labkey.org/wiki/home/Documentation/page.view?name=rAPI for more information.
 
 
-labkey.getSchemas <- function(baseUrl, folderPath)
+labkey.getSchemas <- function(baseUrl=NULL, folderPath)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 ## Empty string/NULL checking
 
 ## Error if any of baseUrl, folderPath, schemName or queryName are missing

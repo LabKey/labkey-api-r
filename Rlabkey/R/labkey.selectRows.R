@@ -14,10 +14,12 @@
 #  limitations under the License.
 ##
 
-labkey.selectRows <- function(baseUrl, folderPath, schemaName, queryName, viewName=NULL, colSelect=NULL,
+labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, viewName=NULL, colSelect=NULL,
         maxRows=NULL, rowOffset=NULL, colSort=NULL, colFilter=NULL, showHidden=FALSE, colNameOpt='caption',
         containerFilter=NULL, parameters=NULL, includeDisplayValues=FALSE)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 ## Empty string/NULL checking
 if(is.null(viewName)==FALSE) {char <- nchar(viewName); if(char<1){viewName<-NULL}}
 if(is.null(colSelect)==FALSE) {char <- nchar(colSelect[1]); if(char<1){colSelect<-NULL}}

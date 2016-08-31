@@ -21,7 +21,7 @@
 	##########################################
 	##  public functions
 	##
-	## a session holds current selected values of the site schema root and the user's currnt folder / container
+	## a session holds current selected values of the site schema root and the user's current folder / container
 	## These are put in two different environment spaces, the schema root is keyed by the URL because the schema is not going to be 
 	## different if the URL is the same.  
 	## The session holds pointers to the site and session variables and holds the baseUrl and current folder path
@@ -30,8 +30,9 @@
 	## them down through all the calls.
 
 	getSession <-
-	    function(baseUrl, folderPath="/home", curlOptions=NULL, lkOptions=NULL)
+	    function(baseUrl=NULL, folderPath="/home", curlOptions=NULL, lkOptions=NULL)
 	{																					
+    baseUrl = labkey.getBaseUrl(baseUrl)
 		skey <-  gsub("[ :]*", "", as.character(date()))
 		sitekey <- paste(baseUrl, "/", .getProjectFromPath(folderPath))
 		.lksite[[sitekey]]<- list(NA)
@@ -144,8 +145,9 @@
 	##  list available projects at base Url 
 	##
 	lsProjects <-
-		function(baseUrl)
+		function(baseUrl=NULL)
 	{
+    baseUrl = labkey.getBaseUrl(baseUrl)
 		folders <- labkey.getFolders(baseUrl, "/", includeSubfolders=TRUE, depth=1)
 		folders <- folders[(folders$folderPath != "/"),]
 		return (sort(as.array(folders$folderPath)))	

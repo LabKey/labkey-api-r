@@ -14,13 +14,14 @@
 #  limitations under the License.
 ##
 
-labkey.executeSql <- function(baseUrl, folderPath, schemaName, sql, maxRows=NULL,
+labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows=NULL,
         rowOffset=NULL, colSort=NULL, showHidden=FALSE, colNameOpt='caption',
         containerFilter=NULL, parameters=NULL)
 {
-
+baseUrl=labkey.getBaseUrl(baseUrl)  
+  
 ## Error if any of baseUrl, folderPath, schemaName or sql are missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("sql")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("sql")==FALSE)
 stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and sql."))
 
 ## URL encoding of folder path (if not already encoded)

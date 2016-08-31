@@ -1,14 +1,16 @@
 \name{labkey.setDefaults}
 \alias{labkey.setDefaults}
-\title{Set the credentials used for all http or https requests}
+\title{Set the default parameters used for all http or https requests}
 \description{
-Use this function to set the "apiKey" package environment variable to be used for all http or https requests.
+Use this function to set the "apiKey" and "baseUrl" package environment variables to be used for all http or https requests.
 You can also use labkey.setDefaults() without any parameters to reset/clear the settings.}
 \usage{
-labkey.setDefaults(apiKey)
+labkey.setDefaults(apiKey='value')
+labkey.setDefaults(baseUrl='value')
 }
 \arguments{
   \item{apiKey}{session key from your server}
+  \item{baseUrl}{server location including context path, if any. e.g. https://www.labkey.org/}
 }
 
 \details{
@@ -36,6 +38,8 @@ labkey.setDefaults(apiKey="session|abcdef0123456789abcdef0123456789")
 ## and session information with the browser session
 
 labkey.setDefaults()
+or
+labkey.setDefaults(apiKey=NULL)
 
 ## Functions no longer share authorization and session
 ## information with the browser session

@@ -14,8 +14,9 @@
 #  limitations under the License.
 ##
 
-labkey.insertRows <- function(baseUrl, folderPath, schemaName, queryName, toInsert)
+labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert)
 {  
+baseUrl=labkey.getBaseUrl(baseUrl)    
 ## Default showAllRows=TRUE
 showAllRows=TRUE
 

@@ -15,25 +15,28 @@
 ##
 
 ## public function getQueries, returns all queries associated with a specified schema
-labkey.getQueries <- function(baseUrl, folderPath, schemaName)
+labkey.getQueries <- function(baseUrl=NULL, folderPath, schemaName)
 {	
+  baseUrl=labkey.getBaseUrl(baseUrl)    
 	mydata <- getQueryLists(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName)
 	return(mydata)
 }
 
 ## public function getQueryViews, returns all views associated with a specified query
-labkey.getQueryViews <- function(baseUrl, folderPath, schemaName, queryName)
+labkey.getQueryViews <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
-	if(is.null(queryName)==FALSE) {char <- nchar(queryName); if(char<1){queryName<-NULL}}
+  baseUrl=labkey.getBaseUrl(baseUrl)    
+  if(is.null(queryName)==FALSE) {char <- nchar(queryName); if(char<1){queryName<-NULL}}
 	if(exists("queryName")==FALSE)  { stop ("You must provide the query on which the view is based.") }
 
 	mydata <- getQueryLists(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName, queryName=queryName)
 	return(mydata)
 }
 
-getQueryLists <- function(baseUrl, folderPath, schemaName, queryName=NULL)
+getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 {
-	if((length(queryName)>0) && (queryName==curlUnescape(queryName)) ) { queryName <- curlEscape(queryName) }
+  baseUrl=labkey.getBaseUrl(baseUrl)    
+  if((length(queryName)>0) && (queryName==curlUnescape(queryName)) ) { queryName <- curlEscape(queryName) }
 	## Error if any of baseUrl, folderPath, or schemName are missing
 	if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE )
 	{stop ("A value must be specified for each of baseUrl, folderPath, schemaName.")}

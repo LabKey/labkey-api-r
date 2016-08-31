@@ -14,13 +14,15 @@
 #  limitations under the License.
 ##
 
-labkey.importRows <- function(baseUrl, folderPath, schemaName, queryName, toImport)
+labkey.importRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toImport)
 {
+baseUrl=labkey.getBaseUrl(baseUrl)    
+
 ## Default showAllRows=TRUE
 showAllRows=TRUE
 
 ## Error if any of baseUrl, folderPath, schemName or toImport are missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toImport")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toImport")==FALSE)
 stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toImport."))
 
 ## Formatting

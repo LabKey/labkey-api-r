@@ -14,13 +14,15 @@
 #  limitations under the License.
 ##
 
-labkey.updateRows <- function(baseUrl, folderPath, schemaName, queryName, toUpdate)
+labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toUpdate)
 {  
+baseUrl=labkey.getBaseUrl(baseUrl)    
+  
 ## Default showAllRows=TRUE
 showAllRows=TRUE
 
 ## Error if any of baseUrl, folderPath, schemName or toUpdate are missing
-if(exists("baseUrl")==FALSE || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toUpdate")==FALSE)
+if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toUpdate")==FALSE)
 stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toUpdate."))
 
 ## Fomatting
