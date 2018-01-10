@@ -51,62 +51,71 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
 labkey.get <- function(myurl)
 {
     ## Set options
-    reader <- basicTextGatherer()
-    header <- basicTextGatherer()
-    myopts <- curlOptions(writefunction=reader$update, headerfunction=header$update, .opts=c(labkey.curlOptions()))
+    options <- labkey.curlOptions()
 
     ## Support user-settable options for debugging and setting proxies etc
     if(exists(".lksession"))
     {
         userOpt <- .lksession[["curlOptions"]]
         if (!is.null(userOpt))
-            {myopts<- curlOptions(.opts=c(myopts, userOpt))}
+            options <- c(options, config(userOpt))
     }
 
     ## HTTP GET
-    handle <- getCurlHandle()
     clist <- ifcookie()
     if(clist$Cvalue==1)
     {
-        mydata <- getURI(myurl, .opts=myopts, cookie=paste(clist$Cname, "=", clist$Ccont, sep=""))
-    } else {
-        myopts <- curlOptions(.opts=c(myopts, httpauth=1L))
+        cook <- c(clist$Ccont)
+        names(cook) <- c(clist$Cname)
+        options <- c(options, set_cookies(cook))
+    }
+    else
+    {
+        options <- c(options, config(httpauth=1L))
         apikey <- ifApiKey();
-
         if (!is.null(apikey))
         {
-            mydata <- getURI(myurl, .opts=myopts, curl=handle, httpheader = c("apikey"=apikey))
-        } else {
-            myopts <- curlOptions(.opts=c(myopts, netrc=1))
-            mydata <- getURI(myurl, .opts=myopts, curl=handle)
+            options <- c(options, add_headers(apikey=apikey))
+        }
+        else
+        {
+            options <- c(options, config(netrc=1))
         }
     }
 
-    processResponse(mydata, header, handle)
+    response <- GET(url=myurl, config=options)
+    processResponse(response)
 }
 
 ## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
 labkey.post <- function(myurl, pbody)
 {
     ## Set options
-    reader <- basicTextGatherer()
-    header <- basicTextGatherer()
-    handle <- getCurlHandle()
     headerFields <- c('Content-Type'="application/json;charset=utf-8")
-    clist <- ifcookie()
-    if(clist$Cvalue==1) {
-        myopts <- curlOptions(cookie=paste(clist$Cname, "=", clist$Ccont, sep=""), writefunction=reader$update, headerfunction=header$update, .opts=c(labkey.curlOptions()))
-    } else {
-        apikey <- ifApiKey();
+    options <- labkey.curlOptions()
 
+    clist <- ifcookie()
+    if(clist$Cvalue==1)
+    {
+        cook <- c(clist$Ccont)
+        names(cook) <- c(clist$Cname)
+        options <- c(options, set_cookies(cook))
+    }
+    else
+    {
+        apikey <- ifApiKey();
         if (!is.null(apikey))
         {
-            myopts <- curlOptions(writefunction=reader$update, headerfunction=header$update, .opts=c(labkey.curlOptions()))
             headerFields <- c(headerFields, apikey=apikey)
-        } else {
-            myopts <- curlOptions(netrc=1, writefunction=reader$update, headerfunction=header$update, .opts=c(labkey.curlOptions()))
+        }
+        else
+        {
+            options <- c(options, config(netrc=1))
         }
     }
+
+    ## add headers
+    options <- c(options, add_headers(headerFields))
 
     ## Support user-settable options for debugging and setting proxies etc
     if(exists(".lksession"))
@@ -115,47 +124,40 @@ labkey.post <- function(myurl, pbody)
 
         if (!is.null(userOpt))
         {
-            myopts <- curlOptions(.opts=c(myopts, userOpt))
+            options <- c(options, config(userOpt))
         }
     }
 
     ## HTTP POST form
-    curlPerform(url=myurl, postFields=pbody, httpheader=headerFields, .opts=myopts, curl=handle)
-    mydata <- reader$value();
-
-    processResponse(mydata, header, handle)
+    response <- POST(url=myurl, config=options, body=pbody)
+    processResponse(response)
 }
 
-processResponse <- function(mydata, header, handle)
+processResponse <- function(response)
 {
     ## Error checking, decode data and return
-    h <- parseHeader(header$value())
-    message <- h$statusMessage
-    status <- getCurlInfo(handle)$response.code
-    if (status == 0) {
-        status <- h$status
+    status_code <- response$status_code
+
+    status <- http_status(response)
+    message <- status$message
+
+    if(status_code==500)
+    {
+        stop(paste("HTTP request was unsuccessful. Status code = 500", "Error message = ", message, sep=""))
     }
 
-    if(status==500)
+    if(status_code>=400)
     {
-        decode <- fromJSON(mydata)
-        message <- decode$exception
-        stop(paste("HTTP request was unsuccessful. Status code = ", status, ", Error message = ", message, sep=""))
-    }
-
-    if(status>=400)
-    {
+        h <- headers(response)
         contTypes <- which(names(h)=='Content-Type')
         if(length(contTypes)>0 && (tolower(h[contTypes[1]])=="application/json;charset=utf-8" || tolower(h[contTypes[2]])=="application/json;charset=utf-8"))
         {
-            decode <- fromJSON(mydata)
-            message <- decode$exception
-            stop (paste("HTTP request was unsuccessful. Status code = ", status, ", Error message = ", message, sep=""))
-        } else
+            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
+        }
+        else
         {
-            stop (paste("HTTP request was unsuccessful. Status code = ", status, ", Error message = ", message, sep=""))
+            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
         }
     }
-
-    mydata
+    content(response, "text")
 }

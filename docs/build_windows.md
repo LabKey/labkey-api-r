@@ -20,5 +20,5 @@
 
 - Install [qpdf](https://sourceforge.net/projects/qpdf/files/)
 
-- Run 'ant check' and 'ant build'
+- Run 'gradlew check' and 'gradlew build'
 

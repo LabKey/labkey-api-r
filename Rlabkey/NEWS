@@ -1,3 +1,6 @@
+Changes in version 2.2.0
+  o Refactor HTTP client library to use httr instead of rcurl
+
 Changes in version 2.1.136
   o Account for colNameOpt = "rname" in the makeDF.R colSelect check
   o Remove call to open empty window on package load

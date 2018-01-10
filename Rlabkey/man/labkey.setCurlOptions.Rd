@@ -2,11 +2,11 @@
 \alias{labkey.setCurlOptions}
 \title{Modify the current set of Curl options that are being used in the existing session}
 \description{
-Rlabkey uses the package RCurl to connect to the LabKey Server.}
+Rlabkey uses the package httr to connect to the LabKey Server.}
 \arguments{
   \item{options args}{a variable list of arguments to set the RCurl options}
-  \item{ssl.verifyhost}{check the existence of a common name and also verify that it matches the hostname provided}
-  \item{ssl.verifypeer}{specifies whether curl will verify the peer's certificate}
+  \item{ssl_verifyhost}{check the existence of a common name and also verify that it matches the hostname provided}
+  \item{ssl_verifypeer}{specifies whether curl will verify the peer's certificate}
   \item{followlocation}{specify is curl should follow any location header that is sent in the HTTP request}
   \item{sslversion}{the SSL version to use}
 }
@@ -14,7 +14,7 @@ Rlabkey uses the package RCurl to connect to the LabKey Server.}
 \details{
 This topic explains how to configure Rlabkey to work with a LabKey Server running SSL.\cr
 
-Rlabkey uses the package RCurl to connect to the LabKey Server. On Windows, the RCurl package is not configured for SSL
+Rlabkey uses the package httr to connect to the LabKey Server. On Windows, the httr package is not configured for SSL
 by default. In order to connect to a HTTPS enabled LabKey Server, you will need to perform the following steps:\cr
 
 1. Create or download a "ca-bundle" file.\cr

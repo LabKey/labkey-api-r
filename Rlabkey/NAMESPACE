@@ -15,7 +15,7 @@ S3method(print, LabkeySchema)
 S3method(print, LabkeyQuery)
 #S3method(print, LabkeyField)
 
-import(RCurl)
+import(httr)
 import(rjson)
 
 importFrom("utils", "URLdecode", "URLencode")

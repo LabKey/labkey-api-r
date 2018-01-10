@@ -1,6 +1,6 @@
 Package: Rlabkey
-Version: 2.1.136
-Date: 2017-10-12
+Version: 2.2.0
+Date: 2018-01-10
 Title: Data Exchange Between R and LabKey Server
 Author: Peter Hussey 
 Maintainer: Cory Nathe <cnathe@labkey.com>
@@ -11,8 +11,8 @@ Description: The LabKey client library for R makes it easy for R users to
     delete records stored on a LabKey Server, provided they have appropriate
     permissions to do so.
 License: Apache License 2.0
-Copyright: Copyright (c) 2010-2017 LabKey Corporation
+Copyright: Copyright (c) 2010-2018 LabKey Corporation
 LazyLoad: true
-Depends: RCurl, rjson (>= 0.1.3)
+Depends: httr, rjson (>= 0.1.3)
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.11.0)
