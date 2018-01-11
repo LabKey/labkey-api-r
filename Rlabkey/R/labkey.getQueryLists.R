@@ -35,13 +35,13 @@ labkey.getQueryViews <- function(baseUrl=NULL, folderPath, schemaName, queryName
 getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
-    if((length(queryName)>0) && (queryName==curlUnescape(queryName)) ) { queryName <- curlEscape(queryName) }
+    if((length(queryName)>0) && (queryName==URLdecode(queryName)) ) { queryName <- URLencode(queryName) }
 	## Error if any of baseUrl, folderPath, or schemName are missing
 	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE )
 	    {stop ("A value must be specified for each of baseUrl, folderPath, schemaName.")}
 
 	## URL encoding of schemaName and folderPath (if not already encoded)
-	if(schemaName==curlUnescape(schemaName)) {schemaName <- curlEscape(schemaName)}
+	if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
 	if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
 
 	## Formatting

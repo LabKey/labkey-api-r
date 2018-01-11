@@ -54,10 +54,10 @@ if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE |
 if(is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }
 
 ## URL encoding (if not already encoded)
-if(schemaName==curlUnescape(schemaName)) {schemaName <- curlEscape(schemaName)}
-if(queryName==curlUnescape(queryName)) {queryName <- curlEscape(queryName)}
+if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
+if(queryName==URLdecode(queryName)) {queryName <- URLencode(queryName)}
 if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
-if(is.null(lookupKey)==FALSE) {if(lookupKey==curlUnescape(lookupKey)) lookupKey <- curlEscape(lookupKey)}
+if(is.null(lookupKey)==FALSE) {if(lookupKey==URLdecode(lookupKey)) lookupKey <- URLencode(lookupKey)}
 
 ## Formatting
 baseUrl <- gsub("[\\]", "/", baseUrl)

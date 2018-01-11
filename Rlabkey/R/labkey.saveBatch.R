@@ -33,7 +33,7 @@ if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
 
 ## URL encode folder path and assay name (if not already encoded) 
 if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
-if(assayName==curlUnescape(assayName)) {assayNameParam <- curlEscape(assayName)}
+if(assayName==URLdecode(assayName)) {assayNameParam <- URLencode(assayName)}
 else {assayNameParam <- assayName}
 
 ## Translate assay name to an ID

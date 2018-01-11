@@ -47,7 +47,7 @@ if(is.null(colSelect)==FALSE) {
     lencolSel <- length(colSelect)
     holder <- NULL
     for(i in 1:length(colSelect)) {
-        holder <-paste(holder,curlEscape(colSelect[i]),",",sep="")
+        holder <-paste(holder,URLencode(colSelect[i]),",",sep="")
     }
     colSelect2 <- substr(holder, 1, nchar(holder)-1)
     colSelect <- paste(colSelect, collapse=",")
@@ -62,11 +62,11 @@ if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
 
 if(is.null(method) == FALSE && method == "GET") {
     ## URL encoding of schema, query, view, etc. (if not already encoded)
-    if(schemaName==curlUnescape(schemaName)) {schemaName <- curlEscape(schemaName)}
-    if(queryName==curlUnescape(queryName)) {queryName <- curlEscape(queryName)}
-    if(is.null(viewName)==FALSE) {if(viewName==curlUnescape(viewName)) viewName <- curlEscape(viewName)}
-    if(is.null(containerFilter)==FALSE) {if(containerFilter==curlUnescape(containerFilter)) containerFilter<- curlEscape(containerFilter)}
-    if(is.null(colSort)==FALSE) {if(colSort==curlUnescape(colSort)) colSort <- curlEscape(colSort)}
+    if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
+    if(queryName==URLdecode(queryName)) {queryName <- URLencode(queryName)}
+    if(is.null(viewName)==FALSE) {if(viewName==URLdecode(viewName)) viewName <- URLencode(viewName)}
+    if(is.null(containerFilter)==FALSE) {if(containerFilter==URLdecode(containerFilter)) containerFilter<- URLencode(containerFilter)}
+    if(is.null(colSort)==FALSE) {if(colSort==URLdecode(colSort)) colSort <- URLencode(colSort)}
 
     ## Construct url
     myurl <- paste(baseUrl,"query",folderPath,"selectRows.api?schemaName=",schemaName,"&query.queryName=",queryName,"&apiVersion=",apiVersion,sep="")
@@ -96,9 +96,9 @@ if(is.null(method) == FALSE && method == "GET") {
     if(is.null(rowOffset)==FALSE) {params <- c(params, list("query.offset"=rowOffset))}
     if(is.null(colSort)==FALSE) {params <- c(params, list("query.sort"=colSort))}
     if(is.null(colFilter)==FALSE) {for(j in 1:length(colFilter)) {
-        # note that the makFilter call uses curlEscape() so we need to unescape here
-        key = paste("query.",curlUnescape(strsplit(colFilter[j],"=")[[1]][1]),sep="")
-        value = curlUnescape(strsplit(colFilter[j],"=")[[1]][2])
+        # note that the makFilter call uses URLencode() so we need to unescape here
+        key = paste("query.",URLdecode(strsplit(colFilter[j],"=")[[1]][1]),sep="")
+        value = URLdecode(strsplit(colFilter[j],"=")[[1]][2])
         params[key] = value
     }}
     if(is.null(parameters)==FALSE) {for(k in 1:length(parameters)) {
