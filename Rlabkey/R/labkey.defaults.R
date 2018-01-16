@@ -148,16 +148,7 @@ processResponse <- function(response)
 
     if(status_code>=400)
     {
-        h <- headers(response)
-        contTypes <- which(names(h)=='Content-Type')
-        if(length(contTypes)>0 && (tolower(h[contTypes[1]])=="application/json;charset=utf-8" || tolower(h[contTypes[2]])=="application/json;charset=utf-8"))
-        {
-            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
-        }
-        else
-        {
-            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
-        }
+        stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
     }
     content(response, "text")
 }

@@ -19,6 +19,18 @@ PACKAGE_ENV = new.env()
 #
 labkey.setCurlOptions <- function(...)
 {
+    # test for legacy config names
+    params <- c(...)
+    if (is.element('ssl.verifyhost', names(params)))
+    {
+        stop(paste("The legacy config : ssl.verifyhost is no longer supported please update to use : ssl_verifyhost"))
+    }
+
+    if (is.element('ssl.verifypeer', names(params)))
+    {
+        stop(paste("The legacy config : ssl.verifypeer is no longer supported please update to use : ssl_verifypeer"))
+    }
+
     # default curl options
     options <- config(ssl_verifyhost=2, ssl_verifypeer=TRUE, followlocation=TRUE, sslversion=1L, useragent = "Rlabkey")
 
