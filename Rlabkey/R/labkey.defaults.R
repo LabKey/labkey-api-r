@@ -65,9 +65,9 @@ labkey.get <- function(myurl)
     clist <- ifcookie()
     if(clist$Cvalue==1)
     {
-        cook <- c(clist$Ccont)
-        names(cook) <- c(clist$Cname)
-        options <- c(options, set_cookies(cook))
+        # don't use the httr wrapper because it URL encodes the cookie value
+        cook <- config(cookie = paste(clist$Cname, "=", clist$Ccont, sep=""))
+        options <- c(options, cook)
     }
     else
     {
@@ -97,9 +97,9 @@ labkey.post <- function(myurl, pbody)
     clist <- ifcookie()
     if(clist$Cvalue==1)
     {
-        cook <- c(clist$Ccont)
-        names(cook) <- c(clist$Cname)
-        options <- c(options, set_cookies(cook))
+        # don't use the httr wrapper because it URL encodes the cookie value
+        cook <- config(cookie = paste(clist$Cname, "=", clist$Ccont, sep=""))
+        options <- c(options, cook)
     }
     else
     {
