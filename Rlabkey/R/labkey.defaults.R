@@ -139,16 +139,17 @@ processResponse <- function(response)
     status_code <- response$status_code
 
     status <- http_status(response)
-    message <- status$message
-
-    if(status_code==500)
+    if(status_code==500 | status_code >= 400)
     {
-        stop(paste("HTTP request was unsuccessful. Status code = 500", "Error message = ", message, sep=""))
-    }
-
-    if(status_code>=400)
-    {
+        ## pull out the error message if possible
+        error <- content(response, type = "application/json")
+        message = status$message
+        if (!is.null(error$exception))
+        {
+            message <- error$exception
+        }
         stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
     }
+
     content(response, "text")
 }
