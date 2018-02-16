@@ -40,17 +40,53 @@ ifApiKey <- function()
 
 labkey.getBaseUrl <- function(baseUrl=NULL)
 {
-    if (!is.null(baseUrl) && baseUrl != "") {
-      return (baseUrl)
-    } else {
+    if (!is.null(baseUrl) && baseUrl != "")
+    {
+        # set the baseUrl if unset
+        if (is.null(.lkdefaults[["baseUrl"]]))
+        {
+            .lkdefaults[["baseUrl"]] = baseUrl
+        }
+        return (baseUrl)
+    }
+    else
+    {
         return (.lkdefaults[["baseUrl"]])
     }
 }
 
-## Executes an HTTP GET against the supplied URL, with standard handling for session, api key, status codes and error messages.
-labkey.get <- function(myurl)
+## helper to retrieve and cache the CSRF token
+labkey.getCSRF <- function()
+{
+    if (is.null(.lkdefaults[["csrf"]]))
+    {
+        urlBase <- labkey.getBaseUrl()
+        if (!is.null(urlBase))
+        {
+            if (substr(urlBase, nchar(urlBase), nchar(urlBase))!="/")
+            {
+                urlBase <- paste(urlBase,"/",sep="")
+            }
+            myUrl <- paste(urlBase, "login/", "whoAmI.view", sep="")
+            response <- GET(url=myUrl, config=labkey.getRequestOptions())
+            r <- processResponse(response, haltOnError=FALSE)
+            json <- fromJSON(r)
+            if (!is.null(json$CSRF))
+            {
+                .lkdefaults[["csrf"]] = json$CSRF
+            }
+        }
+    }
+    return (.lkdefaults[["csrf"]])
+}
+
+labkey.getRequestOptions <- function(method='GET')
 {
     ## Set options
+    headerFields <- c()
+    if (method == "POST")
+        headerFields <- c('Content-Type'="application/json;charset=utf-8")
+
     options <- labkey.curlOptions()
 
     ## Support user-settable options for debugging and setting proxies etc
@@ -61,7 +97,6 @@ labkey.get <- function(myurl)
             options <- c(options, config(userOpt))
     }
 
-    ## HTTP GET
     clist <- ifcookie()
     if(clist$Cvalue==1)
     {
@@ -71,38 +106,8 @@ labkey.get <- function(myurl)
     }
     else
     {
-        options <- c(options, config(httpauth=1L))
-        apikey <- ifApiKey();
-        if (!is.null(apikey))
-        {
-            options <- c(options, add_headers(apikey=apikey))
-        }
-        else
-        {
-            options <- c(options, config(netrc=1))
-        }
-    }
-
-    response <- GET(url=myurl, config=options)
-    processResponse(response)
-}
-
-## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
-labkey.post <- function(myurl, pbody)
-{
-    ## Set options
-    headerFields <- c('Content-Type'="application/json;charset=utf-8")
-    options <- labkey.curlOptions()
-
-    clist <- ifcookie()
-    if(clist$Cvalue==1)
-    {
-        # don't use the httr wrapper because it URL encodes the cookie value
-        cook <- config(cookie = paste(clist$Cname, "=", clist$Ccont, sep=""))
-        options <- c(options, cook)
-    }
-    else
-    {
+        if (method == "GET")
+            options <- c(options, config(httpauth=1L))
         apikey <- ifApiKey();
         if (!is.null(apikey))
         {
@@ -114,26 +119,36 @@ labkey.post <- function(myurl, pbody)
         }
     }
 
-    ## add headers
-    options <- c(options, add_headers(headerFields))
-
-    ## Support user-settable options for debugging and setting proxies etc
-    if(exists(".lksession"))
+    if (method == "POST")
     {
-        userOpt <- .lksession[["curlOptions"]]
-
-        if (!is.null(userOpt))
-        {
-            options <- c(options, config(userOpt))
-        }
+        ## CSRF
+        csrf <- labkey.getCSRF()
+        if (!is.null(csrf))
+            headerFields <- c(headerFields, "X-LABKEY-CSRF" = csrf)
     }
+    o <- c(options, add_headers(headerFields))
+    return (c(options, add_headers(headerFields)))
+}
 
+## Executes an HTTP GET against the supplied URL, with standard handling for session, api key, status codes and error messages.
+labkey.get <- function(myurl)
+{
+    ## HTTP GET
+    options <- labkey.getRequestOptions(method="GET")
+    response <- GET(url=myurl, config=options)
+    processResponse(response)
+}
+
+## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
+labkey.post <- function(myurl, pbody)
+{
     ## HTTP POST form
+    options <- labkey.getRequestOptions(method="POST")
     response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response)
 }
 
-processResponse <- function(response)
+processResponse <- function(response, haltOnError=TRUE)
 {
     ## Error checking, decode data and return
     status_code <- response$status_code
@@ -148,8 +163,8 @@ processResponse <- function(response)
         {
             message <- error$exception
         }
-        stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
+        if (haltOnError)
+            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
     }
-
     content(response, "text")
 }

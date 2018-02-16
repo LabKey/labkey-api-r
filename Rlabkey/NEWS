@@ -1,3 +1,6 @@
+Changes in version 2.2.1
+  o Support for LabKey CSRF tokens (cross site request forgery)
+
 Changes in version 2.2.0
   o Refactor HTTP client library to use httr instead of rcurl
 
