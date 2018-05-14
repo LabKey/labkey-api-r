@@ -16,46 +16,41 @@
 
 labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toUpdate)
 {  
-baseUrl=labkey.getBaseUrl(baseUrl)    
-  
-## Default showAllRows=TRUE
-showAllRows=TRUE
+    baseUrl=labkey.getBaseUrl(baseUrl)
 
-## Error if any of baseUrl, folderPath, schemName or toUpdate are missing
-if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toUpdate")==FALSE)
-    stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toUpdate."))
+    ## Default showAllRows=TRUE
+    showAllRows=TRUE
 
-## Fomatting
-baseUrl <- gsub("[\\]", "/", baseUrl)
-folderPath <- gsub("[\\]", "/", folderPath)
-if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="")}
-if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
+    ## Error if any of baseUrl, folderPath, schemName or toUpdate are missing
+    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toUpdate")==FALSE)
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toUpdate."))
 
-## URL encode folder path, JSON encode post body (if not already encoded)
-toUpdate <- convertFactorsToStrings(toUpdate);
-if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
-nrows <- nrow(toUpdate)
-ncols <- ncol(toUpdate)
-p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
-cnames <- colnames(toUpdate)
-p3 <- NULL
-for(j in 1:nrows)
-{
-    cvalues <- as.list(toUpdate[j,])
-    names(cvalues) <- cnames
-    p2 <- toJSON(cvalues)
-    p3 <- c(p3, p2)
-}
-p3 <- paste(p3, collapse=",")
-pbody <- paste(substr(p1,1,nchar(p1)-1), ', \"rows\":[', p3 ,"] }", sep="")
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
 
-myurl <- paste(baseUrl, "query", folderPath, "updateRows.api", sep="")
+    ## URL encode folder path, JSON encode post body (if not already encoded)
+    toUpdate <- convertFactorsToStrings(toUpdate);
+    nrows <- nrow(toUpdate)
+    ncols <- ncol(toUpdate)
+    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
+    cnames <- colnames(toUpdate)
+    p3 <- NULL
+    for(j in 1:nrows)
+    {
+        cvalues <- as.list(toUpdate[j,])
+        names(cvalues) <- cnames
+        p2 <- toJSON(cvalues)
+        p3 <- c(p3, p2)
+    }
+    p3 <- paste(p3, collapse=",")
+    pbody <- paste(substr(p1,1,nchar(p1)-1), ', \"rows\":[', p3 ,"] }", sep="")
 
-## Execute via our standard POST function
-mydata <- labkey.post(myurl, pbody)
-newdata <- fromJSON(mydata)
+    myurl <- paste(baseUrl, "query", folderPath, "updateRows.api", sep="")
 
-return(newdata)
+    ## Execute via our standard POST function
+    mydata <- labkey.post(myurl, pbody)
+    newdata <- fromJSON(mydata)
+
+    return(newdata)
 }
                                                               

@@ -16,45 +16,39 @@
 
 labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50)
 {
-baseUrl=labkey.getBaseUrl(baseUrl)    
+	baseUrl=labkey.getBaseUrl(baseUrl)
 
-## Empty string/NULL checking
-if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
-    stop (paste("A value must be specified for both baseUrl and folderPath"))
+	## Empty string/NULL checking
+	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
+		stop (paste("A value must be specified for both baseUrl and folderPath"))
 
-## URL encoding of folder path  (if not already encoded)
-if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
+	## normalize the folder path
+	folderPath <- encodeFolderPath(folderPath)
 
-## Formatting
-baseUrl <- gsub("[\\]", "/", baseUrl)
-folderPath <- gsub("[\\]", "/", folderPath)
-if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="")}
-if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
-if(includeSubfolders) {inclsf <- paste("1&depth=", depth, sep="")} else {inclsf <- "0"}
-if(includeEffectivePermissions) {inclep <- "1"} else {inclep <- "0"}
+	## Formatting
+	if(includeSubfolders) {inclsf <- paste("1&depth=", depth, sep="")} else {inclsf <- "0"}
+	if(includeEffectivePermissions) {inclep <- "1"} else {inclep <- "0"}
 
-## Construct url
-myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,"&includeEffectivePermissions=",inclep, sep="")
+	## Construct url
+	myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,"&includeEffectivePermissions=",inclep, sep="")
 
-## Execute via our standard GET function
-mydata <- labkey.get(myurl);
+	## Execute via our standard GET function
+	mydata <- labkey.get(myurl);
 
-decode <- fromJSON(mydata)
-curfld <- decode
-allpaths <- matrix(data=c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")), nrow=1, ncol=3, byrow=TRUE)
-todo <- curfld$children[]
-while (length(todo)>0)
-{
-	curfld<-todo[1][[1]]
-	allpaths <- rbind(allpaths, c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")))
-	todo<- c(todo, curfld$children[])
-	todo<-todo[-1]
-}
+	decode <- fromJSON(mydata)
+	curfld <- decode
+	allpaths <- matrix(data=c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")), nrow=1, ncol=3, byrow=TRUE)
+	todo <- curfld$children[]
+	while (length(todo)>0)
+	{
+		curfld<-todo[1][[1]]
+		allpaths <- rbind(allpaths, c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")))
+		todo<- c(todo, curfld$children[])
+		todo<-todo[-1]
+	}
 
-allpathsDF <- data.frame(allpaths, stringsAsFactors=FALSE)
-colnames(allpathsDF) <- c("name", "folderPath", "effectivePermissions")
+	allpathsDF <- data.frame(allpaths, stringsAsFactors=FALSE)
+	colnames(allpathsDF) <- c("name", "folderPath", "effectivePermissions")
 
-return(allpathsDF)
-
+	return(allpathsDF)
 }

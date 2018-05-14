@@ -16,50 +16,48 @@
 
 labkey.makeRemotePath <- function(localRoot, remoteRoot, fullPath)
 {
+    ## we need a full path to get started
+    if (nzchar(fullPath) == FALSE)
+    {
+        stop(paste("A non-empty value must be specified for fullPath"));
+    }
 
-## we need a full path to get started
-if (nzchar(fullPath) == FALSE)
-{
-    stop(paste("A non-empty value must be specified for fullPath"));
-}
+    ## normalize the fullPath right now to ensure consistent output
+    fullPath <- gsub("[\\]", "/", fullPath);
 
-## normalize the fullPath right now to ensure consistent output
-fullPath <- gsub("[\\]", "/", fullPath);
+    ## if we have an empty remote path then just return what the user passed in
+    if (nzchar(remoteRoot) == FALSE)
+    {
+        return(fullPath);
+    }
 
-## if we have an empty remote path then just return what the user passed in
-if (nzchar(remoteRoot) == FALSE)
-{
+    ## normalize the roots
+    localRoot <- gsub("[\\]", "/", localRoot);
+    remoteRoot <- gsub("[\\]", "/", remoteRoot);
+
+    ## ensure roots have trailing "/"
+    if(substr(localRoot, nchar(localRoot), nchar(localRoot))!="/")
+    {
+        localRoot <- paste(localRoot,"/",sep="")
+    }
+    if(substr(remoteRoot, nchar(remoteRoot), nchar(remoteRoot))!="/")
+    {
+        remoteRoot <- paste(remoteRoot,"/",sep="")
+    }
+
+    ## if the local path and remote path are the same then just return the fullPath
+    if ( localRoot %in% remoteRoot )
+    {
+        return(fullPath);
+    }
+
+
+    ## do the replacement only if the localRoot is part of the filePath
+    if (localRoot %in% substr(fullPath, 1, nchar(localRoot)))
+    {
+        return(paste(remoteRoot, substr(fullPath, nchar(localRoot) + 1, nchar(fullPath)), sep=""));
+    }
+
+    ## otherwise just return what was passed in
     return(fullPath);
-}
-
-
-## normalize the roots
-localRoot <- gsub("[\\]", "/", localRoot);
-remoteRoot <- gsub("[\\]", "/", remoteRoot);
-
-## ensure roots have trailing "/"
-if(substr(localRoot, nchar(localRoot), nchar(localRoot))!="/")
-{
-    localRoot <- paste(localRoot,"/",sep="")
-}
-if(substr(remoteRoot, nchar(remoteRoot), nchar(remoteRoot))!="/")
-{
-    remoteRoot <- paste(remoteRoot,"/",sep="")
-}
-
-## if the local path and remote path are the same then just return the fullPath
-if ( localRoot %in% remoteRoot )
-{
-    return(fullPath);
-}
-
-
-## do the replacement only if the localRoot is part of the filePath
-if (localRoot %in% substr(fullPath, 1, nchar(localRoot)))
-{
-    return(paste(remoteRoot, substr(fullPath, nchar(localRoot) + 1, nchar(fullPath)), sep=""));
-}
-
-## otherwise just return what was passed in
-return(fullPath);
 }

@@ -17,7 +17,6 @@
 ## public function getQueries, returns all queries associated with a specified schema
 labkey.getQueries <- function(baseUrl=NULL, folderPath, schemaName)
 {	
-	baseUrl=labkey.getBaseUrl(baseUrl)
     mydata <- getQueryLists(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName)
 	return(mydata)
 }
@@ -40,16 +39,11 @@ getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE )
 	    {stop ("A value must be specified for each of baseUrl, folderPath, schemaName.")}
 
-	## URL encoding of schemaName and folderPath (if not already encoded)
+	## URL encoding of schemaName (if not already encoded)
 	if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
-	if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
 
-	## Formatting
-	baseUrl <- gsub("[\\]", "/", baseUrl)
-	folderPath <- gsub("[\\]", "/", folderPath)
-	if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="" )}
-	if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-	if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
 
 	## now setup the different columns for views vs queries
 	if(length(queryName)==0)

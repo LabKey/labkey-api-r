@@ -24,36 +24,29 @@
 
 labkey.getSchemas <- function(baseUrl=NULL, folderPath)
 {
-baseUrl=labkey.getBaseUrl(baseUrl)    
-  
-## Empty string/NULL checking
+    baseUrl=labkey.getBaseUrl(baseUrl)
 
-## Error if any of baseUrl, folderPath, schemName or queryName are missing
-if (exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
-    stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
+    ## Empty string/NULL checking
 
-## URL encoding of folder path (if not already encoded)
-if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
+    ## Error if any of baseUrl, folderPath, schemName or queryName are missing
+    if (exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
 
-## Formatting
-baseUrl <- gsub("[\\]", "/", baseUrl)
-folderPath <- gsub("[\\]", "/", folderPath)
-if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="")}
-if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
 
-## Construct url
-myurl <- paste(baseUrl,"query",folderPath,"getSchemas.view?apiVersion=9.3", sep="")
+    ## Construct url
+    myurl <- paste(baseUrl,"query",folderPath,"getSchemas.view?apiVersion=9.3", sep="")
 
-## Execute via our standard GET function
-mydata <- labkey.get(myurl)
+    ## Execute via our standard GET function
+    mydata <- labkey.get(myurl)
 
-decode <- fromJSON(mydata)
-cn<-names(decode)
-newdata<- as.data.frame(cn)
-names(newdata)[1]<-"schemaName"
+    decode <- fromJSON(mydata)
+    cn<-names(decode)
+    newdata<- as.data.frame(cn)
+    names(newdata)[1]<-"schemaName"
 
-return(newdata)
+    return(newdata)
 }
 
 

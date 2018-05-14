@@ -18,39 +18,32 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
         rowOffset=NULL, colSort=NULL, showHidden=FALSE, colNameOpt='caption',
         containerFilter=NULL, parameters=NULL)
 {
-baseUrl=labkey.getBaseUrl(baseUrl)
+    baseUrl=labkey.getBaseUrl(baseUrl)
 
-## Error if any of baseUrl, folderPath, schemaName or sql are missing
-if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("sql")==FALSE)
-    stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and sql."))
+    ## Error if any of baseUrl, folderPath, schemaName or sql are missing
+    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("sql")==FALSE)
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and sql."))
 
-## URL encoding of folder path (if not already encoded)
-if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
 
-## Formatting
-baseUrl <- gsub("[\\]", "/", baseUrl)
-folderPath <- gsub("[\\]", "/", folderPath)
-if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="")}
-if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
+    ## Construct url
+    myurl <- paste(baseUrl, "query", folderPath, "executeSql.api", sep="")
 
-## Construct url
-myurl <- paste(baseUrl, "query", folderPath, "executeSql.api", sep="")
+    ## Construct parameters
+    params <- list(schemaName=schemaName, apiVersion=8.3, sql=sql)
+    if(is.null(maxRows)==FALSE) {params <- c(params, list(maxRows=maxRows))}
+    if(is.null(maxRows)==TRUE) {params <- c(params, list(maxRows="-1"))}
+    if(is.null(rowOffset)==FALSE) {params <- c(params, list(offset=rowOffset))}
+    if(is.null(colSort)==FALSE) {params <- c(params, list(query.sort=colSort))}
+    if(is.null(parameters)==FALSE) {for(k in 1:length(parameters)) params <- c(params, list("query.param."=parameters[k]))}
+    if(is.null(containerFilter)==FALSE) {params <- paste(params, list("containerFilter"=containerFilter))}
 
-## Construct parameters
-params <- list(schemaName=schemaName, apiVersion=8.3, sql=sql)
-if(is.null(maxRows)==FALSE) {params <- c(params, list(maxRows=maxRows))}
-if(is.null(maxRows)==TRUE) {params <- c(params, list(maxRows="-1"))}
-if(is.null(rowOffset)==FALSE) {params <- c(params, list(offset=rowOffset))}
-if(is.null(colSort)==FALSE) {params <- c(params, list(query.sort=colSort))}
-if(is.null(parameters)==FALSE) {for(k in 1:length(parameters)) params <- c(params, list("query.param."=parameters[k]))}
-if(is.null(containerFilter)==FALSE) {params <- paste(params, list("containerFilter"=containerFilter))}
+    ## Execute via our standard POST function
+    mydata <- labkey.post(myurl, toJSON(params))
 
-## Execute via our standard POST function
-mydata <- labkey.post(myurl, toJSON(params))
+    newdata <- makeDF(rawdata=mydata, showHidden=showHidden, colNameOpt=colNameOpt)
 
-newdata <- makeDF(rawdata=mydata, showHidden=showHidden, colNameOpt=colNameOpt)
-
-return(newdata)
+    return(newdata)
 }
 

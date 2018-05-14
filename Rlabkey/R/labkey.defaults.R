@@ -47,12 +47,38 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
         {
             .lkdefaults[["baseUrl"]] = baseUrl
         }
-        return (baseUrl)
+        url <- baseUrl
     }
     else
     {
-        return (.lkdefaults[["baseUrl"]])
+        url <- .lkdefaults[["baseUrl"]]
     }
+
+    ## convert any backslashes to forward slashes, ensure terminating slash
+    url <- gsub("[\\]", "/", url)
+    if(substr(url, nchar(url), nchar(url))!="/")
+    {
+        url <- paste(url,"/",sep="")
+    }
+    return (url)
+}
+
+## helper to encode and normalize the folder path parameter
+encodeFolderPath <- function(folderPath=NULL)
+{
+    if (!is.null(folderPath))
+    {
+        ## URL encoding of folderPath
+        folderPath <- URLencode(folderPath)
+
+        ## Formatting
+        folderPath <- gsub("[\\]", "/", folderPath)
+        if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/")
+            folderPath <- paste(folderPath,"/",sep="")
+        if(substr(folderPath, 1, 1)!="/")
+            folderPath <- paste("/",folderPath,sep="")
+    }
+    return (folderPath)
 }
 
 ## helper to retrieve and cache the CSRF token
@@ -80,12 +106,15 @@ labkey.getCSRF <- function()
     return (.lkdefaults[["csrf"]])
 }
 
-labkey.getRequestOptions <- function(method='GET')
+labkey.getRequestOptions <- function(method='GET', encoding=NULL)
 {
     ## Set options
     headerFields <- c()
-    if (method == "POST")
-        headerFields <- c('Content-Type'="application/json;charset=utf-8")
+   if (method == "POST")
+   {
+       if (is.null(encoding) || encoding != "multipart")
+           headerFields <- c('Content-Type'="application/json;charset=utf-8")
+   }
 
     options <- labkey.curlOptions()
 
@@ -140,10 +169,10 @@ labkey.get <- function(myurl)
 }
 
 ## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
-labkey.post <- function(myurl, pbody)
+labkey.post <- function(myurl, pbody, encoding=NULL)
 {
     ## HTTP POST form
-    options <- labkey.getRequestOptions(method="POST")
+    options <- labkey.getRequestOptions(method="POST", encoding=encoding)
     response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response)
 }

@@ -16,47 +16,42 @@
 
 labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert)
 {  
-baseUrl=labkey.getBaseUrl(baseUrl)    
+    baseUrl=labkey.getBaseUrl(baseUrl)
 
-## Default showAllRows=TRUE
-showAllRows=TRUE
+    ## Default showAllRows=TRUE
+    showAllRows=TRUE
 
-## Error if any of baseUrl, folderPath, schemName or toInsert are missing
-if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toInsert")==FALSE)
-    stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toInsert."))
+    ## Error if any of baseUrl, folderPath, schemName or toInsert are missing
+    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toInsert")==FALSE)
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toInsert."))
 
-## Formatting
-baseUrl <- gsub("[\\]", "/", baseUrl)
-folderPath <- gsub("[\\]", "/", folderPath)
-if(substr(baseUrl, nchar(baseUrl), nchar(baseUrl))!="/"){baseUrl <- paste(baseUrl,"/",sep="")}
-if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/"){folderPath <- paste(folderPath,"/",sep="")}
-if(substr(folderPath, 1, 1)!="/"){folderPath <- paste("/",folderPath,sep="")}
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
 
-## URL encode folder path, JSON encode post body (if not already encoded)
-toInsert <- convertFactorsToStrings(toInsert);
-if(folderPath!=URLencode(folderPath)) {folderPath <- URLencode(folderPath)}
-nrows <- nrow(toInsert)
-ncols <- ncol(toInsert)
-p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
-cnames <- colnames(toInsert)
-p3 <- NULL
-for(j in 1:nrows)
-{
-    cvalues <- as.list(toInsert[j,])
-	names(cvalues) <- cnames
-	cvalues[is.na(cvalues)] = NULL
-    p2 <- toJSON(cvalues)
-    p3 <- c(p3, p2)
-}
-p3 <- paste(p3, collapse=",")
-pbody <- paste(substr(p1, 1, nchar(p1)-1), ', \"rows\":[' ,p3, "] }", sep="")
+    ## URL encode folder path, JSON encode post body (if not already encoded)
+    toInsert <- convertFactorsToStrings(toInsert);
+    nrows <- nrow(toInsert)
+    ncols <- ncol(toInsert)
+    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
+    cnames <- colnames(toInsert)
+    p3 <- NULL
+    for(j in 1:nrows)
+    {
+        cvalues <- as.list(toInsert[j,])
+        names(cvalues) <- cnames
+        cvalues[is.na(cvalues)] = NULL
+        p2 <- toJSON(cvalues)
+        p3 <- c(p3, p2)
+    }
+    p3 <- paste(p3, collapse=",")
+    pbody <- paste(substr(p1, 1, nchar(p1)-1), ', \"rows\":[' ,p3, "] }", sep="")
 
-myurl <- paste(baseUrl, "query", folderPath, "insertRows.api", sep="")
+    myurl <- paste(baseUrl, "query", folderPath, "insertRows.api", sep="")
 
-## Execute via our standard POST function
-mydata <- labkey.post(myurl, pbody)
-newdata <- fromJSON(mydata)
+    ## Execute via our standard POST function
+    mydata <- labkey.post(myurl, pbody)
+    newdata <- fromJSON(mydata)
 
-return(newdata)
+    return(newdata)
 }
                                                               

@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
- makeDF <- function(rawdata, colSelect=NULL, showHidden, colNameOpt)
+makeDF <- function(rawdata, colSelect=NULL, showHidden, colNameOpt)
 {
     decode <- fromJSON(rawdata)
 
