@@ -96,7 +96,7 @@ labkey.getCSRF <- function()
             myUrl <- paste(urlBase, "login/", "whoAmI.view", sep="")
             response <- GET(url=myUrl, config=labkey.getRequestOptions())
             r <- processResponse(response, haltOnError=FALSE)
-            json <- fromJSON(r)
+            json <- fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE)
             if (!is.null(json$CSRF))
             {
                 .lkdefaults[["csrf"]] = json$CSRF

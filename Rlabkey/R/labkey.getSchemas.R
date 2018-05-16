@@ -41,7 +41,7 @@ labkey.getSchemas <- function(baseUrl=NULL, folderPath)
     ## Execute via our standard GET function
     mydata <- labkey.get(myurl)
 
-    decode <- fromJSON(mydata)
+    decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
     cn<-names(decode)
     newdata<- as.data.frame(cn)
     names(newdata)[1]<-"schemaName"

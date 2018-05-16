@@ -67,7 +67,7 @@ getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl);
 
-	decode <- fromJSON(mydata)
+	decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 	qs <- decode[[queryObjType]]
 
 	dmall <- matrix(nrow=0, ncol=2, byrow=TRUE)

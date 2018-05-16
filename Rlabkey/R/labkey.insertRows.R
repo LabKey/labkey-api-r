@@ -32,7 +32,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     toInsert <- convertFactorsToStrings(toInsert);
     nrows <- nrow(toInsert)
     ncols <- ncol(toInsert)
-    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
+    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3), auto_unbox=TRUE)
     cnames <- colnames(toInsert)
     p3 <- NULL
     for(j in 1:nrows)
@@ -40,7 +40,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
         cvalues <- as.list(toInsert[j,])
         names(cvalues) <- cnames
         cvalues[is.na(cvalues)] = NULL
-        p2 <- toJSON(cvalues)
+        p2 <- toJSON(cvalues, auto_unbox=TRUE)
         p3 <- c(p3, p2)
     }
     p3 <- paste(p3, collapse=",")
@@ -50,7 +50,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)
-    newdata <- fromJSON(mydata)
+    newdata <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 
     return(newdata)
 }

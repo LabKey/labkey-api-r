@@ -14,11 +14,117 @@
 #  limitations under the License.
 ##
 
-# temporary
-testInferFields <- function(baseUrl, folderPath)
+## Returns the domain design (as a dataframe) for the specified domain
+##
+labkey.getDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
-    df <- data.frame(ptid=c(1:3), age = c(10,20,30), sex = c("f", "m", "f"))
-    labkey.inferFields(baseUrl, folderPath, df)
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if(missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(schemaName) || missing(queryName))
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "property", folderPath, "getDomain.api", sep="")
+
+    params <- list(schemaName=schemaName, queryName=queryName)
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
+}
+
+## Update an existing domain
+##
+labkey.saveDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(schemaName) || missing(queryName) || missing(domainDesign))
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName, queryName and domainDesign."))
+
+    if (!is.list(domainDesign))
+        stop (paste("domainDesign must be a list data structure."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+    params <- list(schemaName = schemaName, queryName = queryName, domainDesign = domainDesign)
+
+    url <- paste(baseUrl, "property", folderPath, "saveDomain.api", sep="")
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
+}
+
+## Helper function to create the domain design list
+##
+labkey.createDomainDesign <- function(name, description, fields)
+{
+    ## check required parameters
+    if (missing(name) || missing(fields))
+        stop (paste("A value must be specified for each of name and fields."))
+
+    if (!is.list(fields))
+        stop (paste("fields must be a list of field definitions."))
+
+    dd <- list(name = name, fields = fields$fields)
+    if (!missing(description))
+        dd$description = description
+
+    return (dd)
+}
+
+labkey.createDomain <- function(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
+        stop (paste("A value must be specified for each of baseUrl and folderPath."))
+
+    if (!missing(domainKind))
+    {
+        if (missing(domainDesign))
+            stop (paste("If domainKind is specified, then domainDesign must also be included."))
+
+        if (!is.list(domainDesign))
+            stop (paste("domainDesign must be a list data structure."))
+
+        params <- list(kind = domainKind, domainDesign = domainDesign)
+        if (!missing(options))
+        {
+            if (!is.list(options))
+                stop (paste("options must be a list data structure."))
+            params$options = options
+        }
+    }
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "property", folderPath, "createDomain.api", sep="")
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
+}
+
+labkey.deleteDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(schemaName) || missing(queryName))
+        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "property", folderPath, "deleteDomain.api", sep="")
+
+    params <- list(schemaName=schemaName, queryName=queryName)
+    labkey.post(url, toJSON(params, auto_unbox=TRUE))
 }
 
 labkey.inferFields <- function(baseUrl=NULL, folderPath, df)
@@ -26,7 +132,7 @@ labkey.inferFields <- function(baseUrl=NULL, folderPath, df)
     baseUrl=labkey.getBaseUrl(baseUrl)
 
     ## check required parameters
-    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
         stop (paste("A value must be specified for each of baseUrl, folderPath."))
 
     ## normalize the folder path
@@ -42,8 +148,7 @@ labkey.inferFields <- function(baseUrl=NULL, folderPath, df)
     rawdata <- labkey.post(url, list(file=upload_file(tf)), encoding="multipart")
     ## delete the temp file
     file.remove(tf)
+    response <- fromJSON(rawdata)
 
-    decode <- fromJSON(rawdata)
-
-    ## TODO, need to deserialize from json to the appropriate data structure.
+    return (response)
 }

@@ -37,7 +37,7 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
 	assayInfoJSON <- labkey.get(myurl)
 
 	assayDef <- NULL
-	assayInfo<- fromJSON(assayInfoJSON)
+	assayInfo<- fromJSON(assInfoJSON, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 	if (length(assayInfo) == 1 && length(assayInfo[[1]]) == 1)
 	{
 		assayDef <- assayInfo[[1]][[1]]
@@ -73,11 +73,11 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
 
 	## Now post form with batch object filled out
 	myurl <- paste(baseUrl, "assay", folderPath, "saveAssayBatch.view", sep="")
-	pbody <- toJSON(baseAssayList)
+	pbody <- toJSON(baseAssayList, auto_unbox=TRUE)
 
 	## Execute via our standard POST function
 	mydata <- labkey.post(myurl, pbody)
-	newAssayInfo <- fromJSON(mydata)
+	newAssayInfo <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 
 	return(newAssayInfo)
 }

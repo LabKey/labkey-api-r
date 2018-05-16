@@ -32,14 +32,14 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     toUpdate <- convertFactorsToStrings(toUpdate);
     nrows <- nrow(toUpdate)
     ncols <- ncol(toUpdate)
-    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3))
+    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3), auto_unbox=TRUE)
     cnames <- colnames(toUpdate)
     p3 <- NULL
     for(j in 1:nrows)
     {
         cvalues <- as.list(toUpdate[j,])
         names(cvalues) <- cnames
-        p2 <- toJSON(cvalues)
+        p2 <- toJSON(cvalues, auto_unbox=TRUE)
         p3 <- c(p3, p2)
     }
     p3 <- paste(p3, collapse=",")
@@ -49,7 +49,7 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)
-    newdata <- fromJSON(mydata)
+    newdata <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 
     return(newdata)
 }

@@ -35,7 +35,7 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl);
 
-	decode <- fromJSON(mydata)
+	decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 	curfld <- decode
 	allpaths <- matrix(data=c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")), nrow=1, ncol=3, byrow=TRUE)
 	todo <- curfld$children[]

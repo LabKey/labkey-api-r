@@ -1,6 +1,6 @@
 \name{getFolderPath}
 \alias{getFolderPath}
-\title{Reutrns the folder path associated with a session}
+\title{Returns the folder path associated with a session}
 \description{ Returns the current folder path for a LabKey session }
 
 \usage{

@@ -40,7 +40,7 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
     if(is.null(containerFilter)==FALSE) {params <- paste(params, list("containerFilter"=containerFilter))}
 
     ## Execute via our standard POST function
-    mydata <- labkey.post(myurl, toJSON(params))
+    mydata <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
 
     newdata <- makeDF(rawdata=mydata, showHidden=showHidden, colNameOpt=colNameOpt)
 

@@ -16,7 +16,7 @@
 
 makeDF <- function(rawdata, colSelect=NULL, showHidden, colNameOpt)
 {
-    decode <- fromJSON(rawdata)
+    decode <- fromJSON(rawdata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 
 	## Check to make sure at least one column exists in the result set
 	if(length(decode$columnModel)==0){

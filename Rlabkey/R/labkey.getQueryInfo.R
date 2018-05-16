@@ -64,7 +64,7 @@ getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDe
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl)
 
-	decode <- fromJSON(mydata)
+	decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 
 	## If querying the default view, the metadata is in a differnt object in the json stream
 	if (showDefaultView==TRUE) {qcs<-decode$defaultView$columns}

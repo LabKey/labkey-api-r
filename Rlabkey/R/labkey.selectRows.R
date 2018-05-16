@@ -104,7 +104,7 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
         }}
 
         ## Execute via our standard POST function
-        mydata <- labkey.post(myurl, toJSON(params))
+        mydata <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
     }
 
     newdata <- makeDF(mydata, colSelect, showHidden, colNameOpt)
