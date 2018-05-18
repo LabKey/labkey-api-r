@@ -1,11 +1,11 @@
-\name{labkey.getDomain}
-\alias{labkey.getDomain}
+\name{labkey.domain.get}
+\alias{labkey.domain.get}
 \title{Returns the metadata for an existing LabKey domain}
 \description{
 Get the data structure for a domain.
 }
 \usage{
-labkey.getDomain(baseUrl=NULL, folderPath, schemaName, queryName)
+labkey.domain.get(baseUrl=NULL, folderPath, schemaName, queryName)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -14,6 +14,8 @@ labkey.getDomain(baseUrl=NULL, folderPath, schemaName, queryName)
   \item{queryName}{a string specifying the query name }
 }
 \details{
+Returns the domain design of an existing domain. The returned domain design can be used for reporting purposes or it can
+be modified and used to create a new domain or update the domain source.
 }
 \value{
 A list containing elements describing the domain. The structure is the same as a domain design created by \code{labkey.createDomainDesign}
@@ -21,11 +23,11 @@ A list containing elements describing the domain. The structure is the same as a
 
 \author{Karl Lum}
 \seealso{
-\code{\link{labkey.inferFields}},
-\code{\link{labkey.createDomain}},
-\code{\link{labkey.createDomainDesign}},
-\code{\link{labkey.saveDomain}},
-\code{\link{labkey.deleteDomain}}
+\code{\link{labkey.domain.create}},
+\code{\link{labkey.domain.inferFields}},
+\code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.save}},
+\code{\link{labkey.domain.drop}}
 }
 \examples{
 \donttest{
@@ -33,7 +35,7 @@ A list containing elements describing the domain. The structure is the same as a
 ## retrieve an existing domain
 library(Rlabkey)
 
-labkey.getDomain(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
+labkey.domain.get(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
 }
 }
 \keyword{IO}

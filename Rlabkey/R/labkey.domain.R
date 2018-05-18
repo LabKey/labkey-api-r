@@ -16,7 +16,7 @@
 
 ## Returns the domain design (as a dataframe) for the specified domain
 ##
-labkey.getDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
+labkey.domain.get <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -37,7 +37,7 @@ labkey.getDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 
 ## Update an existing domain
 ##
-labkey.saveDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
+labkey.domain.save <- function(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -60,7 +60,7 @@ labkey.saveDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName, d
 
 ## Helper function to create the domain design list
 ##
-labkey.createDomainDesign <- function(name, description, fields)
+labkey.domain.createDesign <- function(name, description, fields)
 {
     ## check required parameters
     if (missing(name) || missing(fields))
@@ -76,7 +76,7 @@ labkey.createDomainDesign <- function(name, description, fields)
     return (dd)
 }
 
-labkey.createDomain <- function(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
+labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -110,7 +110,7 @@ labkey.createDomain <- function(baseUrl=NULL, folderPath, domainKind, domainDesi
     return (fromJSON(response))
 }
 
-labkey.deleteDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
+labkey.domain.drop <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -127,7 +127,7 @@ labkey.deleteDomain <- function(baseUrl=NULL, folderPath, schemaName, queryName)
     labkey.post(url, toJSON(params, auto_unbox=TRUE))
 }
 
-labkey.inferFields <- function(baseUrl=NULL, folderPath, df)
+labkey.domain.inferFields <- function(baseUrl=NULL, folderPath, df)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 

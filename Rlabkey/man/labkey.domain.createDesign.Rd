@@ -1,11 +1,10 @@
-\name{labkey.createDomainDesign}
-\alias{labkey.createDomainDesign}
+\name{labkey.domain.createDesign}
+\alias{labkey.domain.createDesign}
 \title{Helper function to create a domain design data structure}
 \description{
-Create a domain design data structure which can then be used by \code{labkey.createDomain} or \code{labkey.saveDomain}
-}
+Create a domain design data structure which can then be used by \code{labkey.domain.create} or \code{labkey.domain.save}
 \usage{
-labkey.createDomainDesign(name, description, fields)
+labkey.domain.createDesign(name, description, fields)
 }
 \arguments{
   \item{name}{a string specifying the name of the domain}
@@ -13,6 +12,7 @@ labkey.createDomainDesign(name, description, fields)
   \item{fields}{a list containing the fields of the domain design, this should be in the same format as returned by \code{labkey.inferFields}.}
 }
 \details{
+This is a function which can be used to create a domain design data structure. Domain designs are used both when creating a new domain or updating an existing domain.
 }
 \value{
 A list containing elements describing the domain design. Any of the APIs which take a domain design parameter can accept this data structure.
@@ -20,11 +20,11 @@ A list containing elements describing the domain design. Any of the APIs which t
 
 \author{Karl Lum}
 \seealso{
-\code{\link{labkey.getDomain}},
-\code{\link{labkey.createDomain}},
-\code{\link{labkey.inferFields}},
-\code{\link{labkey.saveDomain}},
-\code{\link{labkey.deleteDomain}}
+\code{\link{labkey.domain.get}},
+\code{\link{labkey.domain.inferFields}},
+\code{\link{labkey.domain.create}},
+\code{\link{labkey.domain.save}},
+\code{\link{labkey.domain.drop}}
 }
 \examples{
 \donttest{
@@ -33,8 +33,8 @@ A list containing elements describing the domain design. Any of the APIs which t
 library(Rlabkey)
 
 df <- data.frame(ptid=c(1:3), age = c(10,20,30), sex = c("f", "m", "f"))
-fields <- labkey.inferFields(baseUrl="http://labkey/", folderPath="home", df)
-dd <- labkey.createDomainDesign(name="test list", fields=fields)
+fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df)
+dd <- labkey.domain.createDesign(name="test list", fields=fields)
 
 }
 }

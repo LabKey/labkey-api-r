@@ -1,11 +1,11 @@
-\name{labkey.saveDomain}
-\alias{labkey.saveDomain}
+\name{labkey.domain.save}
+\alias{labkey.domain.save}
 \title{Updates an existing LabKey domain}
 \description{
 Modify an existing domain with the specified domain design.
 }
 \usage{
-labkey.saveDomain(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
+labkey.domain.save(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -14,19 +14,17 @@ labkey.saveDomain(baseUrl=NULL, folderPath, schemaName, queryName, domainDesign)
   \item{queryName}{a string specifying the query name }
   \item{domainDesign}{a list data structure with the domain design to update to }
 }
-\details{
-}
 \value{
 A list containing elements describing the domain after the update. The structure is the same as a domain design created by \code{labkey.createDomainDesign}
 }
 
 \author{Karl Lum}
 \seealso{
-\code{\link{labkey.getDomain}},
-\code{\link{labkey.createDomain}},
-\code{\link{labkey.createDomainDesign}},
-\code{\link{labkey.inferFields}},
-\code{\link{labkey.deleteDomain}}
+\code{\link{labkey.domain.get}},
+\code{\link{labkey.domain.inferFields}},
+\code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.create}},
+\code{\link{labkey.domain.drop}}
 }
 \examples{
 \donttest{
@@ -34,7 +32,7 @@ A list containing elements describing the domain after the update. The structure
 ## retrieve an existing domain
 library(Rlabkey)
 
-labkey.getDomain(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
+labkey.domain.save(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
 }
 }
 \keyword{IO}

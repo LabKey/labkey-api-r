@@ -2,8 +2,8 @@ useDynLib(Rlabkey, .registration = TRUE)
 export(labkey.selectRows, labkey.executeSql, makeFilter, labkey.insertRows, labkey.importRows, labkey.updateRows, labkey.deleteRows,
 	labkey.getSchemas, labkey.getQueries, labkey.getQueryViews, labkey.getQueryDetails, labkey.getDefaultViewDetails, labkey.getFolders,
 	labkey.getLookupDetails, labkey.makeRemotePath, getSession, getRows, getLookups, lsSchemas, lsFolders, lsProjects, labkey.saveBatch,
-	labkey.curlOptions, labkey.setCurlOptions, labkey.acceptSelfSignedCerts, labkey.setDefaults, labkey.inferFields,
-	labkey.deleteDomain, labkey.getDomain, labkey.createDomain, labkey.createDomainDesign, labkey.saveDomain)
+	labkey.curlOptions, labkey.setCurlOptions, labkey.acceptSelfSignedCerts, labkey.setDefaults, labkey.domain.inferFields,
+	labkey.domain.drop, labkey.domain.get, labkey.domain.create, labkey.domain.createDesign, labkey.domain.save)
 export("getSchema")
 export("getFolderPath")
 export("saveResults")
