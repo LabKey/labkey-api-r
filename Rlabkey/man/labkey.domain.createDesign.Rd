@@ -3,6 +3,7 @@
 \title{Helper function to create a domain design data structure}
 \description{
 Create a domain design data structure which can then be used by \code{labkey.domain.create} or \code{labkey.domain.save}
+}
 \usage{
 labkey.domain.createDesign(name, description, fields)
 }

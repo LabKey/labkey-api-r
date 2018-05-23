@@ -8,7 +8,7 @@ Create a domain of the type specified by the domainKind and the domainDesign. A 
 labkey.domain.create(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
 }
 \arguments{
-  \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
+  \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{domainKind}{a string specifying the type of domain to create }
   \item{domainDesign}{a list containing the domain design to create }
