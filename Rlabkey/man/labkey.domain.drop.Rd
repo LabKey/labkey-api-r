@@ -31,7 +31,8 @@ This function will delete an existing domain along with any data that may have b
 ## delete an existing domain
 library(Rlabkey)
 
-labkey.domain.drop(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
+labkey.domain.drop(baseUrl="http://labkey/", folderPath="home",
+    schemaName="lists", queryName="test list")
 }
 }
 \keyword{IO}

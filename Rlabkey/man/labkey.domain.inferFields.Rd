@@ -5,12 +5,12 @@
 Generate field information from the specified data frame. The resulting list can be used to create or edit a domain using the labkey.domain.create or labkey.domain.save APIs.
 }
 \usage{
-labkey.domain.inferFields(baseUrl = NULL, folderPath, fields)
+labkey.domain.inferFields(baseUrl = NULL, folderPath, df)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fields}{a data frame specifying fields to infer. The data frame must have column names as well as row data to infer the type of the field from.}
+  \item{df}{a data frame specifying fields to infer. The data frame must have column names as well as row data to infer the type of the field from.}
 }
 \details{
 Field information can be generated from a data frame by introspecting the data associated with it along with other properties about that column. The data frame

@@ -35,7 +35,8 @@ A list containing elements describing the domain. The structure is the same as a
 ## retrieve an existing domain
 library(Rlabkey)
 
-labkey.domain.get(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
+labkey.domain.get(baseUrl="http://labkey/", folderPath="home",
+    schemaName="lists", queryName="test list")
 }
 }
 \keyword{IO}

@@ -37,7 +37,7 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
 	assayInfoJSON <- labkey.get(myurl)
 
 	assayDef <- NULL
-	assayInfo<- fromJSON(assInfoJSON, simplifyVector=FALSE, simplifyDataFrame=FALSE)
+	assayInfo<- fromJSON(assayInfoJSON, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 	if (length(assayInfo) == 1 && length(assayInfo[[1]]) == 1)
 	{
 		assayDef <- assayInfo[[1]][[1]]

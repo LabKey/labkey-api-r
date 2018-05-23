@@ -83,7 +83,8 @@ fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home",
 dd <- labkey.domain.createDesign(name="test list", fields=fields)
 
 ## create a new list with an integer key field
-labkey.domain.create(baseUrl="http://labkey/", folderPath="home", domainKind="IntList", domainDesign=dd, options=list(keyName = "ptid"))
+labkey.domain.create(baseUrl="http://labkey/", folderPath="home",
+    domainKind="IntList", domainDesign=dd, options=list(keyName = "ptid"))
 
 }
 }
