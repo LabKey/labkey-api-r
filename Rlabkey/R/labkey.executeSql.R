@@ -37,7 +37,7 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
     if(is.null(rowOffset)==FALSE) {params <- c(params, list(offset=rowOffset))}
     if(is.null(colSort)==FALSE) {params <- c(params, list(query.sort=colSort))}
     if(is.null(parameters)==FALSE) {for(k in 1:length(parameters)) params <- c(params, list("query.param."=parameters[k]))}
-    if(is.null(containerFilter)==FALSE) {params <- paste(params, list("containerFilter"=containerFilter))}
+    if(is.null(containerFilter)==FALSE) {params <- c(params, list("containerFilter"=containerFilter))}
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
