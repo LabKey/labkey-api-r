@@ -37,7 +37,7 @@ Each field will contain the list of attributes and values for that field definit
 library(Rlabkey)
 
 df <- data.frame(ptid=c(1:3), age = c(10,20,30), sex = c("f", "m", "f"))
-fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df)
+fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df=df)
 
 }
 }

@@ -79,7 +79,7 @@ A list containing elements describing the newly created domain.
 library(Rlabkey)
 
 df <- data.frame(ptid=c(1:3), age = c(10,20,30), sex = c("f", "m", "f"))
-fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df)
+fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df=df)
 dd <- labkey.domain.createDesign(name="test list", fields=fields)
 
 ## create a new list with an integer key field

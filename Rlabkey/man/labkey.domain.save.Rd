@@ -29,10 +29,14 @@ A list containing elements describing the domain after the update. The structure
 \examples{
 \donttest{
 
-## retrieve an existing domain
 library(Rlabkey)
+## change the type of one of the columns
+domain <- labkey.domain.get(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
 
-labkey.domain.save(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list")
+domain$fields[3,]$rangeURI = "xsd:string"
+domain$fields[3,]$name = "changed to string"
+
+labkey.domain.save(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="test list", domainDesign=domain)
 }
 }
 \keyword{IO}
