@@ -98,8 +98,11 @@ labkey.getCSRF <- function()
             }
             myUrl <- paste(urlBase, "login/", "whoAmI.view", sep="")
             options = labkey.getRequestOptions()
-            verboseOutputUrlAndOptions(myUrl, options, NULL)
-            response <- GET(url=myUrl, config=options)
+            verboseOutput("OPTIONS", options)
+            if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
+                response <- GET(url=myUrl, config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+            else
+                response <- GET(url=myUrl, config=options)
             r <- processResponse(response, haltOnError=FALSE)
             json <- fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE)
             if (!is.null(json$CSRF))
@@ -169,8 +172,11 @@ labkey.get <- function(myurl)
 {
     ## HTTP GET
     options <- labkey.getRequestOptions(method="GET")
-    verboseOutputUrlAndOptions(myurl, options, NULL)
-    response <- GET(url=myurl, config=options)
+    verboseOutput("OPTIONS", options)
+    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
+        response <- GET(url=myurl, config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+    else
+        response <- GET(url=myurl, config=options)
     processResponse(response)
 }
 
@@ -179,15 +185,16 @@ labkey.post <- function(myurl, pbody, encoding=NULL)
 {
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
-    verboseOutputUrlAndOptions(myurl, options, pbody)
-    response <- POST(url=myurl, config=options, body=pbody)
+    verboseOutput("OPTIONS", options)
+    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
+        response <- POST(url=myurl, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+    else
+        response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response)
 }
 
 processResponse <- function(response, haltOnError=TRUE)
 {
-    verboseOutput("RESPONSE", content(response, "text"))
-
     ## Error checking, decode data and return
     status_code <- response$status_code
 
@@ -210,15 +217,6 @@ processResponse <- function(response, haltOnError=TRUE)
 labkey.setDebugMode <- function(debug=FALSE)
 {
     .lkdefaults[["debug"]] = debug;
-}
-
-verboseOutputUrlAndOptions <- function(myurl, options, body)
-{
-    verboseOutput("URL", myurl)
-    verboseOutput("OPTIONS", options)
-    if (!is.null(body)) {
-        verboseOutput("BODY", body)
-    }
 }
 
 verboseOutput <- function(title, content)
