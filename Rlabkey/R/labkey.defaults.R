@@ -54,6 +54,9 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
         url <- .lkdefaults[["baseUrl"]]
     }
 
+    if (is.null(url))
+        stop (paste("baseUrl is null or has not been set yet."))
+
     ## convert any backslashes to forward slashes, ensure terminating slash
     url <- gsub("[\\]", "/", url)
     if(substr(url, nchar(url), nchar(url))!="/")

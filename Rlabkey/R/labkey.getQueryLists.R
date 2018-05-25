@@ -25,7 +25,7 @@ labkey.getQueries <- function(baseUrl=NULL, folderPath, schemaName)
 labkey.getQueryViews <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
 	if(is.null(queryName)==FALSE) {char <- nchar(queryName); if(char<1){queryName<-NULL}}
-	if(exists("queryName")==FALSE)  { stop ("You must provide the query on which the view is based.") }
+	if(missing("queryName"))  { stop ("You must provide the query on which the view is based.") }
 
 	mydata <- getQueryLists(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName, queryName=queryName)
 	return(mydata)
@@ -36,7 +36,7 @@ getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
     baseUrl=labkey.getBaseUrl(baseUrl)
     if((length(queryName)>0) && (queryName==URLdecode(queryName)) ) { queryName <- URLencode(queryName) }
 	## Error if any of baseUrl, folderPath, or schemName are missing
-	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE )
+	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") )
 	    {stop ("A value must be specified for each of baseUrl, folderPath, schemaName.")}
 
 	## URL encoding of schemaName (if not already encoded)

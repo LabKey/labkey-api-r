@@ -21,7 +21,7 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
     baseUrl=labkey.getBaseUrl(baseUrl)
 
     ## Error if any of baseUrl, folderPath, schemaName or sql are missing
-    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("sql")==FALSE)
+    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("sql"))
         stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and sql."))
 
     ## normalize the folder path

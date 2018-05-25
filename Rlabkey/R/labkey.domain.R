@@ -76,7 +76,8 @@ labkey.domain.createDesign <- function(name, description, fields)
     return (dd)
 }
 
-labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
+labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind=NULL, domainDesign=NULL, options=NULL,
+        module=NULL, domainGroup=NULL, domainTemplate=NULL, createDomain=TRUE, importData=TRUE)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -84,9 +85,12 @@ labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind, domainDes
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
         stop (paste("A value must be specified for each of baseUrl and folderPath."))
 
-    if (!missing(domainKind))
+    if (is.null(domainKind) && is.null(module))
+        stop (paste("Domain creation must use either a domain kind or a domain template"))
+
+    if (!is.null(domainKind))
     {
-        if (missing(domainDesign))
+        if (is.null(domainDesign))
             stop (paste("If domainKind is specified, then domainDesign must also be included."))
 
         if (!is.list(domainDesign))
@@ -99,6 +103,15 @@ labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind, domainDes
                 stop (paste("options must be a list data structure."))
             params$options = options
         }
+    }
+
+    if (!is.null(domainTemplate))
+    {
+        if (is.null(module) || is.null(domainGroup))
+            stop (paste("If domainTemplate is specified, module and domainGroup are required."))
+
+        params <- list(domainTemplate = domainTemplate, module = module, domainGroup = domainGroup,
+                createDomain = createDomain, importData = importData)
     }
 
     ## normalize the folder path
@@ -124,7 +137,9 @@ labkey.domain.drop <- function(baseUrl=NULL, folderPath, schemaName, queryName)
     url <- paste(baseUrl, "property", folderPath, "deleteDomain.api", sep="")
 
     params <- list(schemaName=schemaName, queryName=queryName)
-    labkey.post(url, toJSON(params, auto_unbox=TRUE))
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
 }
 
 labkey.domain.inferFields <- function(baseUrl=NULL, folderPath, df)
@@ -132,8 +147,8 @@ labkey.domain.inferFields <- function(baseUrl=NULL, folderPath, df)
     baseUrl=labkey.getBaseUrl(baseUrl)
 
     ## check required parameters
-    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
-        stop (paste("A value must be specified for each of baseUrl, folderPath."))
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(df))
+        stop (paste("A value must be specified for each of baseUrl, folderPath and df."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

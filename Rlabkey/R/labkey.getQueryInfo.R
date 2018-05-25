@@ -17,7 +17,7 @@
 ##labkey.getLookupDetails
 labkey.getLookupDetails <- function(baseUrl=NULL, folderPath, schemaName, queryName, lookupKey)
 {
-	if(exists("lookupKey")==FALSE )
+	if(missing("lookupKey") )
 		{stop ("You must supply the key (name) value of a query field defined as a lookup type field.")}
 
 	lookupFields <- getQueryInfo(baseUrl=baseUrl, folderPath=folderPath, schemaName=schemaName, queryName=queryName,showDefaultView=FALSE, lookupKey=lookupKey)
@@ -44,7 +44,7 @@ getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDe
 	baseUrl=labkey.getBaseUrl(baseUrl)
 
 	## Error if any of baseUrl, folderPath, schemName or queryName are missing
-	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("queryName")==FALSE )
+	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("queryName") )
 		{stop ("A value must be specified for each of baseUrl, folderPath, schemaName, and queryName.")}
 
 	if(is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }

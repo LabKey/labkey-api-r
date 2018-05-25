@@ -33,7 +33,7 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
     if(is.null(includeDisplayValues)==FALSE) {char <- nchar(includeDisplayValues); if(char<1){includeDisplayValues<-FALSE}}
 
     ## Error if any of baseUrl, folderPath, schemName or queryName are missing
-    if(exists("baseUrl")==FALSE || is.null(baseUrl) ||exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("queryName")==FALSE)
+    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("queryName"))
         stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
 
     ## normalize the folder path

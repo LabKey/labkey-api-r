@@ -5,16 +5,25 @@
 Create a domain of the type specified by the domainKind and the domainDesign. A LabKey domain represents a table in a specific schema.
 }
 \usage{
-labkey.domain.create(baseUrl=NULL, folderPath, domainKind, domainDesign, options)
+labkey.domain.create(baseUrl=NULL, folderPath, domainKind=NULL, domainDesign=NULL, options=NULL,
+        module=NULL, domainGroup=NULL, domainTemplate=NULL, createDomain=TRUE, importData=TRUE)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{domainKind}{a string specifying the type of domain to create }
-  \item{domainDesign}{a list containing the domain design to create }
-  \item{options}{a list containing options specific to the domain kind }
+  \item{domainKind}{(optional) a string specifying the type of domain to create }
+  \item{domainDesign}{(optional) a list containing the domain design to create }
+  \item{options}{(optional) a list containing options specific to the domain kind }
+  \item{module}{(optional) the name of the module that contains the domain template group }
+  \item{domainGroup}{(optional) the name of a domain template group }
+  \item{domainTemplate}{(optional) the name of a domain template within the domain group }
+  \item{createDomain}{(optional) when using a domain template, create the domain. Defaults to TRUE }
+  \item{importData}{(optional) when using a domain template, import initial data asociated in the template. Defaults to TRUE }
 }
 \details{
+When creating a domain using a domainKind parameter, the domainDesign parameter will be required. If a domain template is being
+used, then module, domainGroup, and domainTemplate are required.
+
 Will create a domain of the specified domain type, valid types are
      \itemize{
   	      \item{ "IntList": A list with an integer key field }
@@ -86,6 +95,8 @@ dd <- labkey.domain.createDesign(name="test list", fields=fields)
 labkey.domain.create(baseUrl="http://labkey/", folderPath="home",
     domainKind="IntList", domainDesign=dd, options=list(keyName = "ptid"))
 
+## create a domain using a domain template
+labkey.domain.create(baseUrl="http://labkey/", folderPath="home", domainTemplate="Priority", module="simpletest", domainGroup="todolist")
 }
 }
 \keyword{IO}

@@ -19,7 +19,7 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	baseUrl=labkey.getBaseUrl(baseUrl)
 
 	## Empty string/NULL checking
-	if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE)
+	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath"))
 		stop (paste("A value must be specified for both baseUrl and folderPath"))
 
 	## normalize the folder path

@@ -22,7 +22,7 @@ labkey.importRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     showAllRows=TRUE
 
     ## Error if any of baseUrl, folderPath, schemName or toImport are missing
-    if(exists("baseUrl")==FALSE || is.null(baseUrl) || exists("folderPath")==FALSE || exists("schemaName")==FALSE || exists("toImport")==FALSE)
+    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("toImport"))
         stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toImport."))
 
     ## normalize the folder path
