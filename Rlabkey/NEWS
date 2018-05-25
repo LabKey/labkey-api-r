@@ -1,6 +1,7 @@
 Changes in version 2.2.2
   o New APIs for getting, creating, inferring and dropping LabKey domains
   o Fix for Issue #18: labkey.executeSql breaks when using the containerFilter option
+  o Add labkey.setDebugMode(TRUE) option to output GET/POST raw response info
 
 Changes in version 2.2.1
   o Support for LabKey CSRF tokens (cross site request forgery)

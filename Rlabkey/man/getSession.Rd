@@ -22,7 +22,7 @@ determine the security context.
 \code{curlOptions}
 
 The curlOptions parameter gives a mechanism to pass control options down to the RCurl library used by Rlabkey.  
-This can be very useful for debugging problems or setting proxy server properties.  See exammple for debugging.
+This can be very useful for debugging problems or setting proxy server properties.  See example for debugging.
 
 \code{lkOptions}  
 
