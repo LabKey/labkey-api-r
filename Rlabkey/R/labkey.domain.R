@@ -85,8 +85,8 @@ labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind=NULL, doma
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
         stop (paste("A value must be specified for each of baseUrl and folderPath."))
 
-    if (is.null(domainKind) && is.null(module))
-        stop (paste("Domain creation must use either a domain kind or a domain template"))
+    if (is.null(domainKind) && is.null(domainTemplate))
+        stop (paste("Domain creation must use either a domain kind or a domain template."))
 
     if (!is.null(domainKind))
     {

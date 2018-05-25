@@ -5,8 +5,10 @@
 Create a domain of the type specified by the domainKind and the domainDesign. A LabKey domain represents a table in a specific schema.
 }
 \usage{
-labkey.domain.create(baseUrl=NULL, folderPath, domainKind=NULL, domainDesign=NULL, options=NULL,
-        module=NULL, domainGroup=NULL, domainTemplate=NULL, createDomain=TRUE, importData=TRUE)
+labkey.domain.create(baseUrl=NULL, folderPath,
+    domainKind=NULL, domainDesign=NULL, options=NULL,
+    module=NULL, domainGroup=NULL, domainTemplate=NULL,
+    createDomain=TRUE, importData=TRUE)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
@@ -96,7 +98,8 @@ labkey.domain.create(baseUrl="http://labkey/", folderPath="home",
     domainKind="IntList", domainDesign=dd, options=list(keyName = "ptid"))
 
 ## create a domain using a domain template
-labkey.domain.create(baseUrl="http://labkey/", folderPath="home", domainTemplate="Priority", module="simpletest", domainGroup="todolist")
+labkey.domain.create(baseUrl="http://labkey/", folderPath="home",
+    domainTemplate="Priority", module="simpletest", domainGroup="todolist")
 }
 }
 \keyword{IO}
