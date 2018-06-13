@@ -46,9 +46,10 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
         ## change working directory to report directory
         setwd(paste("LabKeyReports", reportEntityId, sep="/"))
 
-        ## create props.JSON for folderPath
-        labkey.rstudio.updateProp(reportEntityId, "folderPath", folderPath)
-        labkey.rstudio.updateProp(reportEntityId, "lastModified", result$lastModified)
+        ## create props.JSON for folderPath, filename and timestamp
+        labkey.rstudio.updateProp("folderPath", folderPath)
+        labkey.rstudio.updateProp("reportFilename", result$filename)
+        labkey.rstudio.updateProp("lastModified", result$lastModified)
 
         ## create prolog script and update its content
         prologFileConn <- file("prolog.R", open="w")
@@ -71,59 +72,91 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
 
 ## Update RStudio report source back to LabKey
 ##
-labkey.rstudio.saveReport <- function(folderPath, reportEntityId, lkLastModified)
+labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename, useWarning=FALSE)
 {
     ## check required parameters
-    if(missing(reportEntityId))
-        stop (paste("A value must be specified for reportEntityId."))
+    if(missing(reportEntityId) || missing(reportFilename))
+        stop (paste("A value must be specified for each of reportEntityId and reportFilename."))
 
     ## check working directory
     if (!grepl(reportEntityId, getwd()))
-        stop (paste("Working directory is currently not set to report's directory. Skip saving source to LabKey."))
+    {
+        return("Working directory is currently not set to report's directory. Skip saving source to LabKey.")
+    }
+
+    targetFilename <- labkey.rstudio.getSavedProp("reportFilename")
+    if (reportFilename != targetFilename)
+    {
+        return("Skip saving non LabKey report file.")
+    }
 
     if(missing(folderPath))
     {
-        folderPath <- labkey.rstudio.getSavedProp(reportEntityId, "folderPath")
-        if (missing(folderPath))
-            stop (paste("Unable to determine folderPath"))
+        folderPath <- labkey.rstudio.getSavedProp("folderPath")
+        if (is.null(folderPath) || folderPath == "NULL")
+        {
+            return("Unable to determine report folderPath. Skip saving source to LabKey.")
+        }
     }
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)
 
-    if (!missing(lkLastModified))
+    baseUrl=labkey.getBaseUrl(NULL)
+
+    ## check valid report
+    url <- paste(baseUrl, "rstudio", folderPath, "ValidateRStudioReport.api", sep="")
+    params <- list(entityId=reportEntityId)
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+    lkResult <- (fromJSON(response))
+
+    if (lkResult$isValid == TRUE)
     {
-        localLastModified <- labkey.rstudio.getSavedProp(reportEntityId, "lastModified")
-        if (localLastModified == lkLastModified)
+        localLastModified <- labkey.rstudio.getSavedProp("lastModified")
+        doSave <- TRUE
+        if (localLastModified == lkResult$lastModified)
         {
-            skipSaving <- .rs.api.showQuestion("Save to LabKey?", "Do you want to update report content to LabKey server?")
+            if (useWarning == TRUE)
+                doSave <- .rs.api.showQuestion("Save to LabKey?", "Do you want to update report content to LabKey Server?")
         }
         else
         {
-            skipSaving <- .rs.api.showQuestion("Save to LabKey? (Potential conflicting edit)", "The report source was modified in LabKey and the content might have diverged from local copy. Do you want to save local changes to LabKey server?")
+            doSave <- .rs.api.showQuestion("Save to LabKey? (Potential conflicting edit)", "The report source was modified in LabKey Server and the content might have diverged from local copy. Do you want to save local changes to LabKey Server?")
         }
-        if (!skipSaving)
+        if (!doSave)
         {
-            stop (paste("Skipped saving updated source to LabKey server"))
-            return;
+            return("Skipped saving updated source to LabKey server");
         }
+        url <- paste(baseUrl, "rstudio", folderPath, "SaveRReportContent.api", sep="")
+
+        if (!file.exists(reportFilename))
+        {
+             stop (paste("File doesn't exist: ", reportFilename))
+        }
+        script <- readChar(reportFilename, file.info(reportFilename)$size)
+
+        params <- list(entityId=reportEntityId, runScript=script)
+        response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+        result <- (fromJSON(response))
+
+        if (result$success == TRUE)
+        {
+            labkey.rstudio.updateProp("lastModified", result$lastModified)
+            return("Successfully updated report source to LabKey Server.")
+        }
+        else
+            warning(result$errorMsg)
     }
-
-    url <- paste(baseUrl, "rstudio", folderPath, "SaveRReportContent.api", sep="")
-
-    params <- list(entityId=reportEntityId)
-    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
-
-    result <- (fromJSON(response))
-
-    if (result$success != TRUE)
-        stop(result$errorMsg)
-
+    else
+    {
+        warning("Failed to update report source to LabKey server. Report doesn't exist.")
+    }
 }
 
 ## Read property value form prop.txt
 ##
-labkey.rstudio.getSavedProp <- function(reportEntityId, propName)
+labkey.rstudio.getSavedProp <- function(propName)
 {
     propsFilepath <- "props.JSON"
     if (!file.exists(propsFilepath))
@@ -134,7 +167,7 @@ labkey.rstudio.getSavedProp <- function(reportEntityId, propName)
 
 ## Update property value to prop.txt
 ##
-labkey.rstudio.updateProp <- function(reportEntityId, propName, propValue)
+labkey.rstudio.updateProp <- function(propName, propValue)
 {
     propsFilepath <- "props.JSON"
     if (!file.exists(propsFilepath))
