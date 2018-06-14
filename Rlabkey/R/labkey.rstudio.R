@@ -16,7 +16,7 @@
 
 ## initialize a RStudio session for LabKey R report source editing
 ##
-labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportEntityId)
+labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportEntityId, skipEdit=FALSE)
 {
     labkey.setDefaults(apiKey, baseUrl);
 
@@ -62,7 +62,8 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
         close(fileConn)
 
         ## open report for editing
-        file.edit(result$filename)
+        if (missing(skipEdit) || skipEdit == FALSE)
+            file.edit(result$filename)
     }
     else
     {
