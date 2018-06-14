@@ -178,3 +178,12 @@ labkey.rstudio.updateProp <- function(propName, propValue)
     props[propName] = propValue
     write(toJSON(props), file=propsFilepath)
 }
+
+## initialize a RStudio session for rlabkey
+##
+labkey.rstudio.initWhenNeeded <- function(apiKey="", baseUrl="")
+{
+    currentUrl <- .lkdefaults[["baseUrl"]]
+    if (is.null(currentUrl))
+        labkey.setDefaults(apiKey, baseUrl);
+}
