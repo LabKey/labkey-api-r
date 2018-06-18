@@ -61,6 +61,13 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
         writeLines(result$reportSource, fileConn)
         close(fileConn)
 
+        ## create input data file
+        if (!is.null(result$queryName))
+        {
+            inputData <- labkey.selectRows(folderPath=folderPath, schemaName=result$schemaName, queryName=result$queryName, viewName=result$viewName, colNameOpt="rname", showHidden = TRUE)
+            write.table(inputData, file="input_data.tsv", append=FALSE, sep="\t", quote=TRUE)
+        }
+
         ## open report for editing
         if (missing(skipEdit) || skipEdit == FALSE)
             file.edit(result$filename)
@@ -181,9 +188,7 @@ labkey.rstudio.updateProp <- function(propName, propValue)
 
 ## initialize a RStudio session for rlabkey
 ##
-labkey.rstudio.initWhenNeeded <- function(apiKey="", baseUrl="")
+labkey.rstudio.isInitialized <- function()
 {
-    currentUrl <- .lkdefaults[["baseUrl"]]
-    if (is.null(currentUrl))
-        labkey.setDefaults(apiKey, baseUrl);
+    return (!is.null(.lkdefaults[["baseUrl"]]))
 }
