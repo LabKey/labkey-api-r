@@ -167,3 +167,40 @@ labkey.domain.inferFields <- function(baseUrl=NULL, folderPath, df)
 
     return (response)
 }
+
+labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, description="", df, domainKind, options=NULL, schemaName=NULL)
+{
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(name) || missing(df) || missing(domainKind))
+        stop (paste("A value must be specified for each of baseUrl, folderPath, name, df or domainKind."))
+
+    if (is.null(options))
+        options <- list(strictFieldValidation = FALSE)
+    else
+        options <- c(options, list(strictFieldValidation = FALSE))
+
+    if (is.null(schemaName))
+    {
+        if (domainKind == "StudyDatasetVisit" || domainKind == "StudyDatatsetDate")
+            schemaName <- "study"
+        else if (domainKind == "IntList" || domainKind == "VarList")
+            schemaName <- "lists"
+        else if (domainKind == "IssueDefinition")
+            schemaName <- "issues"
+        else if (domainKind == "SampleSet")
+            schemaName <- "samples"
+        else if (domainKind == "DataClass")
+            schemaName <- "exp.data"
+    }
+
+    if (is.null(schemaName))
+        stop (paste("A value must be specified for schemaName."))
+
+    fields = labkey.domain.inferFields(baseUrl = baseUrl, folderPath = folderPath, df = df[,colnames(df)])
+
+    design = labkey.domain.createDesign( fields = fields, name = name, description = description)
+    labkey.domain.create(baseUrl = baseUrl, folderPath = folderPath, domainKind = domainKind,
+        domainDesign = design, options = options)
+
+    labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
+}
