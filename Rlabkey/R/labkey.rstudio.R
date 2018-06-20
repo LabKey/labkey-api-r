@@ -64,7 +64,7 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
         ## create input data file
         if (!is.null(result$queryName))
         {
-            inputData <- labkey.selectRows(folderPath=folderPath, schemaName=result$schemaName, queryName=result$queryName, viewName=result$viewName, colNameOpt="rname", showHidden = TRUE)
+            inputData <- labkey.selectRows(folderPath=folderPath, schemaName=result$schemaName, queryName=result$queryName, viewName=result$viewName, colNameOpt="rname", showHidden = TRUE, includeDisplayValues = TRUE)
             write.table(inputData, file="input_data.tsv", append=FALSE, sep="\t", quote=TRUE)
         }
 
