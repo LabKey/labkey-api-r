@@ -74,7 +74,7 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
     }
     else
     {
-        stop(result$errorMsg)
+        warning(result$errorMsg)
     }
 }
 
@@ -90,6 +90,11 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
     if (!grepl(reportEntityId, getwd()))
     {
         return("Working directory is currently not set to report's directory. Skip saving source to LabKey.")
+    }
+
+    if (!file.exists(reportFilename))
+    {
+        stop (paste("File doesn't exist: ", reportFilename))
     }
 
     targetFilename <- labkey.rstudio.getSavedProp("reportFilename")
@@ -137,10 +142,6 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
         }
         url <- paste(baseUrl, "rstudio", folderPath, "SaveRReportContent.api", sep="")
 
-        if (!file.exists(reportFilename))
-        {
-             stop (paste("File doesn't exist: ", reportFilename))
-        }
         script <- readChar(reportFilename, file.info(reportFilename)$size)
 
         params <- list(entityId=reportEntityId, runScript=script)
@@ -162,7 +163,7 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
     }
 }
 
-## Read property value form prop.txt
+## Read property value form props.JSON
 ##
 labkey.rstudio.getSavedProp <- function(propName)
 {
@@ -173,7 +174,7 @@ labkey.rstudio.getSavedProp <- function(propName)
     return (props[propName])
 }
 
-## Update property value to prop.txt
+## Update property value to props.JSON
 ##
 labkey.rstudio.updateProp <- function(propName, propValue)
 {
