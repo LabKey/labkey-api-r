@@ -58,7 +58,7 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
 
         ## create report file and update its content
         fileConn <- file(result$filename, open="w")
-        writeLines(result$reportSource, fileConn)
+        writeLines(result$reportSource, con=fileConn, sep="")
         close(fileConn)
 
         ## create input data file
