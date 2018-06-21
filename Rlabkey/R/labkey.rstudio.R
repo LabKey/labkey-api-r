@@ -133,7 +133,7 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
         }
         if (!doSave)
         {
-            return("Skipped saving updated source to LabKey server");
+            return("Skipped saving updated source to LabKey Server");
         }
         url <- paste(baseUrl, "rstudio", folderPath, "SaveRReportContent.api", sep="")
 
@@ -158,7 +158,7 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
     }
     else
     {
-        warning("Failed to update report source to LabKey server. Report doesn't exist.")
+        warning("Failed to update report source to LabKey Server. Report doesn't exist.")
     }
 }
 
