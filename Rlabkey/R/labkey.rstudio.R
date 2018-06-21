@@ -186,7 +186,7 @@ labkey.rstudio.updateProp <- function(propName, propValue)
     write(toJSON(props), file=propsFilepath)
 }
 
-## initialize a RStudio session for rlabkey
+## check valid rlabkey session
 ##
 labkey.rstudio.isInitialized <- function()
 {
