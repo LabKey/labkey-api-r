@@ -70,7 +70,7 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
 
         ## open report for editing
         if (missing(skipEdit) || skipEdit == FALSE)
-            file.edit(result$filename)
+            get("file.edit")(result$filename)
     }
     else
     {
@@ -130,11 +130,11 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
         if (localLastModified == lkResult$lastModified)
         {
             if (useWarning == TRUE)
-                doSave <- .rs.api.showQuestion("Save to LabKey?", "Do you want to update report content to LabKey Server?")
+                doSave <- get(".rs.api.showQuestion")("Save to LabKey?", "Do you want to update report content to LabKey Server?")
         }
         else
         {
-            doSave <- .rs.api.showQuestion("Save to LabKey? (Potential conflicting edit)", "The report source was modified in LabKey Server and the content might have diverged from local copy. Do you want to save local changes to LabKey Server?")
+            doSave <- get(".rs.api.showQuestion")("Save to LabKey? (Potential conflicting edit)", "The report source was modified in LabKey Server and the content might have diverged from local copy. Do you want to save local changes to LabKey Server?")
         }
         if (!doSave)
         {
@@ -171,7 +171,7 @@ labkey.rstudio.getSavedProp <- function(propName)
     if (!file.exists(propsFilepath))
         return (NULL)
     props <- fromJSON(txt = propsFilepath)
-    return (props[propName])
+    return (props[[propName]])
 }
 
 ## Update property value to props.JSON
