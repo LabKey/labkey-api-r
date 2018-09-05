@@ -1,3 +1,6 @@
+Changes in version 2.2.3
+  o New helper functions for RStudio integration
+
 Changes in version 2.2.2
   o New APIs for getting, creating, inferring and dropping LabKey domains (requires LabKey server version 18.2 or later)
   o Fix for Issue #18: labkey.executeSql breaks when using the containerFilter option

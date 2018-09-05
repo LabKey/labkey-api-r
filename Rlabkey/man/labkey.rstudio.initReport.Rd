@@ -6,7 +6,7 @@ LabKey-RStudio integration helper. Not intended for use outside RStudio.
 }
 \usage{
 labkey.rstudio.initReport(apiKey = "", baseUrl = "", folderPath,
-  reportEntityId, skipEdit = FALSE)
+  reportEntityId, skipViewer = FALSE, skipEdit = FALSE)
 }
 \arguments{
 \item{apiKey}{session key from your server}
@@ -16,6 +16,8 @@ labkey.rstudio.initReport(apiKey = "", baseUrl = "", folderPath,
 \item{folderPath}{a string specifying the \code{folderPath}}
 
 \item{reportEntityId}{LabKey report's entityId}
+
+\item{skipViewer}{(TRUE | FALSE) TRUE to skip setting up LabKey schema viewer in RStudio}
 
 \item{skipEdit}{(TRUE | FALSE) TRUE to open file in editor}
 }

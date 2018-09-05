@@ -14,11 +14,28 @@
 #  limitations under the License.
 ##
 
-## initialize a RStudio session for LabKey R report source editing
+## initialize a RStudio session for LabKey user
 ##
-labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportEntityId, skipEdit=FALSE)
+labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", skipViewer=FALSE)
 {
     labkey.setDefaults(apiKey, baseUrl);
+
+    if (missing(skipViewer) || skipViewer == FALSE)
+    {
+        hasViewer <- FALSE
+        if (!is.null(.lkdefaults[["baseUrl"]]))
+            get(".rs.api.viewer")(paste(.lkdefaults[["baseUrl"]], "rstudio-viewer.view",sep='/'))
+    }
+
+    if (exists("labkey.rstudio.extend", mode="function")) get("labkey.rstudio.extend")()
+}
+
+
+## initialize a RStudio session for LabKey R report source editing
+##
+labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportEntityId, skipViewer=FALSE, skipEdit=FALSE)
+{
+    labkey.rstudio.initRStudio(apiKey, baseUrl, skipViewer);
 
     ## check required parameters
     if(missing(folderPath) || missing(reportEntityId))
