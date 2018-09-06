@@ -14,6 +14,38 @@
 #  limitations under the License.
 ##
 
+
+## initialize a RStudio session for LabKey user
+##
+labkey.rstudio.initSession <- function(requestId, baseUrl)
+{
+    ## check required parameters
+    if(missing(requestId) || missing(baseUrl))
+        stop (paste("A value must be specified for each of requestId and baseUrl."))
+
+    url <- paste(baseUrl, "rstudio-fetchCmd.api?id=", requestId, sep="")
+    response <- labkey.get(url)
+    lkResult <- (fromJSON(response))
+    if (lkResult$success == TRUE)
+    {
+        # do not print initialization cmd that contain apikey
+        eval(parse(text=lkResult$initializationCmd))
+
+        additionalCmds <- lkResult$additionalCmds
+        if (length(additionalCmds) > 0)
+        {
+            for (i in 1:length(additionalCmds))
+            {
+                get(".rs.api.sendToConsole")(additionalCmds[i]);
+            }
+        }
+    }
+    else
+    {
+        warning("Unable to initialize integration with Labkey. Invalid requestId or baseUrl.")
+    }
+}
+
 ## initialize a RStudio session for LabKey user
 ##
 labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", skipViewer=FALSE)
