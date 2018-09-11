@@ -48,7 +48,7 @@ labkey.rstudio.initSession <- function(requestId, baseUrl)
 
 ## initialize a RStudio session for LabKey user
 ##
-labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", skipViewer=FALSE)
+labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", folderPath, skipViewer=FALSE)
 {
     labkey.setDefaults(apiKey, baseUrl);
 
@@ -56,7 +56,10 @@ labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", skipViewer=FALSE)
     {
         hasViewer <- FALSE
         if (!is.null(.lkdefaults[["baseUrl"]]))
-            get(".rs.api.viewer")(paste(.lkdefaults[["baseUrl"]], "rstudio-viewer.view",sep='/'))
+        {
+            folderPath <- encodeFolderPath(folderPath)
+            get(".rs.api.viewer")(paste(.lkdefaults[["baseUrl"]], folderPath, "rstudio-viewer.view", sep=""))
+        }
     }
 
     if (exists("labkey.rstudio.extend", mode="function")) get("labkey.rstudio.extend")()
@@ -67,7 +70,7 @@ labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", skipViewer=FALSE)
 ##
 labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportEntityId, skipViewer=FALSE, skipEdit=FALSE)
 {
-    labkey.rstudio.initRStudio(apiKey, baseUrl, skipViewer);
+    labkey.rstudio.initRStudio(apiKey, baseUrl, folderPath, skipViewer);
 
     ## check required parameters
     if(missing(folderPath) || missing(reportEntityId))
