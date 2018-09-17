@@ -1,6 +1,6 @@
 \name{labkey.rstudio.initSession}
 \alias{labkey.rstudio.initSession}
-\title{Initialize a RStudio session for LabKey integration from a time one request id}
+\title{Initialize a RStudio session for LabKey integration using a time one request id}
 \description{
 LabKey-RStudio integration helper. Not intended for use outside RStudio.
 }
