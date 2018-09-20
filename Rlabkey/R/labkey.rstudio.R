@@ -54,7 +54,6 @@ labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", folderPath, skipVi
 
     if (missing(skipViewer) || skipViewer == FALSE)
     {
-        hasViewer <- FALSE
         if (!is.null(.lkdefaults[["baseUrl"]]))
         {
             folderPath <- encodeFolderPath(folderPath)
