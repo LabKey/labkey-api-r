@@ -1,6 +1,7 @@
 Changes in version 2.2.3
   o New helper functions for RStudio integration
   o New helper functions for use with R transform scripts to process run properties from server
+  o New function to save experiment runs for an assay or a non-assay backed protocol
 
 Changes in version 2.2.2
   o New APIs for getting, creating, inferring and dropping LabKey domains (requires LabKey server version 18.2 or later)
