@@ -16,6 +16,8 @@
 
 labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFrame, batchPropertyList=NULL, runPropertyList=NULL)
 {
+    .Deprecated(msg = "This function is deprecated and will be removed in a future release. Please use the newer replacement function : labkey.experiment.saveBatch, as it supports additional features")
+
 	baseUrl = labkey.getBaseUrl(baseUrl)
 
 	## Error if any of baseUrl, folderPathare missing

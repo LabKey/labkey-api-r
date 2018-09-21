@@ -18,6 +18,9 @@ labkey.saveBatch(baseUrl, folderPath, assayName, resultDataFrame,
   
 }
 \details{
+This function has been deprecated and will be removed in a future release, please use labkey.experiment.saveBatch instead as
+it supports the newer options for saving batch objects.
+
 To save an R data.frame an assay results sets, you must create a named assay using the "General" assay provider.  Detailed 
 instructions are avaialable in the Rlabkey Users Guide, accessible by entering RlabkeyUsersGuide() at the R command prompt.
 Note that saveBatch currently supports only a single run with one result set per batch.
@@ -32,7 +35,8 @@ Note that saveBatch currently supports only a single run with one result set per
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.updateRows}}, \cr
-\code{\link{labkey.deleteRows}}
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.experiment.saveBatch}}
 }
 \examples{
 \donttest{
