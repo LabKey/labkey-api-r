@@ -6,16 +6,16 @@ A function that takes in the full path to the LabKey generated run properties fi
 the key value pairs for the lines within that file. This helper function would be used as part of an assay transform
 script written in R and associated with an assay design.}
 \usage{
-labkey.transform.readRunPropertiesFile(run.info.path)
+labkey.transform.readRunPropertiesFile(runInfoPath)
 }
 \arguments{
-  \item{run.info.path}{the full file system path to the generated run properties file}
+  \item{runInfoPath}{the full file system path to the generated run properties file}
 }
 
 \details{
 The most common scenario is that the assay transform script will get the run properties file path added
 into the running script as a replacement variable. To use that replacement variable for this helper function,
-you can pass in the run.info.path parameter as "${runInfo}".\cr
+you can pass in the runInfoPath parameter as "${runInfo}".\cr
 }
 \examples{
 \donttest{

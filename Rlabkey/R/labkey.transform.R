@@ -1,12 +1,12 @@
 
-labkey.transform.readRunPropertiesFile <- function(run.info.path)
+labkey.transform.readRunPropertiesFile <- function(runInfoPath)
 {
     # set up a data frame to store the run properties
       properties = data.frame(NA, NA, NA, NA);
       colnames(properties) = c("name", "val1", "val2", "val3");
 
       #read in the run properties from the TSV
-      lines = readLines(run.info.path);
+      lines = readLines(runInfoPath);
 
       # each line has a run property with the name, val1, val2, etc.
       for (i in 1:length(lines))
@@ -33,12 +33,12 @@ labkey.transform.readRunPropertiesFile <- function(run.info.path)
       return (properties)
 }
 
-labkey.transform.getRunPropertyValue <- function(run.props, prop.name)
+labkey.transform.getRunPropertyValue <- function(runProps, propName)
 {
     value = NA;
-    if (any(run.props$name == prop.name))
+    if (any(runProps$name == propName))
     {
-        value = run.props$val1[run.props$name == prop.name];
+        value = runProps$val1[runProps$name == propName];
 
         # return NA for an empty string
         if (nchar(value) == 0)
@@ -46,5 +46,5 @@ labkey.transform.getRunPropertyValue <- function(run.props, prop.name)
             value = NA;
         }
     }
-    value;
+    return (value)
 }

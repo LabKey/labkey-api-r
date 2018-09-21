@@ -5,11 +5,11 @@
 A function that takes in data.frame of the run properties info for a given assay transform script execution and
 returns the value for a given property name.}
 \usage{
-labkey.transform.getRunPropertyValue(run.props, prop.name)
+labkey.transform.getRunPropertyValue(runProps, propName)
 }
 \arguments{
-  \item{run.props}{the data.frame of the run property key/value pairs}
-  \item{prop.name}{the name of the property to get the value of within the run.props data.frame}
+  \item{runProps}{the data.frame of the run property key/value pairs}
+  \item{propName}{the name of the property to get the value of within the runProps data.frame}
 }
 
 \details{
