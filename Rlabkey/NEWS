@@ -1,4 +1,5 @@
 Changes in version 2.2.3
+  o New helper functions for RStudio integration
   o New helper functions for use with R transform scripts to process run properties from server
 
 Changes in version 2.2.2
