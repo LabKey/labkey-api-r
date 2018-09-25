@@ -35,8 +35,8 @@ library(Rlabkey)
 
 m1 <- labkey.experiment.createMaterial(list(name = "87444063.2604.626"), sampleSetName = "Study Specimens")
 m2 <- labkey.experiment.createMaterial(list(name = "87444063.2604.625"), sampleSetName = "Study Specimens")
-run <- labkey.experiment.createRun(materialInputs = m1, materialOutputs = m2)
-labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.SAMPLE_DERIVATION_PROTOCOL, runList=run)
+run <- labkey.experiment.createRun(list(name="new run"), materialInputs = m1, materialOutputs = m2)
+labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.experiment.SAMPLE_DERIVATION_PROTOCOL, runList=run)
 }
 }
 \keyword{IO}

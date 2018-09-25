@@ -8,7 +8,7 @@ Saves a modified experiment batch.
 labkey.experiment.saveBatch(baseUrl=NULL, folderPath, assayConfig = NULL, protocolName = NULL, runList)
 }
 \arguments{
-  \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
+  \item{baseUrl}{(optional) a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{assayConfig}{(optional) a list specifying assay configuration information}
   \item{protocolName}{(optional) a string specifying the protocol name of the protocol to use}
@@ -51,8 +51,8 @@ labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", assayCo
 
 m1 <- labkey.experiment.createMaterial(list(name = "87444063.2604.626"), sampleSetName = "Study Specimens")
 m2 <- labkey.experiment.createMaterial(list(name = "87444063.2604.625"), sampleSetName = "Study Specimens")
-run <- labkey.experiment.createRun(materialInputs = m1, materialOutputs = m2)
-labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.SAMPLE_DERIVATION_PROTOCOL, runList=run)
+run <- labkey.experiment.createRun(list(name="new run"), materialInputs = m1, materialOutputs = m2)
+labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.experiment.SAMPLE_DERIVATION_PROTOCOL, runList=run)
 }
 }
 \keyword{IO}

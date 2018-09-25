@@ -36,8 +36,8 @@ library(Rlabkey)
 
 d1 <- labkey.experiment.createData(list(name = "dc-01"), dataClassId = 400)
 d2 <- labkey.experiment.createData(list(name = "dc-02"), dataClassId = 402)
-run <- labkey.experiment.createRun(dataInputs = d1, dataOutputs = d2)
-labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.SAMPLE_DERIVATION_PROTOCOL, runList=run)
+run <- labkey.experiment.createRun(list(name="new run"), dataInputs = d1, dataOutputs = d2)
+labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", protocolName=labkey.experiment.SAMPLE_DERIVATION_PROTOCOL, runList=run)
 }
 }
 \keyword{IO}
