@@ -21,9 +21,11 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     ## Default showAllRows=TRUE
     showAllRows=TRUE
 
-    ## Error if any of baseUrl, folderPath, schemName or toUpdate are missing
-    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("toUpdate"))
-        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toUpdate."))
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
+    if (missing(queryName)) stop (paste("A value must be specified for queryName."))
+    if (missing(toUpdate)) stop (paste("A value must be specified for toUpdate."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

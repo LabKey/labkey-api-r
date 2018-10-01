@@ -145,9 +145,9 @@ labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = 
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
-    ## check required parameters
-    if (missing(folderPath) || missing(runList))
-        stop (paste("A value must be specified for each of folderPath, and runList."))
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(runList)) stop (paste("A value must be specified for runList."))
 
     if (is.null(assayConfig) && is.null(protocolName))
         stop (paste("Either an assay config list or protocolName must be specified. The assay configuration must contain either an assayId or both assayName and providerName"))

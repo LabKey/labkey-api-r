@@ -21,9 +21,11 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     ## Default showAllRows=TRUE
     showAllRows=TRUE
 
-    ## Error if any of baseUrl, folderPath, schemName or toDelete are missing
-    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("toDelete"))
-        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and toDelete."))
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
+    if (missing(queryName)) stop (paste("A value must be specified for queryName."))
+    if (missing(toDelete)) stop (paste("A value must be specified for toDelete."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

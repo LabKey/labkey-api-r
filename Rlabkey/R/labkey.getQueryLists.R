@@ -35,9 +35,10 @@ getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
     if((length(queryName)>0) && (queryName==URLdecode(queryName)) ) { queryName <- URLencode(queryName) }
-	## Error if any of baseUrl, folderPath, or schemName are missing
-	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") )
-	    {stop ("A value must be specified for each of baseUrl, folderPath, schemaName.")}
+
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
 
 	## URL encoding of schemaName (if not already encoded)
 	if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}

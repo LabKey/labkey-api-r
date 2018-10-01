@@ -26,11 +26,8 @@ labkey.getSchemas <- function(baseUrl=NULL, folderPath)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
-    ## Empty string/NULL checking
-
-    ## Error if any of baseUrl, folderPath, schemName or queryName are missing
-    if (missing("baseUrl") || is.null(baseUrl) || missing("folderPath"))
-        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

@@ -20,10 +20,10 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
 
 	baseUrl = labkey.getBaseUrl(baseUrl)
 
-	## Error if any of baseUrl, folderPathare missing
-	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("assayName")  || missing("resultDataFrame"))
-	    stop (paste("A value must be specified for each of baseUrl, folderPath, assayName, and resultDataFrame"))
-	## TODO.check for at least one of the insert blocks is not null
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(assayName)) stop (paste("A value must be specified for assayName."))
+    if (missing(resultDataFrame)) stop (paste("A value must be specified for resultDataFrame."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

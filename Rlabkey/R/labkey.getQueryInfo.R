@@ -43,9 +43,10 @@ getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDe
 {
 	baseUrl=labkey.getBaseUrl(baseUrl)
 
-	## Error if any of baseUrl, folderPath, schemName or queryName are missing
-	if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("queryName") )
-		{stop ("A value must be specified for each of baseUrl, folderPath, schemaName, and queryName.")}
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
+    if (missing(queryName)) stop (paste("A value must be specified for queryName."))
 
 	if(is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }
 

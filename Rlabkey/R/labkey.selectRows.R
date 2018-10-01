@@ -32,9 +32,10 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
     if(is.null(parameters)==FALSE) {char <- nchar(parameters[1]); if(char<1){parameters<-NULL}}
     if(is.null(includeDisplayValues)==FALSE) {char <- nchar(includeDisplayValues); if(char<1){includeDisplayValues<-FALSE}}
 
-    ## Error if any of baseUrl, folderPath, schemName or queryName are missing
-    if(missing("baseUrl") || is.null(baseUrl) || missing("folderPath") || missing("schemaName") || missing("queryName"))
-        stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName and queryName."))
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
+    if (missing(queryName)) stop (paste("A value must be specified for queryName."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)
