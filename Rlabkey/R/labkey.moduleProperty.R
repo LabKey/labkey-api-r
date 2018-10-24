@@ -80,7 +80,7 @@ labkey.setModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
     property$value = propValue
     property$currentContainer = TRUE
 
-    params$properties = list(property)
+    params <- list(properties=list(property))
 
     url <- paste(baseUrl, "core", folderPath, "saveModuleProperties.api", sep="")
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
