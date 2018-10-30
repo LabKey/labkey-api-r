@@ -15,7 +15,9 @@ export(labkey.experiment.createMaterial)
 export(labkey.experiment.createRun)
 export(labkey.experiment.saveBatch)
 export(labkey.experiment.SAMPLE_DERIVATION_PROTOCOL)
-
+export(labkey.getModuleProperty)
+export(labkey.setModuleProperty)
+export(labkey.getBaseUrl)
 
 S3method(print, LabkeySession)
 S3method(print, LabkeySchemaList)

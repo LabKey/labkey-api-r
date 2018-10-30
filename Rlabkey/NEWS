@@ -1,3 +1,7 @@
+Changes in version 2.2.4
+  o New function to set and get module properties
+  o allow getting baseUrl using labkey.getBaseUrl
+
 Changes in version 2.2.3
   o New helper functions for RStudio integration
   o New helper functions for use with R transform scripts to process run properties from server
