@@ -6,7 +6,7 @@ Bulk import rows of data into the database.
 }
 \usage{
 labkey.importRows(baseUrl, folderPath,
-    schemaName, queryName, toImport)
+    schemaName, queryName, toImport, na)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -14,6 +14,7 @@ labkey.importRows(baseUrl, folderPath,
   \item{schemaName}{a string specifying the  \code{schemaName} for the query}
   \item{queryName}{a string specifying the  \code{queryName} }
   \item{toImport}{a data frame containing rows of data to be imported}
+  \item{na}{(optional) the value to convert NA's to, defaults to NULL}
 }
 \details{
 Multiple rows of data can be imported in bulk.  The \code{toImport} data frame must contain

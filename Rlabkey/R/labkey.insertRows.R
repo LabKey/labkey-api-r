@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert)
+labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert, na=NULL)
 {  
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -41,7 +41,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     {
         cvalues <- as.list(toInsert[j,])
         names(cvalues) <- cnames
-        cvalues[is.na(cvalues)] = NULL
+        cvalues[is.na(cvalues)] = na
         p2 <- toJSON(cvalues, auto_unbox=TRUE)
         p3 <- c(p3, p2)
     }

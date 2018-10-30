@@ -6,7 +6,7 @@ Insert new rows of data into the database.
 }
 \usage{
 labkey.insertRows(baseUrl, folderPath,
-    schemaName, queryName, toInsert)
+    schemaName, queryName, toInsert, na)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -14,6 +14,7 @@ labkey.insertRows(baseUrl, folderPath,
   \item{schemaName}{a string specifying the  \code{schemaName} for the query}
   \item{queryName}{a string specifying the  \code{queryName} }
   \item{toInsert}{a data frame containing rows of data to be inserted}
+  \item{na}{(optional) the value to convert NA's to, defaults to NULL}
 }
 \details{
 A single row or multiple rows of data can be inserted.  The \code{toInsert} data frame must contain
