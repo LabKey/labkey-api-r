@@ -32,7 +32,15 @@ labkey.domain.get <- function(baseUrl=NULL, folderPath, schemaName, queryName)
     params <- list(schemaName=schemaName, queryName=queryName)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
-    return (fromJSON(response))
+    result <- fromJSON(response)
+
+    # Issue 36894: translate NULL values for string props to NA
+    if (is.null(result$description)) result$description = NA
+    if (is.null(result$schemaName)) result$schemaName = NA
+    if (is.null(result$queryName)) result$queryName = NA
+    if (is.null(result$templateDescription)) result$templateDescription = NA
+
+    return (result)
 }
 
 ## Update an existing domain
