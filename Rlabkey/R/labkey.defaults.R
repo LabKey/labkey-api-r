@@ -181,7 +181,7 @@ labkey.get <- function(myurl)
 }
 
 ## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
-labkey.post <- function(myurl, pbody, encoding=NULL)
+labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL)
 {
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
@@ -190,10 +190,10 @@ labkey.post <- function(myurl, pbody, encoding=NULL)
         response <- POST(url=myurl, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
     else
         response <- POST(url=myurl, config=options, body=pbody)
-    processResponse(response)
+    processResponse(response, responseType = responseType)
 }
 
-processResponse <- function(response, haltOnError=TRUE)
+processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 {
     ## Error checking, decode data and return
     status_code <- response$status_code
@@ -211,7 +211,7 @@ processResponse <- function(response, haltOnError=TRUE)
         if (haltOnError)
             stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
     }
-    content(response, "text")
+    content(response, as = "text", type = responseType)
 }
 
 labkey.setDebugMode <- function(debug=FALSE)
