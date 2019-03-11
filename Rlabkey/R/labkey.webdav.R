@@ -137,7 +137,23 @@ labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, fileSet="@files", re
     url <- paste0(url, "?method=JSON")
     content <- labkey.post(url, pbody = "", responseType = "text/plain; charset=utf-8")
 
-    fromJSON(content, simplifyVector=FALSE, simplifyDataFrame=FALSE)
+    # The intent of this is to mask some of the properties only intended for rendering the file browser UI (like icon)
+    ret <- fromJSON(content, simplifyVector=FALSE, simplifyDataFrame=FALSE)
+    colNames <- c("id", "href", "text", "creationdate", "createdby", "lastmodified", "contentlength", "size", "isdirectory")
+    ret[["files"]] <- lapply(ret[["files"]], function(l){
+        idx <- match("collection", names(l))
+        if (!is.na(idx)){
+            names(l)[idx] <- "isdirectory"
+        } else {
+            l$isdirectory <- FALSE
+        }
+
+        l <- l[colNames]
+        names(l) <- colNames
+        return(l)
+    })
+
+    return(ret)
 }
 
 labkey.webdav.delete <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
@@ -188,7 +204,7 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, fil
     for (file in files[["files"]]) {
         relativePath <- sub(prefix, "", file[["id"]])
         localPath <- file.path(localDir, relativePath)
-        if (file[["collection"]]) {
+        if (file[["isdirectory"]]) {
             if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
                 print(paste0("Downloading folder: ", relativePath))
                 print(paste0("to: ", localPath))

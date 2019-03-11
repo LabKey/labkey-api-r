@@ -1,21 +1,24 @@
 library(Rlabkey)
 
-#setup
-baseUrl <- 'http://localhost:8080/labkey/'
-fileRoot <- '/labkey_trunk/build/deploy/files/'
-
-baseUrl <- 'https://prime-seq.ohsu.edu/'
-fileRoot <- NA
-
-folderPath <- 'home'
+# This file is included in the PR to illustate labkey.webdav.  This should be removed before final merge, 
+# and a version of this should probably go into SVN and incorporated into 
 #labkey.setDebugMode(T)
 
-localDownloadDir <- 'LocalTestDir'
-dirName <- 'TestDir'
-fileName1 <- paste0(dirName, '/foo.txt')
+#setup
+baseUrl <- "http://localhost:8080/labkey/"
+fileRoot <- "/labkey_trunk/build/deploy/files/"
 
-localName <- 'localCopy.txt'
-localName2 <- 'overwrittenRemoteFile.txt'
+baseUrl <- "https://prime-seq.ohsu.edu/"
+fileRoot <- NA
+
+folderPath <- "home"
+
+localDownloadDir <- "LocalTestDir"
+dirName <- "TestDir"
+fileName1 <- paste0(dirName, "/foo.txt")
+
+localName <- "localCopy.txt"
+localName2 <- "overwrittenRemoteFile.txt"
 
 assertRemoteFileExists <- function(remoteFilePath) {
   if (!labkey.webdav.pathExists(baseUrl=baseUrl, folderPath = folderPath, remoteFilePath=remoteFilePath)) {
@@ -24,9 +27,9 @@ assertRemoteFileExists <- function(remoteFilePath) {
   
   # Verify file exists in server filesystem (if accessible):
   if (!is.na(fileRoot)){
-    expectedFile <- paste0(fileRoot, folderPath, '@files/', remoteFilePath)
+    expectedFile <- paste0(fileRoot, folderPath, "@files/", remoteFilePath)
     if (!file.exists(expected)) {
-      stop(paste0('Uploaded file not found under server file root: ', remoteFilePath))
+      stop(paste0("Uploaded file not found under server file root: ", remoteFilePath))
     }
   }
 }
@@ -38,9 +41,9 @@ assertRemoteFileDoesNotExist <- function(remoteFilePath) {
   
   # Verify file exists in server filesystem (if accessible):
   if (!is.na(fileRoot)){
-    expectedFile <- paste0(fileRoot, folderPath, '@files/', remoteFilePath)
+    expectedFile <- paste0(fileRoot, folderPath, "@files/", remoteFilePath)
     if (file.exists(expected)) {
-      stop(paste0('File still present under server file root: ', remoteFilePath))
+      stop(paste0("File still present under server file root: ", remoteFilePath))
     }
   }
 }
@@ -92,13 +95,13 @@ close(fileConn)
 
 #failed put:
 tryCatch({
-  labkey.webdav.put(baseUrl=baseUrl, paste0(filePath, 'failure'), folderPath=folderPath, remoteFilePath=fileName1, overwriteRemote=TRUE)
-  stop('This should not have worked')
+  labkey.webdav.put(baseUrl=baseUrl, paste0(filePath, "failure"), folderPath=folderPath, remoteFilePath=fileName1)
+  stop("This should not have worked")
 }, error = function(e){
-  print('This failed as expected')  
+  print("This failed as expected")  
 })
 
-labkey.webdav.put(baseUrl=baseUrl, filePath, folderPath=folderPath, remoteFilePath=fileName1, overwriteRemote=TRUE)
+labkey.webdav.put(baseUrl=baseUrl, filePath, folderPath=folderPath, remoteFilePath=fileName1)
 assertRemoteFileExists(remoteFilePath=fileName1)
 
 # Download this file
@@ -137,7 +140,7 @@ close(fileConn)
 fileChars1 <- readChar(localName,nchars=1e6)
 
 #now upload again:
-labkey.webdav.put(baseUrl=baseUrl, localName, folderPath=folderPath, remoteFilePath=fileName1, overwriteRemote=TRUE)
+labkey.webdav.put(baseUrl=baseUrl, localName, folderPath=folderPath, remoteFilePath=fileName1)
 assertRemoteFileExists(remoteFilePath=fileName1)
 
 labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName2, overwrite=TRUE)
@@ -145,13 +148,65 @@ fileChars1 <- readChar(localName,nchars=1e6)
 fileChars2 <- readChar(localName2,nchars=1e6)
 
 if (fileChars1 != fileChars2) {
-  stop('Remote file should have been overwritten')
+  stop("Remote file should have been overwritten")
 }
 
 # Make multiple folders:
 remoteDir2 <- paste0(dirName, "/1/2/3")
 labkey.webdav.mkDirs(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath=remoteDir2)
 assertRemoteFileExists(remoteFilePath=remoteDir2)
+
+# Test listDir
+ret <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=dirName)
+if (length(ret[["files"]]) != 2) {
+  stop (paste0("Expected 2 files, was: ", length(ret[["files"]])))
+}
+
+if (ret[["fileCount"]] != 2) {
+  stop ("Expected 2 files")
+}
+
+expectedJson <- list(
+  list("id"="/_webdav/home/@files/TestDir/1",
+       "href"="/_webdav/home/%40files/TestDir/1/",
+       "text"="1",
+       "isdirectory"=TRUE
+       ),
+  list("id"="/_webdav/home/@files/TestDir/foo.txt",
+       "href"="/_webdav/home/%40files/TestDir/foo.txt",
+       "text"="foo.txt",
+       "isdirectory"=FALSE
+  )
+)
+
+for (idx in c(1,2)) {
+  expected <- expectedJson[[idx]]
+  actual <- ret[["files"]][[idx]]
+  for (prop in names(expected)) {
+    if (expected[[prop]] != actual[[prop]]) {
+      stop(paste0("Incorrect value for: ", prop, " was: ", actual[[prop]], ". expected: ", expected[[prop]]))
+    }
+  }
+  
+  for (prop in c("creationdate", "createdby")) {
+    if (is.null(actual[[prop]])) {
+      stop(paste0("Missing value for: ", prop))
+    }
+  }
+  
+  #file/directory specific props
+  for (prop in c("contentlength", "size", "lastmodified")) {
+    if (actual$isdirectory) {
+      if (!is.null(actual[[prop]])) {
+        stop(paste0("Not null value for: ", prop))
+      }
+    } else {
+      if (is.null(actual[[prop]])) {
+        stop(paste0("Missing value for: ", prop))
+      }
+    }
+  }
+}
 
 # Try delete
 remoteDir3 <- paste0(dirName, "/1/4")
@@ -165,9 +220,8 @@ assertRemoteFileDoesNotExist(remoteFilePath=remoteDir3)
 labkey.webdav.downloadFolder(localDownloadDir, baseUrl, folderPath = folderPath, remoteFilePath = dirName)
 assertLocalFileExists(file.path(localDownloadDir, dirName))
 assertLocalFileExists(file.path(localDownloadDir, fileName1))
-assertLocalFileExists(file.path(localDownloadDir, dirName, '1'))
-assertLocalFileExists(file.path(localDownloadDir, dirName, '1/2/3'))
-  
-cleanup()
+assertLocalFileExists(file.path(localDownloadDir, dirName, "1"))
+assertLocalFileExists(file.path(localDownloadDir, dirName, "1/2/3"))
 
+cleanup()
 

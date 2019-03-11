@@ -20,9 +20,22 @@ json <- labkey.webdav.listDir(
 Lists the contents of a folder on a LabKey Server using WebDAV.
 }
 \value{
-A list with each item under this folder.  Each file has the following attributes:
-
-
+A list with each item under this folder.  Each item (file or directory) is a list with the following attributes:
+     \itemize{
+       	      \item{ "files": A list of the files, where each has the following attributes: }
+              \itemize{
+                  \item{ "id": The relative path to this item, not encoded }
+                  \item{ "href": The relative URL to this item, HTML encoded }
+                  \item{ "text": A dataset in a date based study }
+                  \item{ "creationdate": The date this item was created }
+                  \item{ "createdby": The user that created this file }
+                  \item{ "lastmodified": The last modification time }
+                  \item{ "contentlength": The content length }
+                  \item{ "size": The file size }
+                  \item{ "isdirectory": TRUE or FALSE, depending on whether this item is a directory }
+              }
+              \item{ "fileCount": If this item is a directory, this property will be present, listing the the total files in this location }
+     }
 }
 
 \author{Ben Bimber, Ph.D.}
