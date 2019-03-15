@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.webdav.get <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath, localFilePath, overwrite=TRUE)
+labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFilePath, fileSet="@files", overwrite=TRUE)
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -57,7 +57,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
     processResponse(response)
 }
 
-labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     if (missing(localFile)) {
         stop (paste("A value must be specified for localFile"))
@@ -84,7 +84,7 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, fileSet="@fil
     return(TRUE)
 }
 
-labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     url <- labkey.webdav._validateRemoteUrl(baseUrl = baseUrl, folderPath = folderPath, fileSet = fileSet, remoteFilePath = remoteFilePath)
 
@@ -102,7 +102,7 @@ labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, fileSet="@files", remo
     return(TRUE)
 }
 
-labkey.webdav._validateRemoteUrl <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav._validateRemoteUrl <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -117,7 +117,7 @@ labkey.webdav._validateRemoteUrl <- function(baseUrl=NULL, folderPath, fileSet="
     return(paste(baseUrl, "_webdav", folderPath, fileSet, "/", remoteFilePath, sep=""))
 }
 
-labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -129,7 +129,7 @@ labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, fileSet="@files",
     return(is.null(ret$exception))
 }
 
-labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -156,7 +156,7 @@ labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, fileSet="@files", re
     return(ret)
 }
 
-labkey.webdav.delete <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.delete <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -166,7 +166,7 @@ labkey.webdav.delete <- function(baseUrl=NULL, folderPath, fileSet="@files", rem
     labkey.post(url, pbody = "", responseType = "text/plain; charset=utf-8")
 }
 
-labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath)
+labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -188,7 +188,7 @@ labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, fileSet="@files", rem
     return(TRUE)
 }
 
-labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, fileSet="@files", remoteFilePath, overwrite = TRUE)
+labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwrite = TRUE, fileSet="@files")
 {
     if (!file.exists(localDir)) {
         stop(paste0("Download folder does not exist: ", localDir))
