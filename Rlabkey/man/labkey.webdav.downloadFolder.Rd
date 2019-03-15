@@ -5,22 +5,26 @@
 This will recursively download a folder from a LabKey Server using WebDAV.
 }
 \usage{
-labkey.webdav.downloadFolder(localDir='downloadFolder',
+labkey.webdav.downloadFolder(
+    localDir,
     baseUrl=NULL, 
-    folderPath='home',
-    remoteFilePath='folder1',
-    overwrite=TRUE)
+    folderPath,
+    remoteFilePath,
+    overwrite=TRUE,
+    fileSet='@files'
+    )
 }
 \arguments{
   \item{localDir}{the local filepath where this file will be saved }
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
   \item{remoteFilePath}{the path of this folder on the remote server, relative to the folder root. }
   \item{overwrite}{(optional) if true, any pre-existing file at this location will be overwritten.  Defaults to TRUE }
+  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument).  In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{
-This will recursively download a folder from a LabKey Server using WebDAV.  This is essentially a wrapper that recursively calls labkey.webdav.get to download all files in the remote folder.
+This will recursively download a folder from a LabKey Server using WebDAV.  This is essentially a wrapper that recursively calls
+labkey.webdav.get to download all files in the remote folder.
 }
 \value{
 TRUE or FALSE, depending on if this folder was successfully downloaded
@@ -41,7 +45,12 @@ TRUE or FALSE, depending on if this folder was successfully downloaded
 ## download folder from a LabKey Server
 library(Rlabkey)
 
-labkey.webdav.downloadFolder(baseUrl="http://labkey/", folderPath="home", remoteFilePath="folder1", localDir="destFolder", overwrite=TRUE)
+labkey.webdav.downloadFolder(baseUrl="http://labkey/",
+    folderPath="home",
+    remoteFilePath="folder1",
+    localDir="destFolder",
+    overwrite=TRUE
+)
 
 }
 }

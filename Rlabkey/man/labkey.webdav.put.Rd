@@ -5,17 +5,20 @@
 This will download a file from a LabKey Server using WebDAV.
 }
 \usage{
-labkey.webdav.put('myFileToUpload.txt',
+labkey.webdav.put(
+    localFile,
     baseUrl=NULL,
-    folderPath='home',
-    remoteFilePath='myFile.txt')
+    folderPath,
+    remoteFilePath,
+    fileSet='@files'
+    )
 }
 \arguments{
   \item{localFile}{the local filepath to upload }
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
   \item{remoteFilePath}{the destination path of this file on the remote server, relative to the folder root. }
+  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{
 Upload a single file from the local machine to a LabKey Server using WebDAV.
@@ -39,7 +42,12 @@ TRUE if the file was uploaded successfully
 ## upload a single file to a LabKey Server
 library(Rlabkey)
 
-labkey.webdav.put(localFile="myFileToUpload.txt", baseUrl="http://labkey/", folderPath="home", remoteFilePath="myFileToUpload.txt")
+labkey.webdav.put(
+    localFile="myFileToUpload.txt",
+    baseUrl="http://labkey/",
+    folderPath="home",
+    remoteFilePath="myFileToUpload.txt"
+)
 
 }
 }

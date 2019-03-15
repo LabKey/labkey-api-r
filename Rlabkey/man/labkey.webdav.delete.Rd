@@ -7,14 +7,16 @@ This will delete the supplied file or folder under the specified LabKey Server p
 \usage{
 labkey.webdav.delete(
     baseUrl=NULL,
-    folderPath='home',
-    remoteFilePath='folderName')
+    folderPath,
+    remoteFilePath,
+    fileSet='@files'
+    )
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
   \item{remoteFilePath}{the path to delete, relative to the LabKey folder root. }
+  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{
 This will delete the supplied file or folder under the specified LabKey Server project using WebDAV. Note: if a folder is provided, it will delete that folder and contents.

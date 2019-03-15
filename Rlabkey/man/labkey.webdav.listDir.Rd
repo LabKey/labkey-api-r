@@ -5,16 +5,18 @@
 This will list the contents of a LabKey Server folder using WebDAV.
 }
 \usage{
-json <- labkey.webdav.listDir(
+labkey.webdav.listDir(
     baseUrl=NULL,
-    folderPath='home',
-    remoteFilePath='folder1')
+    folderPath,
+    remoteFilePath,
+    fileSet='@files'
+    )
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
   \item{remoteFilePath}{path of the folder on the remote server, relative to the folder root. }
+  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{
 Lists the contents of a folder on a LabKey Server using WebDAV.
@@ -53,7 +55,11 @@ A list with each item under this folder.  Each item (file or directory) is a lis
 
 library(Rlabkey)
 
-json <- labkey.webdav.listDir(baseUrl="http://labkey/", folderPath="home", remoteFilePath="myFolder")
+json <- labkey.webdav.listDir(
+            baseUrl="http://labkey/",
+            folderPath="home",
+            remoteFilePath="myFolder"
+        )
 
 }
 }

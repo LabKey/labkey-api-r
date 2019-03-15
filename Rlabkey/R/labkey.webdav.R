@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFilePath, fileSet="@files", overwrite=TRUE)
+labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFilePath, overwrite=TRUE, fileSet="@files")
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 

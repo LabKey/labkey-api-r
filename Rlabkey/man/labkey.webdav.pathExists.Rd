@@ -7,14 +7,16 @@ This will test if the supplied file/folder exists folder under the specified Lab
 \usage{
 labkey.webdav.pathExists(
     baseUrl=NULL,
-    folderPath='home',
-    remoteFilePath='folderName')
+    folderPath,
+    remoteFilePath,
+    fileSet='@files'
+    )
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
   \item{remoteFilePath}{the path to test, relative to the LabKey folder root. }
+  \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{
 This will test if the supplied file/folder exists folder under the specified LabKey Server project using WebDAV.
@@ -39,10 +41,18 @@ TRUE if the folder was created successfully
 library(Rlabkey)
 
 # Test folder
-labkey.webdav.pathExists(baseUrl="http://labkey/", folderPath="home", remoteFilePath="pathToTest")
+labkey.webdav.pathExists(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    remoteFilePath="pathToTest"
+)
 
 # Test file
-labkey.webdav.pathExists(baseUrl="http://labkey/", folderPath="home", remoteFilePath="folder/fileToTest.txt")
+labkey.webdav.pathExists(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    remoteFilePath="folder/fileToTest.txt"
+)
 
 }
 }
