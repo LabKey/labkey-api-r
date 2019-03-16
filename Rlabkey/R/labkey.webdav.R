@@ -42,7 +42,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
 
     localDownloadDir <- dirname(localFilePath)
     if (!file.exists(localDownloadDir)) {
-        dir.create(localDownloadDir, recursive = TRUE)
+        dir.create(localDownloadDir, recursive=TRUE)
     }
 
     options <- labkey.getRequestOptions(method="GET")
@@ -67,7 +67,7 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         stop (paste0("File does not exist: ", localFile));
     }
 
-    url <- labkey.webdav._validateRemoteUrl(baseUrl = baseUrl, folderPath = folderPath, fileSet = fileSet, remoteFilePath = remoteFilePath)
+    url <- labkey.webdav._validateRemoteUrl(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     options <- labkey.getRequestOptions(method="POST")
 
     pbody <- upload_file(localFile)
@@ -79,14 +79,14 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         response <- PUT(url=url, config=options, body=pbody)
     }
 
-    processResponse(response, responseType = "text/plain; charset=utf-8")
+    processResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
 
 labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
 {
-    url <- labkey.webdav._validateRemoteUrl(baseUrl = baseUrl, folderPath = folderPath, fileSet = fileSet, remoteFilePath = remoteFilePath)
+    url <- labkey.webdav._validateRemoteUrl(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
 
     options <- labkey.getRequestOptions(method="POST")
 
@@ -97,7 +97,7 @@ labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSe
         response <- VERB("MKCOL", url=url, config=options)
     }
 
-    processResponse(response, responseType = "text/plain; charset=utf-8")
+    processResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
@@ -125,7 +125,7 @@ labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, remoteFilePath, f
         stop (paste("A value must be specified for each of baseUrl, folderPath, fileSet, and remoteFilePath"));
     }
     
-    ret <- labkey.webdav.listDir(baseUrl, folderPath, fileSet, remoteFilePath)
+    ret <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     return(is.null(ret$exception))
 }
 
@@ -133,9 +133,9 @@ labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, file
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
-    url <- labkey.webdav._validateRemoteUrl(baseUrl = baseUrl, folderPath = folderPath, fileSet = fileSet, remoteFilePath = remoteFilePath)
+    url <- labkey.webdav._validateRemoteUrl(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     url <- paste0(url, "?method=JSON")
-    content <- labkey.post(url, pbody = "", responseType = "text/plain; charset=utf-8")
+    content <- labkey.post(url, pbody="", responseType="text/plain; charset=utf-8")
 
     # The intent of this is to mask some of the properties only intended for rendering the file browser UI (like icon)
     ret <- fromJSON(content, simplifyVector=FALSE, simplifyDataFrame=FALSE)
@@ -160,10 +160,10 @@ labkey.webdav.delete <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
-    url <- labkey.webdav._validateRemoteUrl(baseUrl = baseUrl, folderPath = folderPath, fileSet = fileSet, remoteFilePath = remoteFilePath)
+    url <- labkey.webdav._validateRemoteUrl(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     url <- paste0(url, "?method=DELETE")
 
-    labkey.post(url, pbody = "", responseType = "text/plain; charset=utf-8")
+    labkey.post(url, pbody="", responseType="text/plain; charset=utf-8")
 }
 
 labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
@@ -178,8 +178,8 @@ labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
     toCreate <- ""
     for (folderName in remoteFilePaths) {
         toCreate <- paste0(toCreate, folderName, "/")
-        if (!labkey.webdav.pathExists(baseUrl, folderPath, fileSet, toCreate)) {
-            if (!labkey.webdav.mkDir(baseUrl, folderPath, fileSet, toCreate)){
+        if (!labkey.webdav.pathExists(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=toCreate)) {
+            if (!labkey.webdav.mkDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=toCreate)){
                 stop(paste0("Failed to create folder: ", toCreate))
             }
         }
@@ -188,7 +188,7 @@ labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
     return(TRUE)
 }
 
-labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwrite = TRUE, fileSet="@files")
+labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwrite=TRUE, fileSet="@files")
 {
     if (!file.exists(localDir)) {
         stop(paste0("Download folder does not exist: ", localDir))
@@ -200,7 +200,7 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
 
     folderPath <- encodeFolderPath(folderPath)
     prefix <- paste0("/_webdav", folderPath, fileSet, "/")
-    files <- labkey.webdav.listDir(baseUrl, folderPath, fileSet, remoteFilePath)
+    files <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     for (file in files[["files"]]) {
         relativePath <- sub(prefix, "", file[["id"]])
         localPath <- file.path(localDir, relativePath)
@@ -211,10 +211,10 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
             }
 
             if (!file.exists(localPath)){
-                dir.create(localPath, recursive = TRUE)
+                dir.create(localPath, recursive=TRUE)
             }
 
-            labkey.webdav.downloadFolder(localDir, baseUrl, folderPath, fileSet, relativePath)
+            labkey.webdav.downloadFolder(localDir=localDir, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativePath)
         } else {
             url <- paste0(baseUrl, file[["id"]])
 
