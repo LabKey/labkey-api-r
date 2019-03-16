@@ -14,7 +14,9 @@ fileRoot <- NA
 folderPath <- "home"
 
 localDownloadDir <- "LocalTestDir"
-dirName <- "TestDir"
+dirName <- "TestDir-a%b#c&d@e/~2"  #Add tricky characters
+dirNameEncoded <- "TestDir-a%25b%23c%26d%40e/%7E2"
+
 fileName1 <- paste0(dirName, "/foo.txt")
 
 localName <- "localCopy.txt"
@@ -84,7 +86,7 @@ cleanup()
 dir.create(localDownloadDir, recursive = T)
 
 # Create remote folder
-labkey.webdav.mkDir(baseUrl=baseUrl, folderPath, remoteFilePath=dirName)
+labkey.webdav.mkDirs(baseUrl=baseUrl, folderPath, remoteFilePath=dirName)
 assertRemoteFileExists(remoteFilePath=dirName)
   
 # Create file and upload
@@ -167,13 +169,13 @@ if (ret[["fileCount"]] != 2) {
 }
 
 expectedJson <- list(
-  list("id"="/_webdav/home/@files/TestDir/1",
-       "href"="/_webdav/home/%40files/TestDir/1/",
+  list("id"=paste0("/_webdav/home/@files/", dirName, "/1"),
+       "href"=paste0("/_webdav/home/%40files/", dirNameEncoded, "/1/"),
        "text"="1",
        "isdirectory"=TRUE
        ),
-  list("id"="/_webdav/home/@files/TestDir/foo.txt",
-       "href"="/_webdav/home/%40files/TestDir/foo.txt",
+  list("id"=paste0("/_webdav/home/@files/", dirName, "/foo.txt"),
+       "href"=paste0("/_webdav/home/%40files/", dirNameEncoded, "/foo.txt"),
        "text"="foo.txt",
        "isdirectory"=FALSE
   )
