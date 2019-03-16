@@ -28,10 +28,19 @@ CharacterMatrix listToMatrix(List data, List names) {
       // If values are not null add to matrix
       if(!Rf_isNull((as<List>(data[i]))[as<int>(indexList[j])])) 
       {
-        // Do not add vector from group concat
+        // Issue 36837: GROUP CONCAT comes back as an array of values
         if(TYPEOF((as<List>(data[i]))[as<int>(indexList[j])]) != VECSXP)
         {
           cMatrix(i,j) = (as<CharacterVector>((as<List>(as<List>(data[i]))[as<int>(indexList[j])])))[0];
+        }
+        else
+        {
+          // only try to parse the first vector element as a string if it is non-null
+          GenericVector gv = as<GenericVector>((as<List>(data[i]))[as<int>(indexList[j])]);
+          if(!Rf_isNull(gv[0]))
+          {
+            cMatrix(i,j) = as<CharacterVector>(gv[0])[0];
+          }
         }
       }
     }

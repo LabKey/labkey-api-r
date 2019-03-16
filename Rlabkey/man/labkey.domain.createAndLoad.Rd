@@ -42,6 +42,7 @@ to the domain kind specified. The list of valid options for each domain kind are
   	      \itemize{
   	        \item{ \code{datasetId} : Specifies a dataset ID to use, the default is to auto generate an ID}
   	        \item{ \code{categoryId} : Specifies an existing category ID}
+  	        \item{ \code{categoryName} : Specifies an existing category name}
   	        \item{ \code{demographics} : (TRUE | FALSE) Determines whether the dataset is created as demographic}
   	        \item{ \code{keyPropertyName} : The name of an additional key field to be used in conjunction with participantId and (visitId or date) to create unique records}
   	        \item{ \code{useTimeKeyField} : (TRUE | FALSE) Specifies to use the time portion of the date field as an additional key }
