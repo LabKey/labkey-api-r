@@ -197,19 +197,9 @@ processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 {
     ## Error checking, decode data and return
     status_code <- response$status_code
-
-    status <- http_status(response)
     if(status_code==500 | status_code >= 400)
     {
-        ## pull out the error message if possible
-        error <- content(response, type = "application/json")
-        message = status$message
-        if (!is.null(error$exception))
-        {
-            message <- error$exception
-        }
-        if (haltOnError)
-            stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
+      handleError(response, status_code, haltOnError)
     }
     content(response, as = "text", type = responseType)
 }
@@ -217,6 +207,21 @@ processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 labkey.setDebugMode <- function(debug=FALSE)
 {
     .lkdefaults[["debug"]] = debug;
+}
+
+handleError <- function(response, status_code, haltOnError) {
+  status <- http_status(response)
+  
+  ## pull out the error message if possible
+  error <- content(response, type = "application/json")
+  message = status$message
+  if (!is.null(error$exception))
+  {
+    message <- error$exception
+  }
+  if (haltOnError)
+    stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
+  
 }
 
 verboseOutput <- function(title, content)

@@ -81,6 +81,14 @@ cleanup <- function(){
 # pre-clean
 cleanup()
 
+# Attempt to download non-existant file:
+tryCatch({
+  labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='fakeFile.txt', localFilePath = 'fakeFile.txt')
+  stop("This should not have worked")
+}, error = function(e){
+  print("This failed as expected")  
+})
+
 
 # Create local folder
 dir.create(localDownloadDir, recursive = T)

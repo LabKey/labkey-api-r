@@ -29,7 +29,8 @@ labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFil
 
     url <- paste(baseUrl, "_webdav", folderPath, fileSet, "/", remoteFilePath, sep="");
 
-    labkey.webdav.getByUrl(url, localFilePath, overwrite)
+    response <- labkey.webdav.getByUrl(url, localFilePath, overwrite)
+    print(response)
 
     return(file.exists(localFilePath))
 }
@@ -55,7 +56,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
         response <- GET(url=url, write_disk(localFilePath, overwrite=overwrite), config=options)
     }
 
-    processResponse(response)
+    processWebDavResponse(response)
 }
 
 labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
@@ -80,7 +81,7 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         response <- PUT(url=url, config=options, body=pbody)
     }
 
-    processResponse(response, responseType="text/plain; charset=utf-8")
+    processWebDavResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
@@ -98,7 +99,7 @@ labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSe
         response <- VERB("MKCOL", url=url, config=options)
     }
 
-    processResponse(response, responseType="text/plain; charset=utf-8")
+    processWebDavResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
@@ -243,4 +244,22 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     }
 
     return(TRUE)
+}
+
+processWebDavResponse <- function(response, haltOnError=TRUE, responseType = NULL) {
+  #perform default processing
+  ret <- processResponse(response = response, haltOnError = haltOnError, responseType = responseType)
+
+  #test for the situations where the header reports 200, but the JSON returns a different code:
+  if (sum(grepl('application/json', response$headers[['content-type']])) > 0) {
+    c <- content(response, type = "application/json")
+    status_code <- c$status
+    if (!is.null(status_code)) {
+      if (status_code==500 | status_code >= 400) {
+        handleError(response, status_code, haltOnError)
+      }
+    }
+  }
+
+  return(ret)
 }
