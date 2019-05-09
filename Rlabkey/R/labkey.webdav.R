@@ -254,7 +254,8 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
 
           labkey.webdav.downloadFolder(localDir=localDir, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativePath)
       } else {
-          url <- paste0(baseUrl, file[["href"]])
+          baseUrlNoContextPath <- getBaseUrlWithoutPath(baseUrl)
+          url <- paste0(baseUrlNoContextPath, file[["href"]])
 
           if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
               print(paste0("Downloading file: ", relativePath))
@@ -265,4 +266,11 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     }
 
     return(TRUE)
+}
+
+getBaseUrlWithoutPath <- function(baseUrl){
+    url <- url_parse(baseUrl)
+    url$path <- NA
+
+    return(url_compose(url))
 }

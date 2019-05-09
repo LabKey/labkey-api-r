@@ -28,6 +28,7 @@ S3method(print, LabkeyQuery)
 
 import(httr)
 import(jsonlite)
+import(urltools)
 
 importFrom("utils", "URLdecode", "URLencode", "write.table")
 importFrom(Rcpp, sourceCpp)

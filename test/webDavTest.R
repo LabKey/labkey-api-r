@@ -6,10 +6,13 @@ library(Rlabkey)
 
 #setup
 baseUrl <- "http://localhost:8080/labkey/"
-fileRoot <- "/labkey_trunk/build/deploy/files/"
+fileRoot <- "/home/groups/prime-seq/production/"
+contextPath <- '/labkey'
+
 
 #baseUrl <- "https://prime-seq.ohsu.edu/"
 #fileRoot <- NA
+#contextPath <- ''
 
 folderPath <- "home"
 
@@ -30,9 +33,9 @@ assertRemoteFileExists <- function(remoteFilePath) {
   
   # Verify file exists in server filesystem (if accessible):
   if (!is.na(fileRoot)){
-    expectedFile <- paste0(fileRoot, folderPath, "@files/", remoteFilePath)
-    if (!file.exists(expected)) {
-      stop(paste0("Uploaded file not found under server file root: ", remoteFilePath))
+    expectedFile <- paste0(fileRoot, Rlabkey:::normalizeSlash(folderPath), "@files/", remoteFilePath)
+    if (!file.exists(expectedFile)) {
+      stop(paste0("Uploaded file not found under server file root: ", expectedFile))
     }
   }
 }
@@ -44,9 +47,9 @@ assertRemoteFileDoesNotExist <- function(remoteFilePath) {
   
   # Verify file exists in server filesystem (if accessible):
   if (!is.na(fileRoot)){
-    expectedFile <- paste0(fileRoot, folderPath, "@files/", remoteFilePath)
-    if (file.exists(expected)) {
-      stop(paste0("File still present under server file root: ", remoteFilePath))
+    expectedFile <- paste0(fileRoot, Rlabkey:::normalizeSlash(folderPath), "@files/", remoteFilePath)
+    if (file.exists(expectedFile)) {
+      stop(paste0("File still present under server file root: ", expectedFile))
     }
   }
 }
@@ -214,12 +217,12 @@ if (ret[["fileCount"]] != 2) {
 folderPathEncoded <- URLencode(folderPath)
 expectedJson <- list(
   list("id"=paste0("/_webdav/",folderPath,"/@files/", dirName, "/1"),
-       "href"=paste0("/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/1/"),
+       "href"=paste0(contextPath, "/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/1/"),
        "text"="1",
        "isdirectory"=TRUE
        ),
   list("id"=paste0("/_webdav/",folderPath,"/@files/", dirName, "/foo.txt"),
-       "href"=paste0("/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/foo.txt"),
+       "href"=paste0(contextPath, "/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/foo.txt"),
        "text"="foo.txt",
        "isdirectory"=FALSE
   )
@@ -275,7 +278,7 @@ if (file.exists('shouldNotExist')) {
 
 # Download directory
 path <- normalizePath(localDownloadDir)
-labkey.webdav.downloadFolder(localDir = path, baseUrl, folderPath = folderPath, remoteFilePath = dirName)
+labkey.webdav.downloadFolder(localDir = path, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T)
 
 assertLocalFileExists(file.path(localDownloadDir, dirName))
 assertLocalFileExists(file.path(localDownloadDir, fileName1))
