@@ -89,6 +89,21 @@ tryCatch({
   print("This failed as expected")  
 })
 
+# Attempt to mDir when parent doesnt exist:
+tryCatch({
+  labkey.webdav.mkDir(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='1/2/3/4/')
+  stop("This should not have worked")
+}, error = function(e){
+  print("This failed as expected")  
+})
+
+# Attempt to delete file that doesnt exist:
+tryCatch({
+  labkey.webdav.delete(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='fakeFile.txt')
+  stop("This should not have worked")
+}, error = function(e){
+  print("This failed as expected")  
+})
 
 # Create local folder
 dir.create(localDownloadDir, recursive = T)
