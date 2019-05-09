@@ -181,7 +181,7 @@ labkey.get <- function(myurl)
 }
 
 ## Executes an HTTP POST of pbody against the supplied URL, with standard handling for session, api key, status codes and error messages.
-labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL)
+labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL, haltOnError=TRUE)
 {
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
@@ -190,16 +190,14 @@ labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL)
         response <- POST(url=myurl, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
     else
         response <- POST(url=myurl, config=options, body=pbody)
-    processResponse(response, responseType = responseType)
+    processResponse(response, responseType = responseType, haltOnError = haltOnError)
 }
 
 processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 {
-    ## Error checking, decode data and return
-    status_code <- response$status_code
-    if(status_code==500 | status_code >= 400)
+    if(isRequestError(response))
     {
-      handleError(response, status_code, haltOnError)
+      handleError(response, haltOnError)
     }
     content(response, as = "text", type = responseType)
 }
@@ -209,19 +207,52 @@ labkey.setDebugMode <- function(debug=FALSE)
     .lkdefaults[["debug"]] = debug;
 }
 
-handleError <- function(response, status_code, haltOnError) {
+isRequestError <- function(response, status_code) 
+{
+  status_code <- getStatusCode(response)
+  
+  return(status_code==500 | status_code >= 400)
+}
+
+getStatusCode <- function(response) 
+{
+  ## Error checking, decode data and return
+  status_code <- response$status_code
+  
+  #test for the situations where the header reports 200, but the JSON contains the error:
+  if (sum(grepl('application/json', response$headers[['content-type']])) > 0) {
+    c <- content(response, type = "application/json")
+    if (!is.null(c[['status']])) {
+      status_code <- c$status
+    }
+  }
+
+  return(status_code)  
+}
+
+handleError <- function(response, haltOnError) 
+{
   status <- http_status(response)
+  message = status$message
   
   ## pull out the error message if possible
   error <- content(response, type = "application/json")
-  message = status$message
   if (!is.null(error$exception))
   {
     message <- error$exception
   }
-  if (haltOnError)
+  if (haltOnError) {
+    status_code <- getStatusCode(response)
+
+    # Note: is this request was writing to a file, the error message JSON will be written to that file, so we delete.  
+    if (inherits(response$content, 'path')) {
+      if (file.exists(response$content)){
+        unlink(response$content)  
+      } 
+    }
+
     stop (paste("HTTP request was unsuccessful. Status code = ", status_code, ", Error message = ", message, sep=""))
-  
+  }
 }
 
 verboseOutput <- function(title, content)

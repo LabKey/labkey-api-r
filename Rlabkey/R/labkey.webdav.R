@@ -30,7 +30,6 @@ labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFil
     url <- paste(baseUrl, "_webdav", folderPath, fileSet, "/", remoteFilePath, sep="");
 
     response <- labkey.webdav.getByUrl(url, localFilePath, overwrite)
-    print(response)
 
     return(file.exists(localFilePath))
 }
@@ -56,7 +55,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
         response <- GET(url=url, write_disk(localFilePath, overwrite=overwrite), config=options)
     }
 
-    processWebDavResponse(response)
+    processResponse(response)
 }
 
 labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
@@ -81,7 +80,7 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         response <- PUT(url=url, config=options, body=pbody)
     }
 
-    processWebDavResponse(response, responseType="text/plain; charset=utf-8")
+    processResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
@@ -99,7 +98,7 @@ labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSe
         response <- VERB("MKCOL", url=url, config=options)
     }
 
-    processWebDavResponse(response, responseType="text/plain; charset=utf-8")
+    processResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
 }
@@ -135,11 +134,12 @@ labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, remoteFilePath, f
         stop (paste("A value must be specified for each of baseUrl, folderPath, fileSet, and remoteFilePath"));
     }
     
-    ret <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
+    ret <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath, haltOnError=F)
+    
     return(is.null(ret$exception))
 }
 
-labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
+labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files", haltOnError = TRUE)
 {
     baseUrl=labkey.getBaseUrl(baseUrl);
 
@@ -149,7 +149,7 @@ labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, file
         print(paste0("URL: ", url))
     }
 
-    content <- labkey.post(url, pbody="", responseType="text/plain; charset=utf-8")
+    content <- labkey.post(url, pbody="", responseType="text/plain; charset=utf-8", haltOnError = haltOnError)
 
     # The intent of this is to mask some of the properties only intended for rendering the file browser UI (like icon)
     ret <- fromJSON(content, simplifyVector=FALSE, simplifyDataFrame=FALSE)
@@ -244,22 +244,4 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     }
 
     return(TRUE)
-}
-
-processWebDavResponse <- function(response, haltOnError=TRUE, responseType = NULL) {
-  #perform default processing
-  ret <- processResponse(response = response, haltOnError = haltOnError, responseType = responseType)
-
-  #test for the situations where the header reports 200, but the JSON returns a different code:
-  if (sum(grepl('application/json', response$headers[['content-type']])) > 0) {
-    c <- content(response, type = "application/json")
-    status_code <- c$status
-    if (!is.null(status_code)) {
-      if (status_code==500 | status_code >= 400) {
-        handleError(response, status_code, haltOnError)
-      }
-    }
-  }
-
-  return(ret)
 }

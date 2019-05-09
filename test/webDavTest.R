@@ -89,6 +89,12 @@ tryCatch({
   print("This failed as expected")  
 })
 
+#ensure JSON not written out as file
+if (file.exists('fakeFile.txt')) {
+  stop(paste0("Unexpected file found: fakeFile.txt"))
+}
+
+
 # Attempt to mDir when parent doesnt exist:
 tryCatch({
   labkey.webdav.mkDir(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='1/2/3/4/')
@@ -242,7 +248,8 @@ labkey.webdav.delete(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath=
 assertRemoteFileDoesNotExist(remoteFilePath=remoteDir3)
 
 # Download directory
-labkey.webdav.downloadFolder(localDownloadDir, baseUrl, folderPath = folderPath, remoteFilePath = dirName)
+path <- normalizePath(localDownloadDir)
+labkey.webdav.downloadFolder(localDir = path, baseUrl, folderPath = folderPath, remoteFilePath = dirName)
 assertLocalFileExists(file.path(localDownloadDir, dirName))
 assertLocalFileExists(file.path(localDownloadDir, fileName1))
 assertLocalFileExists(file.path(localDownloadDir, dirName, "1"))
