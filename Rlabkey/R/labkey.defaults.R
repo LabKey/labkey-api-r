@@ -74,14 +74,20 @@ encodeFolderPath <- function(folderPath=NULL)
         ## URL encoding of folderPath
         folderPath <- URLencode(folderPath)
 
-        ## Formatting
-        folderPath <- gsub("[\\]", "/", folderPath)
-        if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/")
-            folderPath <- paste(folderPath,"/",sep="")
-        if(substr(folderPath, 1, 1)!="/")
-            folderPath <- paste("/",folderPath,sep="")
+        folderPath <- normalizeSlash(folderPath)
     }
     return (folderPath)
+}
+
+normalizeSlash <- function(folderPath) {
+  ## Formatting
+  folderPath <- gsub("[\\]", "/", folderPath)
+  if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/")
+    folderPath <- paste(folderPath,"/",sep="")
+  if(substr(folderPath, 1, 1)!="/")
+    folderPath <- paste("/",folderPath,sep="")
+  
+  return(folderPath)
 }
 
 ## helper to retrieve and cache the CSRF token

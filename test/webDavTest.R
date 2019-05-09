@@ -8,14 +8,15 @@ library(Rlabkey)
 baseUrl <- "http://localhost:8080/labkey/"
 fileRoot <- "/labkey_trunk/build/deploy/files/"
 
-baseUrl <- "https://prime-seq.ohsu.edu/"
-fileRoot <- NA
+#baseUrl <- "https://prime-seq.ohsu.edu/"
+#fileRoot <- NA
 
 folderPath <- "home"
 
 localDownloadDir <- "LocalTestDir"
 dirName <- "TestDir-a%b#c&d@e/~2"  #Add tricky characters
 dirNameEncoded <- "TestDir-a%25b%23c%26d%40e/%7E2"
+dir1 <- file.path(localDownloadDir, 'directory1')
 
 fileName1 <- paste0(dirName, "/foo.txt")
 
@@ -78,6 +79,14 @@ cleanup <- function(){
   }
 }
 
+handleExpectedFail <- function(e) {
+  if (e$message == "This should not have worked") {
+    stop(e$message)
+  }
+  
+  print("This failed as expected")  
+}
+
 # pre-clean
 cleanup()
 
@@ -85,9 +94,7 @@ cleanup()
 tryCatch({
   labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='fakeFile.txt', localFilePath = 'fakeFile.txt')
   stop("This should not have worked")
-}, error = function(e){
-  print("This failed as expected")  
-})
+}, error = handleExpectedFail)
 
 #ensure JSON not written out as file
 if (file.exists('fakeFile.txt')) {
@@ -99,17 +106,13 @@ if (file.exists('fakeFile.txt')) {
 tryCatch({
   labkey.webdav.mkDir(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='1/2/3/4/')
   stop("This should not have worked")
-}, error = function(e){
-  print("This failed as expected")  
-})
+}, error = handleExpectedFail)
 
 # Attempt to delete file that doesnt exist:
 tryCatch({
   labkey.webdav.delete(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath='fakeFile.txt')
   stop("This should not have worked")
-}, error = function(e){
-  print("This failed as expected")  
-})
+}, error = handleExpectedFail)
 
 # Create local folder
 dir.create(localDownloadDir, recursive = T)
@@ -128,21 +131,25 @@ close(fileConn)
 tryCatch({
   labkey.webdav.put(baseUrl=baseUrl, paste0(filePath, "failure"), folderPath=folderPath, remoteFilePath=fileName1)
   stop("This should not have worked")
-}, error = function(e){
-  print("This failed as expected")  
-})
+}, error = handleExpectedFail)
 
 labkey.webdav.put(baseUrl=baseUrl, filePath, folderPath=folderPath, remoteFilePath=fileName1)
 assertRemoteFileExists(remoteFilePath=fileName1)
 
 # Download this file
-labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName, overwrite=TRUE)
+resp <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName, overwrite=TRUE)
+if (!resp) {
+  stop('Expected response to be TRUE')
+}
 assertLocalFileExists(localName)
 
 # Now try to re-download using overwrite=F
 fileChars1 <- readChar(localName,nchars=1e6)
 
-labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName, overwrite=FALSE)
+resp <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName, overwrite=FALSE)
+if (!resp) {
+  stop('Expected response to be TRUE')
+}
 fileChars2 <- readChar(localName,nchars=1e6)
 
 # Should be equal
@@ -182,6 +189,13 @@ if (fileChars1 != fileChars2) {
   stop("Remote file should have been overwritten")
 }
 
+#Attempt to download a file, when a local directory exists with that name:
+dir.create(dir1)
+tryCatch({
+  resp <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=dir1, overwrite=T)
+  stop("This should not have worked")
+}, error = handleExpectedFail)
+
 # Make multiple folders:
 remoteDir2 <- paste0(dirName, "/1/2/3")
 labkey.webdav.mkDirs(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath=remoteDir2)
@@ -197,14 +211,15 @@ if (ret[["fileCount"]] != 2) {
   stop ("Expected 2 files")
 }
 
+folderPathEncoded <- URLencode(folderPath)
 expectedJson <- list(
-  list("id"=paste0("/_webdav/home/@files/", dirName, "/1"),
-       "href"=paste0("/_webdav/home/%40files/", dirNameEncoded, "/1/"),
+  list("id"=paste0("/_webdav/",folderPath,"/@files/", dirName, "/1"),
+       "href"=paste0("/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/1/"),
        "text"="1",
        "isdirectory"=TRUE
        ),
-  list("id"=paste0("/_webdav/home/@files/", dirName, "/foo.txt"),
-       "href"=paste0("/_webdav/home/%40files/", dirNameEncoded, "/foo.txt"),
+  list("id"=paste0("/_webdav/",folderPath,"/@files/", dirName, "/foo.txt"),
+       "href"=paste0("/_webdav/",folderPathEncoded,"/%40files/", dirNameEncoded, "/foo.txt"),
        "text"="foo.txt",
        "isdirectory"=FALSE
   )
@@ -247,9 +262,21 @@ assertRemoteFileExists(remoteFilePath=remoteDir3)
 labkey.webdav.delete(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath=remoteDir3)
 assertRemoteFileDoesNotExist(remoteFilePath=remoteDir3)
 
+#TODO: when calling get() on a directory, LK returns a valid status_code, but a block of HTML?
+#tryCatch({
+#  ret <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=dirName, localFilePath = 'shouldFail')
+#  stop("This should not have worked")
+#}, error = handleExpectedFail)
+#
+##ensure JSON not written out as file
+#if (file.exists('shouldFail')) {
+#  stop(paste0("Unexpected file found: shouldFail"))
+#}
+
 # Download directory
 path <- normalizePath(localDownloadDir)
 labkey.webdav.downloadFolder(localDir = path, baseUrl, folderPath = folderPath, remoteFilePath = dirName)
+
 assertLocalFileExists(file.path(localDownloadDir, dirName))
 assertLocalFileExists(file.path(localDownloadDir, fileName1))
 assertLocalFileExists(file.path(localDownloadDir, dirName, "1"))

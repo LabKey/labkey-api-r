@@ -40,6 +40,10 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
     if (!overwrite & file.exists(localFilePath)) {
         return()
     }
+  
+    if (dir.exists(localFilePath)) {
+      stop(paste0("The local filepath exists and is a directory: ", localFilePath))
+    }
 
     localDownloadDir <- dirname(localFilePath)
     if (!file.exists(localDownloadDir)) {
@@ -181,6 +185,8 @@ labkey.webdav.delete <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
     }
 
     labkey.post(url, pbody="", responseType="text/plain; charset=utf-8")
+    
+    return(T)
 }
 
 labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
@@ -215,32 +221,34 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
         stop (paste("A value must be specified for each of baseUrl, folderPath, fileSet, and remoteFilePath"))
     }
 
-    folderPath <- encodeFolderPath(folderPath)
-    prefix <- paste0("/_webdav", folderPath, fileSet, "/")
+    # Note: this should use unencoded values to match the ID in JSON
+    folderPath <- normalizeSlash(folderPath)
+    prefix <- paste0("/_webdav", folderPath, fileSet, "/")  
+    
     files <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     for (file in files[["files"]]) {
-        relativePath <- sub(prefix, "", file[["id"]])
-        localPath <- file.path(localDir, relativePath)
-        if (file[["isdirectory"]]) {
-            if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-                print(paste0("Downloading folder: ", relativePath))
-                print(paste0("to: ", localPath))
-            }
+      relativePath <- sub(prefix, "", file[["id"]])
+      localPath <- file.path(localDir, relativePath)
+      if (file[["isdirectory"]]) {
+          if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+              print(paste0("Downloading folder: ", relativePath))
+              print(paste0("to: ", localPath))
+          }
 
-            if (!file.exists(localPath)){
-                dir.create(localPath, recursive=TRUE)
-            }
+          if (!file.exists(localPath)){
+              dir.create(localPath, recursive=TRUE)
+          }
 
-            labkey.webdav.downloadFolder(localDir=localDir, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativePath)
-        } else {
-            url <- paste0(baseUrl, file[["href"]])
+          labkey.webdav.downloadFolder(localDir=localDir, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativePath)
+      } else {
+          url <- paste0(baseUrl, file[["href"]])
 
-            if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-                print(paste0("Downloading file: ", relativePath))
-                print(paste0("to: ", localPath))
-            }
-            labkey.webdav.getByUrl(url, localPath, overwrite)
-        }
+          if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+              print(paste0("Downloading file: ", relativePath))
+              print(paste0("to: ", localPath))
+          }
+          labkey.webdav.getByUrl(url, localPath, overwrite)
+      }
     }
 
     return(TRUE)

@@ -17,6 +17,7 @@ labkey.webdav.listDir(
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{remoteFilePath}{path of the folder on the remote server, relative to the folder root. }
   \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
+  \item{haltOnError}{(optional) Specifies whether this request should fail if the requested path does not exist.  Defaults to TRUE }
 }
 \details{
 Lists the contents of a folder on a LabKey Server using WebDAV.
