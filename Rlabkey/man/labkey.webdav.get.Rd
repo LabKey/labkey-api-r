@@ -26,7 +26,7 @@ labkey.webdav.get(
 Download a single file from a LabKey Server to the local machine using WebDAV.
 }
 \value{
-TRUE or FALSE, depending on if this file was created
+TRUE or FALSE, depending on if this file was downloaded and exists locally.  Will return FALSE if the already file exists and overwrite=F.
 }
 
 \author{Ben Bimber, Ph.D.}

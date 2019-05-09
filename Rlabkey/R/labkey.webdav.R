@@ -33,7 +33,10 @@ labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFil
 
     url <- paste(baseUrl, "_webdav", folderPath, fileSet, "/", remoteFilePath, sep="");
 
-    response <- labkey.webdav.getByUrl(url, localFilePath, overwrite)
+    ret <- labkey.webdav.getByUrl(url, localFilePath, overwrite)
+    if (ret == FALSE) {
+      return(FALSE)
+    }
 
     return(file.exists(localFilePath))
 }
@@ -42,7 +45,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
 {
     # dont bother querying if this file already exists, since we wont overwrite it
     if (!overwrite & file.exists(localFilePath)) {
-        return()
+        return(FALSE)
     }
   
     if (dir.exists(localFilePath)) {

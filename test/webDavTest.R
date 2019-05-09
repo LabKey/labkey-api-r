@@ -143,12 +143,12 @@ if (!resp) {
 }
 assertLocalFileExists(localName)
 
-# Now try to re-download using overwrite=F
+# Now try to re-download using overwrite=F, which should no-op
 fileChars1 <- readChar(localName,nchars=1e6)
 
 resp <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=fileName1, localFilePath=localName, overwrite=FALSE)
-if (!resp) {
-  stop('Expected response to be TRUE')
+if (resp) {
+  stop('Expected response to be FALSE')
 }
 fileChars2 <- readChar(localName,nchars=1e6)
 
