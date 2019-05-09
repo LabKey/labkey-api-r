@@ -23,6 +23,10 @@ labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFil
         stop (paste("A value must be specified for each of baseUrl, folderPath, fileSet, remoteFilePath, and localFilePath"));
     }
 
+    if (labkey.webdav.isDirectory(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, fileSet = fileSet, haltOnError = T)){
+      stop('The requested file is a directory.  Please see labkey.webdav.downloadFolder()')  
+    }
+    
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath);
     remoteFilePath <- encodeRemotePath(remoteFilePath)
@@ -44,7 +48,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
     if (dir.exists(localFilePath)) {
       stop(paste0("The local filepath exists and is a directory: ", localFilePath))
     }
-
+  
     localDownloadDir <- dirname(localFilePath)
     if (!file.exists(localDownloadDir)) {
         dir.create(localDownloadDir, recursive=TRUE)
@@ -141,6 +145,12 @@ labkey.webdav.pathExists <- function(baseUrl=NULL, folderPath, remoteFilePath, f
     ret <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath, haltOnError=F)
     
     return(is.null(ret$exception))
+}
+
+labkey.webdav.isDirectory <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files", haltOnError = TRUE) {
+  json <- labkey.webdav.listDir(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, fileSet = fileSet, haltOnError = haltOnError)
+  
+  return(!is.null(json[['fileCount']]))
 }
 
 labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files", haltOnError = TRUE)

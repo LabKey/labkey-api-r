@@ -262,16 +262,16 @@ assertRemoteFileExists(remoteFilePath=remoteDir3)
 labkey.webdav.delete(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath=remoteDir3)
 assertRemoteFileDoesNotExist(remoteFilePath=remoteDir3)
 
-#TODO: when calling get() on a directory, LK returns a valid status_code, but a block of HTML?
-#tryCatch({
-#  ret <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=dirName, localFilePath = 'shouldFail')
-#  stop("This should not have worked")
-#}, error = handleExpectedFail)
-#
-##ensure JSON not written out as file
-#if (file.exists('shouldFail')) {
-#  stop(paste0("Unexpected file found: shouldFail"))
-#}
+# Attempt to download directory using get()
+tryCatch({
+  ret <- labkey.webdav.get(baseUrl=baseUrl, folderPath=folderPath, remoteFilePath=dirName, localFilePath = 'shouldNotExist')
+  stop("This should not have worked")
+}, error = handleExpectedFail)
+
+#ensure JSON not written out as file
+if (file.exists('shouldNotExist')) {
+  stop(paste0("Unexpected file found: shouldNotExist"))
+}
 
 # Download directory
 path <- normalizePath(localDownloadDir)
