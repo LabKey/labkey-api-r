@@ -235,7 +235,7 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     }
 
     # Note: this should use unencoded values to match the ID in JSON
-    baseUrl <- normalizeSlash(folderPath, leading = F, trailing = F)
+    baseUrl <- normalizeSlash(baseUrl, leading = F, trailing = F)
     folderPath <- normalizeSlash(folderPath, leading = F)
     fileSet <- normalizeSlash(fileSet, leading = F, trailing = F)
     remoteFilePath <- normalizeSlash(remoteFilePath, leading = F)
