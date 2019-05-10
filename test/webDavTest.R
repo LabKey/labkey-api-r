@@ -17,6 +17,7 @@ contextPath <- '/labkey'
 folderPath <- "home"
 
 localDownloadDir <- "LocalTestDir"
+localDownloadDir2 <- "LocalTestDir2"
 dirName <- "TestDir-a%b#c&d@e/~2"  #Add tricky characters
 dirNameEncoded <- "TestDir-a%25b%23c%26d%40e/%7E2"
 dir1 <- file.path(localDownloadDir, 'directory1')
@@ -60,6 +61,12 @@ assertLocalFileExists <- function(filePath) {
   }
 }
 
+assertLocalFileDoesNotExist <- function(filePath) {
+  if (file.exists(filePath)) {
+    stop(paste0("Unexpected file found: ", filePath))
+  }
+}
+
 cleanup <- function(){
   print("Cleaning")
   if (file.exists(localDownloadDir)){
@@ -67,7 +74,12 @@ cleanup <- function(){
     unlink(localDownloadDir, recursive = T)
   }
   
-  if (labkey.webdav.pathExists(baseUrl=baseUrl, folderPath = folderPath, remoteFilePath=dirName)) {
+  if (file.exists(localDownloadDir2)){
+    print(paste0("Removing directory: ", localDownloadDir2))
+    unlink(localDownloadDir2, recursive = T)
+  }
+
+    if (labkey.webdav.pathExists(baseUrl=baseUrl, folderPath = folderPath, remoteFilePath=dirName)) {
     print("Deleting remote directory")
     labkey.webdav.delete(baseUrl=baseUrl, folderPath = folderPath, remoteFilePath=dirName)
   }
@@ -119,6 +131,7 @@ tryCatch({
 
 # Create local folder
 dir.create(localDownloadDir, recursive = T)
+dir.create(localDownloadDir2, recursive = T)
 
 # Create remote folder
 labkey.webdav.mkDirs(baseUrl=baseUrl, folderPath, remoteFilePath=dirName)
@@ -277,13 +290,19 @@ if (file.exists('shouldNotExist')) {
 }
 
 # Download directory
-path <- normalizePath(localDownloadDir)
-labkey.webdav.downloadFolder(localDir = path, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T)
+labkey.setDebugMode(F)
+labkey.webdav.downloadFolder(localDir = localDownloadDir, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T)
 
-assertLocalFileExists(file.path(localDownloadDir, dirName))
-assertLocalFileExists(file.path(localDownloadDir, fileName1))
-assertLocalFileExists(file.path(localDownloadDir, dirName, "1"))
-assertLocalFileExists(file.path(localDownloadDir, dirName, "1/2/3"))
+assertLocalFileDoesNotExist(file.path(localDownloadDir, dirName))
+assertLocalFileExists(file.path(localDownloadDir, 'foo.txt'))
+assertLocalFileExists(file.path(localDownloadDir, "1"))
+assertLocalFileExists(file.path(localDownloadDir, "1/2/3"))
+
+# Download subfolder:
+labkey.webdav.downloadFolder(localDir = localDownloadDir2, baseUrl, folderPath = folderPath, remoteFilePath = paste0(dirName, '/1/2'), overwrite = T)
+
+assertLocalFileDoesNotExist(file.path(localDownloadDir2, dirName))
+assertLocalFileExists(file.path(localDownloadDir2, "3"))
 
 cleanup()
 

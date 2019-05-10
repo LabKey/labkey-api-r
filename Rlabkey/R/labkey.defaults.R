@@ -79,13 +79,25 @@ encodeFolderPath <- function(folderPath=NULL)
     return (folderPath)
 }
 
-normalizeSlash <- function(folderPath) {
+normalizeSlash <- function(folderPath, leading = T, trailing = T) {
   ## Formatting
   folderPath <- gsub("[\\]", "/", folderPath)
-  if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/")
-    folderPath <- paste(folderPath,"/",sep="")
-  if(substr(folderPath, 1, 1)!="/")
-    folderPath <- paste("/",folderPath,sep="")
+  
+  if (trailing) {
+    if(substr(folderPath, nchar(folderPath), nchar(folderPath))!="/")
+      folderPath <- paste(folderPath,"/",sep="")
+  } else {
+    if(substr(folderPath, nchar(folderPath), nchar(folderPath))=="/")
+      folderPath <- substr(folderPath,1, nchar(folderPath)-1)
+  }
+  
+  if (leading) {
+    if(substr(folderPath, 1, 1)!="/")
+      folderPath <- paste("/",folderPath,sep="")
+  } else {
+    if(substr(folderPath, 1, 1)=="/")
+      folderPath <- substr(folderPath,2, nchar(folderPath))
+  }
   
   return(folderPath)
 }

@@ -235,16 +235,25 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     }
 
     # Note: this should use unencoded values to match the ID in JSON
-    folderPath <- normalizeSlash(folderPath)
-    prefix <- paste0("/_webdav", folderPath, fileSet, "/")  
+    baseUrl <- normalizeSlash(folderPath, leading = F, trailing = F)
+    folderPath <- normalizeSlash(folderPath, leading = F)
+    fileSet <- normalizeSlash(fileSet, leading = F, trailing = F)
+    remoteFilePath <- normalizeSlash(remoteFilePath, leading = F)
+
+    if (substr(localDir, nchar(localDir), nchar(localDir))=="/")
+      localDir <- substr(localDir,1, nchar(localDir)-1)
+    
+    prefix <- paste0("/_webdav/", folderPath, fileSet, '/')  
     
     files <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     for (file in files[["files"]]) {
-      relativePath <- sub(prefix, "", file[["id"]])
-      localPath <- file.path(localDir, relativePath)
+      relativeToRemoteRoot <- sub(prefix, "", file[["id"]])
+      relativeToDownloadStart <- sub(paste0(prefix, remoteFilePath), "", file[["id"]])
+
+      localPath <- file.path(localDir, relativeToDownloadStart)
       if (file[["isdirectory"]]) {
           if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-              print(paste0("Downloading folder: ", relativePath))
+              print(paste0("Downloading folder: ", relativeToRemoteRoot))
               print(paste0("to: ", localPath))
           }
 
@@ -252,13 +261,12 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
               dir.create(localPath, recursive=TRUE)
           }
 
-          labkey.webdav.downloadFolder(localDir=localDir, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativePath)
+          labkey.webdav.downloadFolder(localDir=localPath, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativeToRemoteRoot)
       } else {
-          baseUrlNoContextPath <- getBaseUrlWithoutPath(baseUrl)
-          url <- paste0(baseUrlNoContextPath, file[["href"]])
+          url <- paste0(baseUrl, trimLeadingPath(file[["href"]]))
 
           if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-              print(paste0("Downloading file: ", relativePath))
+              print(paste0("Downloading file: ", relativeToRemoteRoot))
               print(paste0("to: ", localPath))
           }
           labkey.webdav.getByUrl(url, localPath, overwrite)
@@ -268,9 +276,11 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
     return(TRUE)
 }
 
-getBaseUrlWithoutPath <- function(baseUrl){
-    url <- url_parse(baseUrl)
-    url$path <- NA
-
-    return(url_compose(url))
+trimLeadingPath <- function(url){
+  pos <- regexpr('/_webdav', tolower(url))
+  if (pos == -1) {
+    return(url)
+  }
+  
+  return(substr(url, pos, nchar(url)))
 }
