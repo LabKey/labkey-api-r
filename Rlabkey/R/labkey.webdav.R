@@ -34,7 +34,7 @@ labkey.webdav.get <- function(baseUrl=NULL, folderPath, remoteFilePath, localFil
     url <- paste(baseUrl, "_webdav", folderPath, fileSet, "/", remoteFilePath, sep="");
 
     ret <- labkey.webdav.getByUrl(url, localFilePath, overwrite)
-    if (!is.null(ret) && ret == FALSE) {
+    if (!is.null(ret) && !is.na(ret) && ret == FALSE) {
       return(FALSE)
     }
 
