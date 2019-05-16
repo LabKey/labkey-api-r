@@ -10,16 +10,18 @@ labkey.webdav.downloadFolder(
     baseUrl=NULL, 
     folderPath,
     remoteFilePath,
-    overwrite=TRUE,
+    overwriteFiles=TRUE,
+    mergeFolders=FALSE,
     fileSet='@files'
     )
 }
 \arguments{
-  \item{localDir}{the local filepath where this file will be saved }
+  \item{localDir}{the local filepath where this file will be saved. If this directory exists, the contents of the remote directory will be downloaded here. If not, this local folder will be created; however, this will fail unless the parent folder of localDir exists (similar behavior as linux mv or cp) }
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{remoteFilePath}{the path of this folder on the remote server, relative to the folder root. }
-  \item{overwrite}{(optional) if true, any pre-existing file at this location will be overwritten.  Defaults to TRUE }
+  \item{overwriteFiles}{(optional) if true, any pre-existing file at this location will be overwritten.  Defaults to TRUE }
+  \item{mergeFolders}{(optional) if false, any pre-existing local folders in the target location will be deleted if there is an incoming folder of the same name. If true, these existing folders will be left alone, and remote files downloaded into them.  Existing file conflicts will be handled based on the overwriteFiles parameter.  Defaults to TRUE }
   \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument).  In some cases this might be "@pipeline" or "@fileset". }
 }
 \details{

@@ -162,9 +162,7 @@ labkey.webdav.listDir <- function(baseUrl=NULL, folderPath, remoteFilePath, file
 
     url <- labkey.webdav.validateAndBuildRemoteUrl(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     url <- paste0(url, "?method=JSON")
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-        print(paste0("URL: ", url))
-    }
+    logMessage(paste0("URL: ", url))
 
     content <- labkey.post(url, pbody="", responseType="text/plain; charset=utf-8", haltOnError = haltOnError)
 
@@ -224,24 +222,53 @@ labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
     return(TRUE)
 }
 
-labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwrite=TRUE, fileSet="@files")
+labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwriteFiles=TRUE, mergeFolders=TRUE, fileSet="@files") {
+  if (missing(localDir) || missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(remoteFilePath)){
+    stop (paste("A value must be specified for each of localDir, baseUrl, folderPath, fileSet, and remoteFilePath"))
+  }
+  
+  if (file.exists(localDir) && !dir.exists(localDir)) {
+    stop(paste0("Download folder exists, but is not a directory: ", localDir))
+  }
+  
+  if (!dir.exists(localDir)) {
+    if (!dir.exists(dirname(localDir))) {
+      stop('Attempting to download using a local directory where the parent folder does not exist')
+    }
+    
+    logMessage('creating local directory because it does not exist')  
+
+    dir.create(localDir, recursive=FALSE)
+  }
+
+  labkey.webdav.doDownloadFolder(localDir = localDir, baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, overwriteFiles = overwriteFiles, mergeFolders = mergeFolders, fileSet = fileSet)
+}
+
+normalizeFolder <- function(localDir){
+  # remove trailing or double slash
+  localDir <- gsub("[\\]", "/", localDir)
+  localDir <- gsub("[/]+", "/", localDir)
+  if (substr(localDir, nchar(localDir), nchar(localDir))=="/") {
+    localDir <- substr(localDir,1, nchar(localDir)-1)
+  }
+  
+  return(localDir)
+}
+
+logMessage <- function(msg) {
+  if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+    print(msg)  
+  }
+}
+
+labkey.webdav.doDownloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, depth, overwriteFiles=TRUE, mergeFolders=TRUE, fileSet="@files")
 {
-    if (!file.exists(localDir)) {
-        stop(paste0("Download folder does not exist: ", localDir))
-    }
-
-    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(remoteFilePath)){
-        stop (paste("A value must be specified for each of baseUrl, folderPath, fileSet, and remoteFilePath"))
-    }
-
     # Note: this should use unencoded values to match the ID in JSON
     baseUrl <- normalizeSlash(baseUrl, leading = F, trailing = F)
     folderPath <- normalizeSlash(folderPath, leading = F)
     fileSet <- normalizeSlash(fileSet, leading = F, trailing = F)
     remoteFilePath <- normalizeSlash(remoteFilePath, leading = F)
-
-    if (substr(localDir, nchar(localDir), nchar(localDir))=="/")
-      localDir <- substr(localDir,1, nchar(localDir)-1)
+    localDir <- normalizeFolder(localDir)
     
     prefix <- paste0("/_webdav/", folderPath, fileSet, '/')  
     
@@ -252,24 +279,45 @@ labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, rem
 
       localPath <- file.path(localDir, relativeToDownloadStart)
       if (file[["isdirectory"]]) {
-          if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-              print(paste0("Downloading folder: ", relativeToRemoteRoot))
-              print(paste0("to: ", localPath))
-          }
+        logMessage(paste0("Downloading folder: ", relativeToRemoteRoot))
+        logMessage(paste0("to: ", localPath))
 
-          if (!file.exists(localPath)){
-              dir.create(localPath, recursive=TRUE)
-          }
+        # File exists, but is not directory:
+        if (file.exists(localPath) && !dir.exists(localPath)) {
+          if (overwriteFiles) {
+            unlink((localPath))
+          } else {
+            stop(paste0('Target of folder download already exists, but is a file, not a folder: ', localPath))
+          }  
+        }
+      
+        # Handle potential merges:
+        if (dir.exists(localPath)) {
+          logMessage(paste0('existing folder found: ', localPath))  
 
-          labkey.webdav.downloadFolder(localDir=localPath, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativeToRemoteRoot)
+          if (!mergeFolders && overwriteFiles) {
+            logMessage('deleting existing folder')
+            unlink(localPath, recursive = T)
+          }
+          else if (!mergeFolders && !overwriteFiles) {
+            logMessage('skipping existing folder')
+            next
+          }
+          else if (mergeFolders) {
+            logMessage('existing folder will be left alone and contents downloaded')
+          }
+        } else {
+            dir.create(localPath, recursive=TRUE)
+        }
+
+        labkey.webdav.doDownloadFolder(localDir=localPath, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativeToRemoteRoot, overwriteFiles=overwriteFiles, mergeFolders=mergeFolders)
       } else {
           url <- paste0(baseUrl, trimLeadingPath(file[["href"]]))
 
-          if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
-              print(paste0("Downloading file: ", relativeToRemoteRoot))
-              print(paste0("to: ", localPath))
-          }
-          labkey.webdav.getByUrl(url, localPath, overwrite)
+          logMessage(paste0("Downloading file: ", relativeToRemoteRoot))
+          logMessage(paste0("to: ", localPath))
+
+          labkey.webdav.getByUrl(url, localPath, overwriteFiles)
       }
     }
 
