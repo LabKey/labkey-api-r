@@ -16,7 +16,7 @@ labkey.webdav.downloadFolder(
     )
 }
 \arguments{
-  \item{localDir}{the local filepath where this file will be saved. If this directory exists, the contents of the remote directory will be downloaded here. If not, this local folder will be created; however, this will fail unless the parent folder of localDir exists (similar behavior as linux mv or cp) }
+  \item{localBaseDir}{the local filepath where this directory will be saved. a subfolder with the remote directory name will be created.  }
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{remoteFilePath}{the path of this folder on the remote server, relative to the folder root. }

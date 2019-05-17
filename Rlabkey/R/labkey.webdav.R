@@ -222,26 +222,29 @@ labkey.webdav.mkDirs <- function(baseUrl=NULL, folderPath, remoteFilePath, fileS
     return(TRUE)
 }
 
-labkey.webdav.downloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, overwriteFiles=TRUE, mergeFolders=TRUE, fileSet="@files") {
-  if (missing(localDir) || missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(remoteFilePath)){
-    stop (paste("A value must be specified for each of localDir, baseUrl, folderPath, fileSet, and remoteFilePath"))
+labkey.webdav.downloadFolder <- function(localBaseDir, baseUrl=NULL, folderPath, remoteFilePath, overwriteFiles=TRUE, mergeFolders=TRUE, fileSet="@files") {
+  if (missing(localBaseDir) || missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(remoteFilePath)){
+    stop (paste("A value must be specified for each of localBaseDir, baseUrl, folderPath, fileSet, and remoteFilePath"))
   }
   
-  if (file.exists(localDir) && !dir.exists(localDir)) {
-    stop(paste0("Download folder exists, but is not a directory: ", localDir))
+  if (file.exists(localBaseDir) && !dir.exists(localBaseDir)) {
+    stop(paste0("Download folder exists, but is not a directory: ", localBaseDir))
   }
   
-  if (!dir.exists(localDir)) {
-    if (!dir.exists(dirname(localDir))) {
-      stop('Attempting to download using a local directory where the parent folder does not exist')
-    }
-    
-    logMessage('creating local directory because it does not exist')  
-
-    dir.create(localDir, recursive=FALSE)
+  # Download remote directory directly into this newly created folder:
+  if (!dir.exists(localBaseDir)) {
+    stop(paste0("Download folder does not exist: ", localBaseDir))
+  }
+  
+  # always download into a subfolder with the basename of the remote directory
+  remoteFilePath <- normalizeSlash(remoteFilePath, leading = F)
+  subfolder <- basename(remoteFilePath)
+  if (subfolder != ''){
+    localBaseDir <- normalizeFolder(localBaseDir)
+    localBaseDir <- file.path(localBaseDir, subfolder)
   }
 
-  labkey.webdav.doDownloadFolder(localDir = localDir, baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, overwriteFiles = overwriteFiles, mergeFolders = mergeFolders, fileSet = fileSet)
+  labkey.webdav.doDownloadFolder(localDir = localBaseDir, baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, overwriteFiles = overwriteFiles, mergeFolders = mergeFolders, fileSet = fileSet)
 }
 
 normalizeFolder <- function(localDir){

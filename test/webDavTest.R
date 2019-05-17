@@ -289,25 +289,26 @@ dir.create(targetExists)
 targetNotExists <- file.path(localDownloadDir, 'DownloadFolder2')
 
 # localDir exists
-labkey.webdav.downloadFolder(localDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T, mergeFolders = F)
+base <- basename(dirName)
+labkey.webdav.downloadFolder(localBaseDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T, mergeFolders = F)
 assertLocalFileDoesNotExist(file.path(targetExists, dirName))
-assertLocalFileExists(file.path(targetExists, 'foo.txt'))
-assertLocalFileExists(file.path(targetExists, "1"))
-assertLocalFileExists(file.path(targetExists, "1/2/3"))
+assertLocalFileExists(file.path(targetExists, base, 'foo.txt'))
+assertLocalFileExists(file.path(targetExists, base, "1"))
+assertLocalFileExists(file.path(targetExists, base, "1/2/3"))
 
 #repeat with overwrite=F.  targets already exist, so nothing should happen.  also add an extra local file, which should be preserved: 
-testFile <- file.path(targetExists, "1", "test.txt")
+testFile <- file.path(targetExists, base, "1", "test.txt")
 file.create(testFile) 
-labkey.webdav.downloadFolder(localDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = T)
-assertLocalFileExists(file.path(targetExists, 'foo.txt'))
-assertLocalFileExists(file.path(targetExists, "1"))
-assertLocalFileExists(file.path(targetExists, "1/2/3"))
+labkey.webdav.downloadFolder(localBaseDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = T)
+assertLocalFileExists(file.path(targetExists, base, 'foo.txt'))
+assertLocalFileExists(file.path(targetExists, base, "1"))
+assertLocalFileExists(file.path(targetExists, base, "1/2/3"))
 assertLocalFileExists(testFile)
 
-labkey.webdav.downloadFolder(localDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = F)
-assertLocalFileExists(file.path(targetExists, 'foo.txt'))
-assertLocalFileExists(file.path(targetExists, "1"))
-assertLocalFileExists(file.path(targetExists, "1/2/3"))
+labkey.webdav.downloadFolder(localBaseDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = F)
+assertLocalFileExists(file.path(targetExists, base, 'foo.txt'))
+assertLocalFileExists(file.path(targetExists, base, "1"))
+assertLocalFileExists(file.path(targetExists, base, "1/2/3"))
 assertLocalFileExists(testFile)
 
 #Clean
@@ -315,32 +316,29 @@ unlink(targetExists, recursive = T)
 dir.create(targetExists)
 
 # localDir exists.  also create empty subfolder, which should block download of children since merge=F
-dir.create(file.path(targetExists, '1'))
-labkey.webdav.downloadFolder(localDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = F)
-assertLocalFileDoesNotExist(file.path(targetExists, dirName))
-assertLocalFileExists(file.path(targetExists, 'foo.txt'))
-assertLocalFileExists(file.path(targetExists, "1"))
-assertLocalFileDoesNotExist(file.path(targetExists, "1/2/3"))
+dir.create(file.path(targetExists, base, '1'), recursive = T)
+labkey.webdav.downloadFolder(localBaseDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = F, mergeFolders = F)
+assertLocalFileDoesNotExist(file.path(targetExists, base, dirName))
+assertLocalFileExists(file.path(targetExists, base, 'foo.txt'))
+assertLocalFileExists(file.path(targetExists, base, "1"))
+assertLocalFileDoesNotExist(file.path(targetExists, base, "1/2/3"))
 
 # Repeat when localDir does not exist:
 if (dir.exists(targetNotExists)) {
   unlink(targetNotExists, recursive = T)
 }
 
-labkey.webdav.downloadFolder(localDir = targetNotExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T, mergeFolders = F)
-assertLocalFileDoesNotExist(file.path(targetNotExists, dirName))
-assertLocalFileExists(file.path(targetNotExists, 'foo.txt'))
-assertLocalFileExists(file.path(targetNotExists, "1"))
-assertLocalFileExists(file.path(targetNotExists, "1/2/3"))
-
-#Clean
-unlink(targetNotExists, recursive = T)
-dir.create(targetNotExists)
+tryCatch({
+  labkey.webdav.downloadFolder(localBaseDir = targetNotExists, baseUrl, folderPath = folderPath, remoteFilePath = dirName, overwrite = T, mergeFolders = F)
+  stop("This should not have worked")
+}, error = handleExpectedFail)
 
 # Download subfolder:
-labkey.webdav.downloadFolder(localDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = paste0(dirName, '/1/2'), overwrite = T)
-assertLocalFileDoesNotExist(file.path(targetExists, dirName))
-assertLocalFileExists(file.path(targetExists, "3"))
+remote2 <- paste0(dirName, '/1/2')
+base <- basename(remote2)
+labkey.webdav.downloadFolder(localBaseDir = targetExists, baseUrl, folderPath = folderPath, remoteFilePath = remote2, overwrite = T)
+assertLocalFileDoesNotExist(file.path(targetExists, base, dirName))
+assertLocalFileExists(file.path(targetExists, base, "3"))
 
 cleanup()
 
