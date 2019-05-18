@@ -242,8 +242,17 @@ labkey.webdav.downloadFolder <- function(localBaseDir, baseUrl=NULL, folderPath,
   if (subfolder != ''){
     localBaseDir <- normalizeFolder(localBaseDir)
     localBaseDir <- file.path(localBaseDir, subfolder)
+    logMessage(paste0('target local folder: ', localBaseDir))
   }
 
+  if (!labkey.webdav.isDirectory(baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, fileSet = fileSet, haltOnError = T)){
+    stop('The requested file is not a directory.')  
+  }
+  
+  if (!prepareDirectory(localPath = localBaseDir, overwriteFiles = overwriteFiles, mergeFolders = mergeFolders)){
+    return(F)
+  }
+  
   labkey.webdav.doDownloadFolder(localDir = localBaseDir, baseUrl = baseUrl, folderPath = folderPath, remoteFilePath = remoteFilePath, overwriteFiles = overwriteFiles, mergeFolders = mergeFolders, fileSet = fileSet)
 }
 
@@ -295,24 +304,10 @@ labkey.webdav.doDownloadFolder <- function(localDir, baseUrl=NULL, folderPath, r
         }
       
         # Handle potential merges:
-        if (dir.exists(localPath)) {
-          logMessage(paste0('existing folder found: ', localPath))  
-
-          if (!mergeFolders && overwriteFiles) {
-            logMessage('deleting existing folder')
-            unlink(localPath, recursive = T)
-          }
-          else if (!mergeFolders && !overwriteFiles) {
-            logMessage('skipping existing folder')
-            next
-          }
-          else if (mergeFolders) {
-            logMessage('existing folder will be left alone and contents downloaded')
-          }
-        } else {
-            dir.create(localPath, recursive=TRUE)
+        if (!prepareDirectory(localPath, overwriteFiles, mergeFolders)) {
+          next
         }
-
+        
         labkey.webdav.doDownloadFolder(localDir=localPath, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativeToRemoteRoot, overwriteFiles=overwriteFiles, mergeFolders=mergeFolders)
       } else {
           url <- paste0(baseUrl, trimLeadingPath(file[["href"]]))
@@ -334,4 +329,26 @@ trimLeadingPath <- function(url){
   }
   
   return(substr(url, pos, nchar(url)))
+}
+
+prepareDirectory <- function(localPath, overwriteFiles, mergeFolders) {
+  if (dir.exists(localPath)) {
+    logMessage(paste0('existing folder found: ', localPath))  
+    
+    if (!mergeFolders && overwriteFiles) {
+      logMessage('deleting existing folder')
+      unlink(localPath, recursive = T)
+    }
+    else if (!mergeFolders && !overwriteFiles) {
+      logMessage('skipping existing folder')
+      return(F)
+    }
+    else if (mergeFolders) {
+      logMessage('existing folder will be left alone and contents downloaded')
+    }
+  } else {
+    dir.create(localPath, recursive=TRUE)
+  }
+  
+  return(T)
 }
