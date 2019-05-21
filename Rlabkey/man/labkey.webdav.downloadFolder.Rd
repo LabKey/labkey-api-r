@@ -6,12 +6,12 @@ This will recursively download a folder from a LabKey Server using WebDAV.
 }
 \usage{
 labkey.webdav.downloadFolder(
-    localDir,
+    localBaseDir,
     baseUrl=NULL, 
     folderPath,
     remoteFilePath,
     overwriteFiles=TRUE,
-    mergeFolders=FALSE,
+    mergeFolders=TRUE,
     fileSet='@files'
     )
 }
@@ -50,7 +50,7 @@ library(Rlabkey)
 labkey.webdav.downloadFolder(baseUrl="http://labkey/",
     folderPath="home",
     remoteFilePath="folder1",
-    localDir="destFolder",
+    localBaseDir="destFolder",
     overwrite=TRUE
 )
 

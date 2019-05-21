@@ -9,7 +9,8 @@ labkey.webdav.listDir(
     baseUrl=NULL,
     folderPath,
     remoteFilePath,
-    fileSet='@files'
+    fileSet='@files',
+    haltOnError=TRUE
     )
 }
 \arguments{
