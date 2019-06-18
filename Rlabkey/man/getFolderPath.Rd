@@ -15,7 +15,7 @@ getFolderPath(session)
 
 \value{ A character array containing the folder path, relative to the root. 
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=projects}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=projects}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}  \code{\link{lsFolders}}}
 \examples{

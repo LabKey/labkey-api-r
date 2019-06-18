@@ -19,7 +19,7 @@
 # This script makes use of the LabKey Remote API for R package (Rlabkey), which can be obtained via CRAN
 # using the package name "Rlabkey".  The Rlabkey package also depends on the "jsonlite" and "httr" packages.
 #
-# See https://www.labkey.org/wiki/home/Documentation/page.view?name=rAPI for more information.
+# See https://www.labkey.org/Documentation/wiki-page.view?name=rAPI for more information.
 
 
 labkey.getSchemas <- function(baseUrl=NULL, folderPath)

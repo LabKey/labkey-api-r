@@ -17,7 +17,7 @@ schema objects is essentially the same as the schema and query objects shown in 
 
 \value{an object representing the schema.  The named elements of a schema are the queries within that schema.  
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=querySchemaBrowser}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=querySchemaBrowser}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}}
 \examples{

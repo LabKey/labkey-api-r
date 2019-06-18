@@ -74,7 +74,7 @@ colNameOpt parameter but defaults to field names instead of captions.
 \value{
 The requested data are returned in a data frame with stringsAsFactors set to FALSE.  Column names are set as determined by the colNameOpt parameter.
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=savingViews}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=savingViews}
 
 \author{Valerie Obenchain}
 \seealso{

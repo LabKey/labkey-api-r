@@ -22,7 +22,7 @@ query objects that are named elemenets of a schema object, A lookup query
 object, however, does not have a parent schema object, it is only returned by getLookups.  Also, the field names in
 a lookup query object are compound names relative to the base query object used in getLookups.
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=propertyFields}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{getRows}} \code{\link{getSchema}}}
 \examples{

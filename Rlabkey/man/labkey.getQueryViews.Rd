@@ -26,7 +26,7 @@ The available views for a query are returned as a three-column data frame, with 
 \code{key} {The name of the field relative to the base query,  Use this value in the colSelect parameter of \code{labkey.selectRows()} .}\cr 
 
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=savingViews}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=savingViews}
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
 {Retrieve data:  } \code{\link{labkey.selectRows}},\code{\link{makeFilter}}, \code{\link{labkey.executeSql}} \cr

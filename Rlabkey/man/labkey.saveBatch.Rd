@@ -29,7 +29,7 @@ Note that saveBatch currently supports only a single run with one result set per
 \value{
  Returns the object representation of the Assay batch.
 }
-\references{https://www.labkey.org/wiki/home/Documentation/page.view?name=createDatasetViaAssay}
+\references{https://www.labkey.org/Documentation/wiki-page.view?name=createDatasetViaAssay}
 
 \author{Peter Hussey}
 \seealso{
