@@ -114,7 +114,7 @@
  				if(is.null(fop)==TRUE) stop ("Invalid operator name.")
  				# url encode column name and value
  				colnam <- URLencode(fmat[i,1])
- 				fvalue <- URLencode(fmat[i,3])
+ 				fvalue <- URLencode(fmat[i,3], reserved = TRUE)
  				filters[i] <- paste(colnam,"~",fop,"=",fvalue,sep="")
  			}
 
