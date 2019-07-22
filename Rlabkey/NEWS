@@ -1,3 +1,7 @@
+Changes in version 2.3.1
+  o Fix for makeFilter URLencode to use reserved = TRUE
+  o When using labkey.selectRows, default showHidden to TRUE when using colSelect property
+
 Changes in version 2.3.0
   o WebDav support in Rlabkey with functions like labkey.webdav.get, labkey.webdav.put, labkey.webdav.delete, etc. (from Ben Bimber)
 

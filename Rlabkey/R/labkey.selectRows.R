@@ -52,6 +52,9 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
         }
         colSelect2 <- substr(holder, 1, nchar(holder)-1)
         colSelect <- paste(colSelect, collapse=",")
+
+        # when using colSelect, always set showHidden to TRUE
+        showHidden = TRUE
     }
 
     if(is.null(method) == FALSE && method == "GET")
