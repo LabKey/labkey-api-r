@@ -56,3 +56,25 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     return(newdata)
 }
                                                               
+labkey.truncateTable <- function(baseUrl=NULL, folderPath, schemaName, queryName)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
+        stop (paste("A value must be specified for each of baseUrl and folderPath."))
+
+    ## Validate required parameters
+    if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
+    if (missing(queryName)) stop (paste("A value must be specified for queryName."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "query", folderPath, "truncateTable.api", sep="")
+
+    params <- list(schemaName=schemaName, queryName=queryName)
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
+}
