@@ -193,7 +193,8 @@ return(filtered)
 
 .getRNameFromName <- function(lkname, existing=NULL)
 {
-	rname <- tolower(chartr(" /", "__", lkname))
+	rname <- gsub("::", "--", lkname)
+	rname <- tolower(chartr(" /", "__", rname))
 
 	if (length(existing)>0)
 	{ 
