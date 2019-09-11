@@ -1,6 +1,7 @@
 Changes in version 2.3.2
   o Fix typo in labkey.webdav.put for generated Rlabkey.pdf (Issue 37739)
   o Issue 38427: In Rlabkey, labkey.selectRows with colNameOpt="rname" does not sanitize "::"
+  o New API for truncating tables (delete all rows)
 
 Changes in version 2.3.1
   o Fix for makeFilter URLencode to use reserved = TRUE
