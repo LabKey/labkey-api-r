@@ -32,7 +32,8 @@ Returns the count of the number of rows deleted.
 ## create a data frame and infer it's fields
 library(Rlabkey)
 
-labkey.truncateTable(baseUrl="http://labkey/", folderPath="home", schemaName="lists", queryName="people")
+labkey.truncateTable(baseUrl="http://labkey/", folderPath="home",
+    schemaName="lists", queryName="people")
 
 }
 }
