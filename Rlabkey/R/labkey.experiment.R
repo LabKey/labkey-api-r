@@ -171,3 +171,30 @@ labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = 
 
 	return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
 }
+
+labkey.experiment.saveRuns <- function(baseUrl=NULL, folderPath, protocolName, runList)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## Validate required parameters
+    if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
+    if (missing(protocolName)) stop (paste("A value must be specified for protocolName."))
+    if (missing(runList)) stop (paste("A value must be specified for runList."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    ## Now post form with batch object filled out
+    url <- paste(baseUrl, "assay", folderPath, "saveAssayRun.api", sep="")
+
+    if (!is.null(runList))
+    {
+        params = list()
+        params$protocolName = protocolName
+    }
+    params$runs = ensureNestedList(runList)
+
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
+}
