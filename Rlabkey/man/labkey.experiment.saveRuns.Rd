@@ -23,7 +23,7 @@ the assayName and providerName name must be specified in the assayConfig paramet
 specify the protocolName string value, note that currently only the simple : labkey.experiment.SAMPLE_DERIVATION_PROTOCOL is supported.
 
 Refer to the labkey.experiment.createData, labkey.experiment.createMaterial, and labkey.experiment.createRun helper functions
-to assemble the data structure that saveBatch expects.
+to assemble the data structure that saveRuns expects.
 }
 
 \value{
