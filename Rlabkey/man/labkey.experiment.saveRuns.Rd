@@ -37,14 +37,14 @@ to assemble the data structure that saveRuns expects.
 
 library(Rlabkey)
 
-## uploads data to an existing assay
+## example with datarows
 
 df <- data.frame(participantId=c(1:3), visitId = c(10,20,30), sex = c("f", "m", "f"))
 run <- labkey.experiment.createRun(list(name="new assay run"), dataRows = df)
 labkey.experiment.saveRuns(baseUrl="http://labkey/", folderPath="home",
     assayConfig=list(assayName="GPAT", providerName="General"), runList=run)
 
-## create a non-assay backed run with samples as material inputs and outputs
+## example with materialInputs and materialOutputs
 
 m1 <- labkey.experiment.createMaterial(
         list(name = "87444063.2604.626"), sampleSetName = "Study Specimens")
