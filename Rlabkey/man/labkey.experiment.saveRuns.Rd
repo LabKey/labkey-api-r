@@ -18,10 +18,6 @@ labkey.experiment.saveRuns(baseUrl=NULL, folderPath,
 Saves experiment runs. Runs may refer to existing data and material objects, either inputs or outputs,
 by ID or LSID. Runs may also define new data and materials objects by not specifying an ID or LSID in their properties.
 
-Runs can be created for either assay or non-assay backed protocols. For an assay backed protocol, either the assayId or
-the assayName and providerName name must be specified in the assayConfig parameter. If a non-assay backed protocol is to be used,
-specify the protocolName string value, note that currently only the simple : labkey.experiment.SAMPLE_DERIVATION_PROTOCOL is supported.
-
 Refer to the labkey.experiment.createData, labkey.experiment.createMaterial, and labkey.experiment.createRun helper functions
 to assemble the data structure that saveRuns expects.
 }
