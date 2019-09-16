@@ -185,7 +185,7 @@ labkey.experiment.saveRuns <- function(baseUrl=NULL, folderPath, protocolName, r
     folderPath <- encodeFolderPath(folderPath)
 
     ## Now post form with runs object filled out
-    url <- paste(baseUrl, "assay", folderPath, "saveAssayRun.api", sep="")
+    url <- paste(baseUrl, "assay", folderPath, "saveAssayRuns.api", sep="")
 
     if (!is.null(runList))
     {
