@@ -439,7 +439,7 @@
 	}
 
 
-## the following two functions add an entry for the Rlabkey Users guide to the Vignettes menu
+## the following function allows for the user guide to be opened via R command
 RlabkeyUsersGuide <- function(view=TRUE)
 {
      f <- system.file("doc", "usersguide.pdf", package = "Rlabkey")
@@ -449,20 +449,4 @@ RlabkeyUsersGuide <- function(view=TRUE)
         else system(paste(Sys.getenv("R_PDFVIEWER"), f, "&"))
     }
     return(f)
-}
-
-.onLoad<- function(libname, pkgname)
-{	
-	#try(utils::winMenuAddItem("Vignettes", "Rlabkey", "RlabkeyUsersGuide()"), TRUE)
-}
-
-.onUnload<- function(libpath)
-{	
-	numItems= as.integer(0);
-	
-	try (numItems<- length(utils::winMenuItems("Vignettes")), TRUE)
-	if (numItems > 0)
-	{
-		try(utils::winMenuDelItem("Vignettes", "Rlabkey"), TRUE)
-	}	
 }

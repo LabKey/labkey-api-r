@@ -1,4 +1,8 @@
-Changes in version 2.3.2
+Changes in TBD
+  o Handle newlines better in transform run properties files - run properties configured as multi-line types
+  o Remove outdated vignette and other doc files from package
+
+Changes in version 2.3.3
   o Issue 38841: Rlabkey needs to translate NULL to NA for new GWTDomain "instructions" property
 
 Changes in version 2.3.2

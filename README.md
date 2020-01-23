@@ -13,9 +13,7 @@ This file describes the sources for the Rlabkey package and a number of addition
 - **DESCRIPTION**	Text manifest file specifying version number, dependencies, and other properties.  Developer maintained.
 - **NAMESPACE**	Specifies the public function names.  Developer maintained.
 - **NEWS**	Document of change history for this project, developer maintaind.
-- **inst/doc**	Folder for vignette hookup documents
- - **RlabkeyExample.pdf, .R, .Rnw**  	Three files that make up the official "latex" way to create package vignettes.
-						The official vignette pages acts as a pointer to the userguide.
+- **inst/doc**	Folder for documents
  - **usersguide.pdf**			The pdf version of the source document found in \lktrunk\remoteapi\r\docs, printed to pdf format
 - **man**		Source files for function-by-function reference documentation.  After a successful build, a final pdf of the function reference documentation can be found in Rlabkey.Rcheck/Rlabkey-manual.pdf.
 - **R**		R Source files for package functions
