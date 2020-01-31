@@ -16,17 +16,33 @@
 
 .lkdefaults <- new.env(parent=emptyenv());
 
-# Set the credentials used for all http or https requests
-# For now, just apiKey and baseUrl. TODO: Add email, password, folderPath, and maybe curlOptions & lkOptions
-labkey.setDefaults <- function(apiKey="", baseUrl="")
+# Set the credentials used for all http or https requests. Note that if both apiKey and email/password are provided,
+# the apiKey will be given preference in labkey.getRequestOptions().
+labkey.setDefaults <- function(baseUrl="", apiKey="", email="", password="")
 {
-    if (apiKey != "")
-        .lkdefaults[["apiKey"]] = apiKey;
     if (baseUrl != "")
         .lkdefaults[["baseUrl"]] = baseUrl;
+
+    if (apiKey != "")
+        .lkdefaults[["apiKey"]] = apiKey;
+
+    if (email != "" && password != "") {
+        .lkdefaults[["email"]] = email;
+        .lkdefaults[["password"]] = password;
+    }
+
     # for backward compatibility, clear defaults if setDefaults() is called with NO arguments
-    if (apiKey == "" && baseUrl=="")
-      .lkdefaults <- new.env(parent=emptyenv());
+    if (baseUrl == "" && apiKey == "" && email == "" && password == "") {
+        if (!is.null(.lkdefaults[["baseUrl"]])) { rm("baseUrl", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults[["apiKey"]])) { rm("apiKey", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults[["email"]])) { rm("email", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults[["password"]])) { rm("password", envir = .lkdefaults) }
+    }
+}
+
+isPasswordAuth <- function()
+{
+    return (!is.null(.lkdefaults[["password"]]) && .lkdefaults[["password"]] != "")
 }
 
 ifApiKey <- function()
@@ -117,10 +133,7 @@ labkey.getCSRF <- function()
             myUrl <- paste(urlBase, "login/", "whoAmI.view", sep="")
             options = labkey.getRequestOptions()
             verboseOutput("OPTIONS", options)
-            if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
-                response <- GET(url=myUrl, config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
-            else
-                response <- GET(url=myUrl, config=options)
+            response <- GET(url=myUrl, config=options)
             r <- processResponse(response, haltOnError=FALSE)
             json <- fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE)
             if (!is.null(json$CSRF))
@@ -136,11 +149,16 @@ labkey.getRequestOptions <- function(method='GET', encoding=NULL)
 {
     ## Set options
     headerFields <- c()
-   if (method == "POST")
-   {
+    if (method == "POST")
+    {
        if (is.null(encoding) || encoding != "multipart")
            headerFields <- c('Content-Type'="application/json;charset=utf-8")
-   }
+
+       ## CSRF
+       csrf <- labkey.getCSRF()
+       if (!is.null(csrf))
+           headerFields <- c(headerFields, "X-LABKEY-CSRF" = csrf)
+    }
 
     options <- labkey.curlOptions()
 
@@ -163,25 +181,22 @@ labkey.getRequestOptions <- function(method='GET', encoding=NULL)
     {
         if (method == "GET")
             options <- c(options, config(httpauth=1L))
+
         apikey <- ifApiKey();
-        if (!is.null(apikey))
-        {
+        if (!is.null(apikey) && apikey != "") {
             headerFields <- c(headerFields, apikey=apikey)
         }
-        else
-        {
+        else if (isPasswordAuth()) {
+            options <- c(options, authenticate(.lkdefaults[["email"]], .lkdefaults[["password"]]))
+        }
+        else {
             options <- c(options, config(netrc=1))
         }
     }
 
-    if (method == "POST")
-    {
-        ## CSRF
-        csrf <- labkey.getCSRF()
-        if (!is.null(csrf))
-            headerFields <- c(headerFields, "X-LABKEY-CSRF" = csrf)
-    }
-    o <- c(options, add_headers(headerFields))
+    if (isDebug())
+        options <- c(options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+
     return (c(options, add_headers(headerFields)))
 }
 
@@ -191,10 +206,7 @@ labkey.get <- function(myurl)
     ## HTTP GET
     options <- labkey.getRequestOptions(method="GET")
     verboseOutput("OPTIONS", options)
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
-        response <- GET(url=myurl, config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
-    else
-        response <- GET(url=myurl, config=options)
+    response <- GET(url=myurl, config=options)
     processResponse(response)
 }
 
@@ -204,10 +216,7 @@ labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL, haltOnEr
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
     verboseOutput("OPTIONS", options)
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE)
-        response <- POST(url=myurl, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
-    else
-        response <- POST(url=myurl, config=options, body=pbody)
+    response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response, responseType = responseType, haltOnError = haltOnError)
 }
 
@@ -224,6 +233,15 @@ labkey.setDebugMode <- function(debug=FALSE)
 {
     .lkdefaults[["debug"]] = debug;
 }
+
+isDebug <- function()
+{
+    if (is.null(.lkdefaults[["debug"]])) {
+        return (FALSE)
+    }
+    return (.lkdefaults[["debug"]])
+}
+
 
 isRequestError <- function(response, status_code) 
 {
@@ -275,7 +293,7 @@ handleError <- function(response, haltOnError)
 
 verboseOutput <- function(title, content)
 {
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+    if (isDebug()) {
         print(paste("*******************BEGIN ",title,"*******************", sep=""))
         print(content)
         print(paste("*******************END ",title,"*********************", sep=""))

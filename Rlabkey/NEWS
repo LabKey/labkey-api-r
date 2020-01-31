@@ -1,5 +1,6 @@
 Changes in TBD
-  o Handle newlines better in transform run properties files - run properties configured as multi-line types
+  o Issue 38229: Handle newlines better in transform run properties files - run properties configured as multi-line types
+  o Issue 39262: Add support for using username/password authentication via labkey.setDefaults
   o Remove outdated vignette and other doc files from package
 
 Changes in version 2.3.3
