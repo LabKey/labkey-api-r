@@ -18,7 +18,7 @@
 
 # Set the credentials used for all http or https requests. Note that if both apiKey and email/password are provided,
 # the apiKey will be given preference in labkey.getRequestOptions().
-labkey.setDefaults <- function(baseUrl="", apiKey="", email="", password="")
+labkey.setDefaults <- function(apiKey="", baseUrl="", email="", password="")
 {
     if (baseUrl != "")
         .lkdefaults[["baseUrl"]] = baseUrl;

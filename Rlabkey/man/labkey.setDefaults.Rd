@@ -6,11 +6,11 @@ Use this function to set the default baseUrl and authentication parameters as pa
 for all http or https requests. You can also use labkey.setDefaults() without any parameters to reset/clear
 these settings.}
 \usage{
-labkey.setDefaults(baseUrl="", apiKey="", email="", password="")
+labkey.setDefaults(apiKey="", baseUrl="", email="", password="")
 }
 \arguments{
-  \item{baseUrl}{server location including context path, if any. e.g. https://www.labkey.org/}
   \item{apiKey}{session key from your server}
+  \item{baseUrl}{server location including context path, if any. e.g. https://www.labkey.org/}
   \item{email}{user email address}
   \item{password}{user password}
 }
