@@ -1,3 +1,6 @@
+Changes in 2.3.5
+  o Add support for uploading runs for GPAT assays that support plate template metadata via labkey.experiment.createRun and labkey.experiment.saveBatch.
+
 Changes in 2.3.4
   o Issue 38229: Handle newlines better in transform run properties files - run properties configured as multi-line types
   o Issue 39262: Add support for using username/password authentication via labkey.setDefaults
