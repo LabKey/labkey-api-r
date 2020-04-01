@@ -146,7 +146,7 @@ ensureNestedList <- function(data)
     return (data)
 }
 
-labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = NULL, protocolName = NULL, runList)
+labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = NULL, protocolName = NULL, batchPropertyList = NULL, runList)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -170,7 +170,7 @@ labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = 
         params = list()
         params$protocolName = protocolName
     }
-    params$batch = list(runs = ensureNestedList(runList))
+    params$batch = c(batchPropertyList, list(runs = ensureNestedList(runList)))
 
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 

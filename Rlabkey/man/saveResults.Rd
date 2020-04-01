@@ -1,7 +1,9 @@
 \name{saveResults}
 \alias{saveResults}
 \title{ Returns an object representing a LabKey schema }
-\description{ Creates and returns an object representing a LabKey schema, containing child objects representing LabKey queries}
+\description{
+A wrapper function to labkey.saveBatch which uses a session object and provides defaults for the Batch/Run names.
+ }
 
 \usage{
 saveResults(session, assayName, resultDataFrame, 

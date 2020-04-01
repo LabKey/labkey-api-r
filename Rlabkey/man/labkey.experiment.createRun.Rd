@@ -54,8 +54,10 @@ df <- data.frame(participantId=c(1:3), visitId = c(10,20,30), welllocation = c("
 
 runConfig <- fromJSON(txt='{"assayId": 310,
     "name" : "api imported run with plate metadata",
-    "properties" : {"PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd777822f8"}
-    }')
+    "properties" : {
+        "PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd"
+    }}
+}')
 
 plateMetadata <- fromJSON(txt='{
       "control" : {
@@ -71,7 +73,10 @@ plateMetadata <- fromJSON(txt='{
     }')
 
 run <- labkey.experiment.createRun(runConfig, dataRows = df, plateMetadata = plateMetadata)
-labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", assayConfig=list(assayId = 310), runList=run)
+labkey.experiment.saveBatch(
+    baseUrl="http://labkey/", folderPath="home",
+    assayConfig=list(assayId = 310), runList=run
+)
 
 }
 }

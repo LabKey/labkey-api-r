@@ -6,13 +6,15 @@ Saves a modified experiment batch.
 }
 \usage{
 labkey.experiment.saveBatch(baseUrl=NULL, folderPath,
-    assayConfig = NULL, protocolName = NULL, runList)
+    assayConfig = NULL, protocolName = NULL,
+    batchPropertyList = NULL, runList)
 }
 \arguments{
   \item{baseUrl}{(optional) a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{assayConfig}{(optional) a list specifying assay configuration information}
   \item{protocolName}{(optional) a string specifying the protocol name of the protocol to use}
+  \item{batchPropertyList}{(optional) a list of batch properties }
   \item{runList}{a list of experiment run objects}
 }
 \details{
@@ -45,9 +47,12 @@ library(Rlabkey)
 ## uploads data to an existing assay
 
 df <- data.frame(participantId=c(1:3), visitId = c(10,20,30), sex = c("f", "m", "f"))
+bprops <- list(LabNotes="this is a simple demo")
+bpl <- list(name=paste("Batch ", as.character(date())),properties=bprops)
 run <- labkey.experiment.createRun(list(name="new assay run"), dataRows = df)
 labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home",
-    assayConfig=list(assayName="GPAT", providerName="General"), runList=run)
+    assayConfig=list(assayName="GPAT", providerName="General"),
+    batchPropertyList=bpl, runList=run)
 
 ## create a non-assay backed run with samples as material inputs and outputs
 
@@ -66,8 +71,10 @@ df <- data.frame(participantId=c(1:3), visitId = c(10,20,30), welllocation = c("
 
 runConfig <- fromJSON(txt='{"assayId": 310,
     "name" : "api imported run with plate metadata",
-    "properties" : {"PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd777822f8"}
-    }')
+    "properties" : {
+        "PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd"
+    }}
+}')
 
 plateMetadata <- fromJSON(txt='{
       "control" : {
@@ -83,7 +90,11 @@ plateMetadata <- fromJSON(txt='{
     }')
 
 run <- labkey.experiment.createRun(runConfig, dataRows = df, plateMetadata = plateMetadata)
-labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home", assayConfig=list(assayId = 310), runList=run)
+labkey.experiment.saveBatch(
+    baseUrl="http://labkey/", folderPath="home",
+    assayConfig=list(assayId = 310), runList=run
+)
+
 }
 }
 \keyword{IO}

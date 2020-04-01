@@ -1,3 +1,7 @@
+Changes in 2.4.0
+  o Issue 39955: Fix for labkey.saveBatch issue with using GET instead of POST for query to get assay Id from assay name
+  o Issue 39955: Add batchPropertyList parameter to labkey.experiment.saveBatch to match behavior from deprecated labkey.saveBatch
+
 Changes in 2.3.5
   o Add support for uploading runs for GPAT assays that support plate template metadata via labkey.experiment.createRun and labkey.experiment.saveBatch.
 
