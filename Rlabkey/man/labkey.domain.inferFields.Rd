@@ -27,6 +27,7 @@ Each field will contain the list of attributes and values for that field definit
 \code{\link{labkey.domain.get}},
 \code{\link{labkey.domain.create}},
 \code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.drop}}
 }

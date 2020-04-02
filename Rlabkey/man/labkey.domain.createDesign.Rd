@@ -23,6 +23,7 @@ A list containing elements describing the domain design. Any of the APIs which t
 \seealso{
 \code{\link{labkey.domain.get}},
 \code{\link{labkey.domain.inferFields}},
+\code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.create}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.drop}}
@@ -35,7 +36,9 @@ library(Rlabkey)
 
 df <- data.frame(ptid=c(1:3), age = c(10,20,30), sex = c("f", "m", "f"))
 fields <- labkey.domain.inferFields(baseUrl="http://labkey/", folderPath="home", df=df)
-dd <- labkey.domain.createDesign(name="test list", fields=fields)
+indices = labkey.domain.createIndices(list("ptid", "age"), TRUE)
+indices = labkey.domain.createIndices(list("age"), FALSE, indices)
+dd <- labkey.domain.createDesign(name="test list", fields=fields, indices=indices)
 
 }
 }

@@ -26,6 +26,7 @@ A list containing elements describing the domain. The structure is the same as a
 \code{\link{labkey.domain.create}},
 \code{\link{labkey.domain.inferFields}},
 \code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.drop}}
 }

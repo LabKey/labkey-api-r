@@ -82,6 +82,7 @@ A list containing elements describing the newly created domain.
 \code{\link{labkey.domain.get}},
 \code{\link{labkey.domain.inferFields}},
 \code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.drop}}
 }

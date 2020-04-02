@@ -69,20 +69,48 @@ labkey.domain.save <- function(baseUrl=NULL, folderPath, schemaName, queryName, 
 
 ## Helper function to create the domain design list
 ##
-labkey.domain.createDesign <- function(name, description, fields)
+labkey.domain.createDesign <- function(name, description = NULL, fields, indices = NULL)
 {
     ## check required parameters
     if (missing(name) || missing(fields))
         stop (paste("A value must be specified for each of name and fields."))
 
     if (!is.list(fields))
-        stop (paste("fields must be a list of field definitions."))
+        stop (paste("The 'fields' parameter must be a list of field definitions."))
 
     dd <- list(name = name, fields = fields$fields)
+
     if (!missing(description))
         dd$description = description
 
+    if (!missing(indices)) {
+        if (!is.list(indices))
+            stop (paste("The 'indices' parameter must be a list of index definitions (including a list of 'columnNames' and a 'unique' boolean)."))
+
+        dd$indices = indices
+    }
+
     return (dd)
+}
+
+## Helper function to create the domain design indices list
+##
+labkey.domain.createIndices <- function(colNames, asUnique, existingIndices = NULL)
+{
+    if (!is.list(colNames))
+        stop (paste("The 'colNames' parameter must be a list of column names."))
+
+    if (!is.logical(asUnique))
+        stop (paste("The 'asUnique' parameter must be a logical value of either TRUE or FALSE."))
+
+    columnNames <- list(colNames)
+    unique <- list(tolower(toString(asUnique)))
+    indices = as.data.frame(cbind(columnNames, unique))
+
+    if (!missing(existingIndices))
+        indices = rbind(existingIndices, indices)
+
+    return (indices)
 }
 
 labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind=NULL, domainDesign=NULL, options=NULL,

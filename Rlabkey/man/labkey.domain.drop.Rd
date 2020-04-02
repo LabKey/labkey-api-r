@@ -22,6 +22,7 @@ This function will delete an existing domain along with any data that may have b
 \code{\link{labkey.domain.get}},
 \code{\link{labkey.domain.inferFields}},
 \code{\link{labkey.domain.createDesign}},
+\code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.create}}
 }

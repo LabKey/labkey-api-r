@@ -2,8 +2,7 @@ useDynLib(Rlabkey, .registration = TRUE)
 export(labkey.selectRows, labkey.executeSql, makeFilter, labkey.insertRows, labkey.importRows, labkey.updateRows, labkey.deleteRows,
 	labkey.getSchemas, labkey.getQueries, labkey.getQueryViews, labkey.getQueryDetails, labkey.getDefaultViewDetails, labkey.getFolders,
 	labkey.getLookupDetails, labkey.makeRemotePath, getSession, getRows, getLookups, lsSchemas, lsFolders, lsProjects, labkey.saveBatch,
-	labkey.curlOptions, labkey.setCurlOptions, labkey.acceptSelfSignedCerts, labkey.setDefaults, labkey.domain.inferFields,
-	labkey.domain.drop, labkey.domain.get, labkey.domain.create, labkey.domain.createDesign, labkey.domain.save, labkey.domain.createAndLoad,
+	labkey.curlOptions, labkey.setCurlOptions, labkey.acceptSelfSignedCerts, labkey.setDefaults,
 	labkey.rstudio.initSession, labkey.rstudio.initRStudio, labkey.rstudio.initReport, labkey.rstudio.saveReport, labkey.rstudio.isInitialized,
 	labkey.transform.readRunPropertiesFile, labkey.transform.getRunPropertyValue, labkey.setDebugMode,
 	labkey.webdav.get, labkey.webdav.put, labkey.webdav.delete, labkey.webdav.mkDir, labkey.webdav.mkDirs, labkey.webdav.pathExists, labkey.webdav.listDir, labkey.webdav.downloadFolder,
@@ -21,6 +20,14 @@ export(labkey.experiment.SAMPLE_DERIVATION_PROTOCOL)
 export(labkey.getModuleProperty)
 export(labkey.setModuleProperty)
 export(labkey.getBaseUrl)
+export(labkey.domain.create)
+export(labkey.domain.createAndLoad)
+export(labkey.domain.createDesign)
+export(labkey.domain.createIndices)
+export(labkey.domain.drop)
+export(labkey.domain.get)
+export(labkey.domain.inferFields)
+export(labkey.domain.save)
 
 S3method(print, LabkeySession)
 S3method(print, LabkeySchemaList)
