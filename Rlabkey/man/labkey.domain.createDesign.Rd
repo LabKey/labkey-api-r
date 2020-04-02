@@ -5,12 +5,13 @@
 Create a domain design data structure which can then be used by \code{labkey.domain.create} or \code{labkey.domain.save}
 }
 \usage{
-labkey.domain.createDesign(name, description, fields)
+labkey.domain.createDesign(name, description = NULL, fields, indices = NULL)
 }
 \arguments{
   \item{name}{a string specifying the name of the domain}
   \item{description}{(optional) a string specifying domain description }
   \item{fields}{a list containing the fields of the domain design, this should be in the same format as returned by \code{labkey.inferFields}.}
+  \item{indices}{(optional) a list of indices definitions to be used for this domain design on creation}
 }
 \details{
 This is a function which can be used to create a domain design data structure. Domain designs are used both when creating a new domain or updating an existing domain.
