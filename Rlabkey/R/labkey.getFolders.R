@@ -35,19 +35,24 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	mydata <- labkey.get(myurl);
 
 	decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
+
+	resultCols = c("name", "path", "id", "title", "type", "folderType", "effectivePermissions")
+
 	curfld <- decode
-	allpaths <- matrix(data=c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")), nrow=1, ncol=3, byrow=TRUE)
-	todo <- curfld$children[]
-	while (length(todo)>0)
+	curfld$effectivePermissions = paste(curfld$effectivePermissions, collapse=",")
+	allpaths <- matrix(data=unlist(curfld[resultCols]), nrow=1, ncol=length(resultCols), byrow=TRUE)
+	childflds <- curfld$children[]
+	while (length(childflds)>0)
 	{
-		curfld<-todo[1][[1]]
-		allpaths <- rbind(allpaths, c(curfld$name, curfld$path, paste(curfld$effectivePermissions, collapse=",")))
-		todo<- c(todo, curfld$children[])
-		todo<-todo[-1]
+		curfld<-childflds[1][[1]]
+		curfld$effectivePermissions = paste(curfld$effectivePermissions, collapse=",")
+		allpaths <- rbind(allpaths, unlist(curfld[resultCols]))
+		childflds <- c(childflds, curfld$children[])
+		childflds <- childflds[-1]
 	}
 
 	allpathsDF <- data.frame(allpaths, stringsAsFactors=FALSE)
-	colnames(allpathsDF) <- c("name", "folderPath", "effectivePermissions")
+	colnames(allpathsDF) <- c("name", "folderPath", "id", "title", "type", "folderType", "effectivePermissions")
 
 	return(allpathsDF)
 }
