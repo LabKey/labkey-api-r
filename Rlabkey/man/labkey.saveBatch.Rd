@@ -22,7 +22,7 @@ This function has been deprecated and will be removed in a future release, pleas
 it supports the newer options for saving batch objects.
 
 To save an R data.frame an assay results sets, you must create a named assay using the "General" assay provider.  Detailed 
-instructions are avaialable in the Rlabkey Users Guide, accessible by entering RlabkeyUsersGuide() at the R command prompt.
+instructions are available in the Rlabkey Users Guide, accessible by entering RlabkeyUsersGuide() at the R command prompt.
 Note that saveBatch currently supports only a single run with one result set per batch.
 }
 
