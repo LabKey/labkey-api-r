@@ -5,7 +5,8 @@ File buildOutputFile = new File(project.buildDir, "commands.out")
 String rExe = "R"
 String rTermExe = "Rterm"
 String rHome = System.getenv("R_HOME")
-if (Os.isFamily(Os.FAMILY_WINDOWS) && rHome != null)
+boolean isWindows = Os.isFamily(Os.FAMILY_NT) || Os.isFamily(Os.FAMILY_WINDOWS)
+if (isWindows && rHome != null)
 {
     rExe = new File(rHome, "bin/R.exe").getAbsolutePath()
     rTermExe = new File(rHome, "bin/x64/Rterm.exe").getAbsolutePath()
@@ -51,7 +52,7 @@ project.task(
                             copy.include '*.tar.gz'
                             copy.into latestDir
                         }
-                        if (Os.isFamily(Os.FAMILY_WINDOWS))
+                        if (isWindows)
                         {
                             project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
                             {
@@ -89,7 +90,7 @@ project.task(
         description: "install the Rlabkey package to the local R instance. Must be run as administrator.",
         {
             doFirst {
-                if (Os.isFamily(Os.FAMILY_WINDOWS))
+                if (isWindows)
                 {
                     project.ant.exec(executable: rTermExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFil, append: truee)
                     {
