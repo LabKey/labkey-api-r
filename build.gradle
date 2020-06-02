@@ -45,7 +45,13 @@ project.task(
                         }
                         if (Os.isFamily(Os.FAMILY_WINDOWS))
                         {
-                            project.ant.exec(executable: "R", dir: project.buildDir, output: buildOutputFile)
+                            var rHome = System.getenv("R_HOME")
+                            var rExe = "R"
+                            if (rHome != null)
+                            {
+                                rExe = new File(rHome, "bin/R.exe").getAbsolutePath()
+                            }
+                            project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile)
                             {
                                 arg(line: "CMD INSTALL --build ${project.projectDir}/build/*.tar.gz")
                                 if (System.getenv("R_LIBS_USER") != null)
@@ -83,7 +89,13 @@ project.task(
             doFirst {
                 if (Os.isFamily(Os.FAMILY_WINDOWS))
                 {
-                    project.ant.exec(executable: "Rterm", dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFile)
+                    var rHome = System.getenv("R_HOME")
+                    var rExe = "Rterm"
+                    if (rHome != null)
+                    {
+                        rExe = new File(rHome, "bin/x64/Rterm.exe").getAbsolutePath()
+                    }
+                    project.ant.exec(executable: rExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFile)
                     {
                         arg(line: "--vanilla")
                         if (System.getenv("R_LIBS_USER") != null)
