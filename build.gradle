@@ -2,6 +2,14 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 File latestDir = project.file("latest");
 File buildOutputFile = new File(project.buildDir, "commands.out")
+String rExe = "R"
+String rTermExe = "Rterm"
+String rHome = System.getenv("R_HOME")
+if (Os.isFamily(Os.FAMILY_WINDOWS) && rHome != null)
+{
+    rExe = new File(rHome, "bin/R.exe").getAbsolutePath()
+    rTermExe = new File(rHome, "bin/x64/Rterm.exe").getAbsolutePath()
+}
 
 project.task(
         "check",
@@ -15,7 +23,7 @@ project.task(
         }
 
 ).doLast {
-    project.ant.exec(executable: "R", output: buildOutputFile)
+    project.ant.exec(executable: rExe, output: buildOutputFile)
                 {
                     arg(line:"CMD check --no-examples --as-cran ${latestDir}/*.tar.gz")
                 }
@@ -32,7 +40,7 @@ project.task(
             task.doFirst(
                     {
                         project.buildDir.mkdirs()
-                        project.ant.exec(executable: "R", dir: project.buildDir, output: buildOutputFile)
+                        project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile)
                         {
                             arg(line: "CMD build ${project.projectDir}/Rlabkey")
                             if (System.getenv("R_LIBS_USER") != null)
@@ -45,12 +53,6 @@ project.task(
                         }
                         if (Os.isFamily(Os.FAMILY_WINDOWS))
                         {
-                            var rHome = System.getenv("R_HOME")
-                            var rExe = "R"
-                            if (rHome != null)
-                            {
-                                rExe = new File(rHome, "bin/R.exe").getAbsolutePath()
-                            }
                             project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile)
                             {
                                 arg(line: "CMD INSTALL --build ${project.projectDir}/build/*.tar.gz")
@@ -89,13 +91,7 @@ project.task(
             doFirst {
                 if (Os.isFamily(Os.FAMILY_WINDOWS))
                 {
-                    var rHome = System.getenv("R_HOME")
-                    var rExe = "Rterm"
-                    if (rHome != null)
-                    {
-                        rExe = new File(rHome, "bin/x64/Rterm.exe").getAbsolutePath()
-                    }
-                    project.ant.exec(executable: rExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFile)
+                    project.ant.exec(executable: rTermExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFile)
                     {
                         arg(line: "--vanilla")
                         if (System.getenv("R_LIBS_USER") != null)
@@ -104,7 +100,7 @@ project.task(
                 }
                 if (Os.isFamily(Os.FAMILY_UNIX))
                 {
-                    project.ant.exec(executable: "R", output: buildOutputFile)
+                    project.ant.exec(executable: rExe, output: buildOutputFile)
                     {
                         arg(line: "CMD INSTALL Rlabkey")
                         if (System.getenv("R_LIBS_USER") != null)
