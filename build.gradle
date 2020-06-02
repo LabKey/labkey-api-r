@@ -23,7 +23,7 @@ project.task(
         }
 
 ).doLast {
-    project.ant.exec(executable: rExe, output: buildOutputFile)
+    project.ant.exec(executable: rExe, output: buildOutputFile, append: true)
                 {
                     arg(line:"CMD check --no-examples --as-cran ${latestDir}/*.tar.gz")
                 }
@@ -40,7 +40,7 @@ project.task(
             task.doFirst(
                     {
                         project.buildDir.mkdirs()
-                        project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile)
+                        project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
                         {
                             arg(line: "CMD build ${project.projectDir}/Rlabkey")
                             if (System.getenv("R_LIBS_USER") != null)
@@ -53,7 +53,7 @@ project.task(
                         }
                         if (Os.isFamily(Os.FAMILY_WINDOWS))
                         {
-                            project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile)
+                            project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
                             {
                                 arg(line: "CMD INSTALL --build ${project.projectDir}/build/*.tar.gz")
                                 if (System.getenv("R_LIBS_USER") != null)
@@ -91,7 +91,7 @@ project.task(
             doFirst {
                 if (Os.isFamily(Os.FAMILY_WINDOWS))
                 {
-                    project.ant.exec(executable: rTermExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFile)
+                    project.ant.exec(executable: rTermExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFil, append: truee)
                     {
                         arg(line: "--vanilla")
                         if (System.getenv("R_LIBS_USER") != null)
@@ -100,7 +100,7 @@ project.task(
                 }
                 if (Os.isFamily(Os.FAMILY_UNIX))
                 {
-                    project.ant.exec(executable: rExe, output: buildOutputFile)
+                    project.ant.exec(executable: rExe, output: buildOutputFile, append: true)
                     {
                         arg(line: "CMD INSTALL Rlabkey")
                         if (System.getenv("R_LIBS_USER") != null)
