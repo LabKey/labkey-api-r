@@ -160,6 +160,12 @@ labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind=NULL, doma
     return (fromJSON(response))
 }
 
+labkey.domain.what <- function()
+{
+    what <- "7"
+    print(what)
+}
+
 labkey.domain.drop <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
@@ -241,4 +247,78 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
         domainDesign = design, options = options)
 
     labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
+}
+
+labkey.domain.conditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, text_color="", background_color="")
+{
+    return(c(queryFilter, bold, italic, strikeThrough, text_color, background_color))
+}
+
+labkey.domain.queryFilter <- function(value, filterType, additionalValue=NULL, additionalFilter=NULL)
+{
+    qf1 <- sprintf("format.column~%s=%s", filterType, value)
+    qf2 <- NULL
+
+    if (!is.null(additionalValue) || !is.null(additionalFilter))
+        qf2 <- sprintf("format.column~%s=%s", filterType, value)
+
+    qf <- if(is.null(qf2)) qf1 else paste0(qf1, "&", qf2)
+    return(qf)
+}
+
+labkey.domain.queryFilterEnum <- function()
+{
+    list(
+        HAS_ANY_VALUE = '',
+
+        EQUAL = 'eq',
+        DATE_EQUAL = 'dateeq',
+
+        NEQ = 'neq',
+        NOT_EQUAL = 'neq',
+        DATE_NOT_EQUAL = 'dateneq',
+
+        NEQ_OR_NULL = 'neqornull',
+        NOT_EQUAL_OR_MISSING = 'neqornull',
+
+        GT = 'gt',
+        GREATER_THAN = 'gt',
+        DATE_GREATER_THAN = 'dategt',
+
+        LT = 'lt',
+        LESS_THAN = 'lt',
+        DATE_LESS_THAN = 'datelt',
+
+        GTE = 'gte',
+        GREATER_THAN_OR_EQUAL = 'gte',
+        DATE_GREATER_THAN_OR_EQUAL = 'dategte',
+
+        LTE = 'lte',
+        LESS_THAN_OR_EQUAL = 'lte',
+        DATE_LESS_THAN_OR_EQUAL = 'datelte',
+
+        STARTS_WITH = 'startswith',
+        DOES_NOT_START_WITH = 'doesnotstartwith',
+
+        CONTAINS = 'contains',
+        DOES_NOT_CONTAIN = 'doesnotcontain',
+
+        CONTAINS_ONE_OF = 'containsoneof',
+        CONTAINS_NONE_OF = 'containsnoneof',
+
+        IN = 'in',
+
+        EQUALS_ONE_OF = 'in',
+
+        NOT_IN = 'notin',
+        EQUALS_NONE_OF = 'notin',
+
+        BETWEEN = 'between',
+        NOT_BETWEEN = 'notbetween',
+
+        IS_BLANK = 'isblank',
+        IS_NOT_BLANK = 'isnonblank',
+
+        MEMBER_OF = 'memberof'
+    )
 }
