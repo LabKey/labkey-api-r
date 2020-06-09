@@ -160,12 +160,6 @@ labkey.domain.create <- function(baseUrl=NULL, folderPath, domainKind=NULL, doma
     return (fromJSON(response))
 }
 
-labkey.domain.what <- function()
-{
-    what <- "7"
-    print(what)
-}
-
 labkey.domain.drop <- function(baseUrl=NULL, folderPath, schemaName, queryName)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
