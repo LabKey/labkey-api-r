@@ -27,7 +27,10 @@ A list containing elements describing the domain design. Any of the APIs which t
 \code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.create}},
 \code{\link{labkey.domain.save}},
-\code{\link{labkey.domain.drop}}
+\code{\link{labkey.domain.drop}},
+\code{\link{labkey.domain.conditionalFormat}},
+\code{\link{labkey.domain.queryFilter}},
+\code{\link{labkey.domain.queryFilterEnum}}
 }
 \examples{
 \donttest{

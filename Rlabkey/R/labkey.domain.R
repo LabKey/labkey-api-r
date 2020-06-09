@@ -251,7 +251,7 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
 
 labkey.domain.conditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, text_color="", background_color="")
 {
-    list(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = text_color, backgroundColor = background_color)
+    data.frame(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = text_color, backgroundColor = background_color)
 }
 
 labkey.domain.queryFilter <- function(value, filterType, additionalValue=NULL, additionalFilter=NULL)
