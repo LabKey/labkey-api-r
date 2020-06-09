@@ -243,9 +243,9 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
     labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
 }
 
-labkey.domain.conditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, text_color="", background_color="")
+labkey.domain.conditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, textColor="", backgroundColor="")
 {
-    data.frame(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = text_color, backgroundColor = background_color)
+    data.frame(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = textColor, backgroundColor = backgroundColor)
 }
 
 labkey.domain.queryFilter <- function(value, filterType, additionalValue=NULL, additionalFilter=NULL)
