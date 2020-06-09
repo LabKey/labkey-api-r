@@ -50,9 +50,10 @@ domain <- labkey.domain.get(baseUrl="http://labkey/", folderPath="home",
 
 ## update the third field to use two conditional formats
 qf <- labkey.domain.queryFilterEnum()
-cf1 =  labkey.domain.conditionalFormat(labkey.domain.queryFilter(100, qf$GT), bold=TRUE, text_color="D33115",
-    background_color="333333")
-cf2 =  labkey.domain.conditionalFormat(labkey.domain.queryFilter(400, qf$LESS_THAN), italic=TRUE, text_color="68BC00")
+cf1 =  labkey.domain.conditionalFormat(labkey.domain.queryFilter(100, qf$GT), bold=TRUE,
+       text_color="D33115", background_color="333333")
+cf2 =  labkey.domain.conditionalFormat(labkey.domain.queryFilter(400, qf$LESS_THAN), italic=TRUE,
+       text_color="68BC00")
 domain$fields$conditionalFormats[[3]] = rbind(cf1,cf2)
 
 labkey.domain.save(baseUrl="http://labkey/", folderPath="home",

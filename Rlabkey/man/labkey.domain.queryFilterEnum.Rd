@@ -7,10 +7,6 @@ Get a list specifying permitted validator comparators.
 \usage{
 labkey.domain.queryFilterEnum()
 }
-\arguments{
-  \N/A
-
-}
 \details{
 This function can be used to return a list specifying the set of permitted validator operators, using names to map
 conventional terms to the expressions used by LabKey filter URL formats. The values are intended to be used in
