@@ -23,7 +23,7 @@ conditionalFormats component while creating or updating a domain. The queryFilte
 with \code{labkey.domain.queryFilter} for convenient construction of a query filter string. Multiple conditional
 formats can be applied to one field, where each format specified constitutes a new row of the field's conditionalFormats
 data frame.
-If text formatting options are not specified, the default displayed as black text on a white background.
+If text formatting options are not specified, the default is to display the value as black text on a white background.
 }
 \value{
 The data frame containing values describing a conditional format.
