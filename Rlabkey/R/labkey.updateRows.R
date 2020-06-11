@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toUpdate)
+labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toUpdate, provenanceParams=NULL)
 {  
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -34,7 +34,12 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     toUpdate <- convertFactorsToStrings(toUpdate);
     nrows <- nrow(toUpdate)
     ncols <- ncol(toUpdate)
-    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3), auto_unbox=TRUE)
+
+    params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
+    if (!missing(provenanceParams))
+        params$provenance = provenanceParams
+
+    p1 <- toJSON(params, auto_unbox=TRUE)
     cnames <- colnames(toUpdate)
     p3 <- NULL
     for(j in 1:nrows)
