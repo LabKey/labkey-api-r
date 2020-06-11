@@ -1,11 +1,11 @@
-\name{labkey.domain.queryFilterEnum}
-\alias{labkey.domain.queryFilterEnum}
+\name{labkey.domain.FILTER_TYPES}
+\alias{labkey.domain.FILTER_TYPES}
 \title{Provide comparator access}
 \description{
-Get a list specifying permitted validator comparators.
+A list specifying permitted validator comparators.
 }
 \usage{
-labkey.domain.queryFilterEnum()
+labkey.domain.FILTER_TYPES
 }
 \details{
 This function can be used to return a list specifying the set of permitted validator operators, using names to map
@@ -24,15 +24,14 @@ A named list of strings.
 \code{\link{labkey.domain.inferFields}},
 \code{\link{labkey.domain.save}},
 \code{\link{labkey.domain.drop}},
-\code{\link{labkey.domain.conditionalFormat}},
-\code{\link{labkey.domain.queryFilter}}
+\code{\link{labkey.domain.createConditionalFormat}},
+\code{\link{labkey.domain.createConditionalFormatQueryFilter}}
 }
 \examples{
 \donttest{
-
 library(Rlabkey)
 
-qf <- labkey.domain.queryFilterEnum()
+qf <- labkey.domain.FILTER_TYPES
 
 # Example of available comparators
 comparator1 <- qf$EQUAL

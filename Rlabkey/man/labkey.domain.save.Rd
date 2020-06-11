@@ -26,9 +26,9 @@ A list containing elements describing the domain after the update. The structure
 \code{\link{labkey.domain.createIndices}},
 \code{\link{labkey.domain.create}},
 \code{\link{labkey.domain.drop}},
-\code{\link{labkey.domain.conditionalFormat}},
-\code{\link{labkey.domain.queryFilter}},
-\code{\link{labkey.domain.queryFilterEnum}}
+\code{\link{labkey.domain.createConditionalFormat}},
+\code{\link{labkey.domain.createConditionalFormatQueryFilter}},
+\code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
 \donttest{

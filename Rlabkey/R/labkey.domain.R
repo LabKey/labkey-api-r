@@ -243,12 +243,12 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
     labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
 }
 
-labkey.domain.conditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, textColor="", backgroundColor="")
+labkey.domain.createConditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, textColor="", backgroundColor="")
 {
     data.frame(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = textColor, backgroundColor = backgroundColor)
 }
 
-labkey.domain.queryFilter <- function(value, filterType, additionalValue=NULL, additionalFilter=NULL)
+labkey.domain.createConditionalFormatQueryFilter <- function(filterType, value, additionalFilter=NULL, additionalValue=NULL)
 {
     qf1 <- sprintf("format.column~%s=%s", filterType, value)
     qf2 <- NULL
@@ -260,9 +260,8 @@ labkey.domain.queryFilter <- function(value, filterType, additionalValue=NULL, a
     return(qf)
 }
 
-labkey.domain.queryFilterEnum <- function()
-{
-    list(
+labkey.domain.FILTER_TYPES <-
+  list(
         HAS_ANY_VALUE = '',
 
         EQUAL = 'eq',
@@ -315,4 +314,3 @@ labkey.domain.queryFilterEnum <- function()
 
         MEMBER_OF = 'memberof'
     )
-}
