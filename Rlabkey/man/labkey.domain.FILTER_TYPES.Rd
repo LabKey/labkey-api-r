@@ -8,7 +8,7 @@ A list specifying permitted validator comparators.
 labkey.domain.FILTER_TYPES
 }
 \details{
-This function can be used to return a list specifying the set of permitted validator operators, using names to map
+This constant contains a list specifying the set of permitted validator operators, using names to map
 conventional terms to the expressions used by LabKey filter URL formats. The values are intended to be used in
 conjunction with conditional formats or property validators.
 }
