@@ -242,3 +242,75 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
 
     labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
 }
+
+labkey.domain.createConditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, textColor="", backgroundColor="")
+{
+    data.frame(filter = queryFilter, bold = bold, strikethrough = strikeThrough, italic = italic, textColor = textColor, backgroundColor = backgroundColor)
+}
+
+labkey.domain.createConditionalFormatQueryFilter <- function(filterType, value, additionalFilter=NULL, additionalValue=NULL)
+{
+    qf1 <- makeFilter(c("filter.column", filterType, value))[1]
+    qf2 <- NULL
+
+    if (!is.null(additionalValue) || !is.null(additionalFilter))
+        qf2 <- makeFilter(c("filter.column", additionalFilter, additionalValue))[1]
+
+    qf <- if(is.null(qf2)) qf1 else paste0(qf1, "&", qf2)
+    return(qf)
+}
+
+labkey.domain.FILTER_TYPES <-
+  list(
+        HAS_ANY_VALUE = '',
+
+        EQUAL = 'eq',
+        DATE_EQUAL = 'dateeq',
+
+        NEQ = 'neq',
+        NOT_EQUAL = 'neq',
+        DATE_NOT_EQUAL = 'dateneq',
+
+        NEQ_OR_NULL = 'neqornull',
+        NOT_EQUAL_OR_MISSING = 'neqornull',
+
+        GT = 'gt',
+        GREATER_THAN = 'gt',
+        DATE_GREATER_THAN = 'dategt',
+
+        LT = 'lt',
+        LESS_THAN = 'lt',
+        DATE_LESS_THAN = 'datelt',
+
+        GTE = 'gte',
+        GREATER_THAN_OR_EQUAL = 'gte',
+        DATE_GREATER_THAN_OR_EQUAL = 'dategte',
+
+        LTE = 'lte',
+        LESS_THAN_OR_EQUAL = 'lte',
+        DATE_LESS_THAN_OR_EQUAL = 'datelte',
+
+        STARTS_WITH = 'startswith',
+        DOES_NOT_START_WITH = 'doesnotstartwith',
+
+        CONTAINS = 'contains',
+        DOES_NOT_CONTAIN = 'doesnotcontain',
+
+        CONTAINS_ONE_OF = 'containsoneof',
+        CONTAINS_NONE_OF = 'containsnoneof',
+
+        IN = 'in',
+
+        EQUALS_ONE_OF = 'in',
+
+        NOT_IN = 'notin',
+        EQUALS_NONE_OF = 'notin',
+
+        BETWEEN = 'between',
+        NOT_BETWEEN = 'notbetween',
+
+        IS_BLANK = 'isblank',
+        IS_NOT_BLANK = 'isnonblank',
+
+        MEMBER_OF = 'memberof'
+    )
