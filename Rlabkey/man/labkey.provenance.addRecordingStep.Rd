@@ -19,7 +19,7 @@ a previous startRecording function call must be passed into the provenanceParams
 This is a premium feature and requires the Provenance LabKey module to function correctly.
 }
 \value{
-The generated recording ID which can be used in subsequent steps (or queries that support provenance)
+The generated recording ID which can be used in subsequent steps (or queries that support provenance).
 }
 
 \author{Karl Lum}

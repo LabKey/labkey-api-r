@@ -21,7 +21,7 @@ this will return a recording ID which is needed for subsequent steps.
 This is a premium feature and requires the Provenance LabKey module to function correctly.
 }
 \value{
-The generated recording ID which can be used in subsequent steps (or queries that support provenance)
+The generated recording ID which can be used in subsequent steps (or queries that support provenance).
 }
 
 \author{Karl Lum}

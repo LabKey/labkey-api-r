@@ -1,4 +1,4 @@
-Changes in 2.4.1
+Changes in 2.5.0
   o Add support for creating provenance runs : createProvenanceParams, startRecording, addRecordingStep, stopRecording
   o Add provenance support to query APIs : insertRows, updateRows, deleteRows
   o Add convenience functions to support creating conditional formats for domains
