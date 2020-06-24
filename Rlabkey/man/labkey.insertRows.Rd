@@ -95,29 +95,40 @@ result <- labkey.deleteRows(baseUrl="http://localhost:8080/labkey",
     toDelete=deleterow)
 
 ## Example of creating a provenance run with an initial step with material inputs, a second step
-## with provenance mapping to link existing samples with newly inserted samples and a final step with
-## a data output
+## with provenance mapping to link existing samples with newly inserted samples, and a final step
+## with a data output
 ##
-mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1", "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
-p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step", materialInputs=mi)
-ra <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance", provenanceParams=p)
+mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1",
+        "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
+p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step",
+        materialInputs=mi)
+ra <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/",
+        folderPath = "Provenance", provenanceParams=p)
 
 rows <- fromJSON(txt='[{
         "name" : "sample3",
         "protein" : "p3",
-        "prov:objectInputs" : ["urn:lsid:labkey.com:Sample.251.MySamples:sample21", "urn:lsid:labkey.com:Sample.251.MySamples:sample22"]
+        "prov:objectInputs" : [
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample21",
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample22"
+        ]
     },{
         "name" : "sample4",
         "protein" : "p4",
-        "prov:objectInputs" : ["urn:lsid:labkey.com:Sample.251.MySamples:sample21", "urn:lsid:labkey.com:Sample.251.MySamples:sample22"]
+        "prov:objectInputs" : [
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample21",
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample22"
+        ]
     }
 ]')
 
 labkey.insertRows(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
     schemaName="samples", queryName="MySamples", toInsert=rows,
-    provenanceParams=labkey.provenance.createProvenanceParams(name="query step", recordingId=ra$recordingId))
+    provenanceParams=labkey.provenance.createProvenanceParams(name="query step",
+        recordingId=ra$recordingId))
 labkey.provenance.stopRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
-    provenanceParams=labkey.provenance.createProvenanceParams(name="final step", recordingId=ra$recordingId, dataOutputs=do))
+    provenanceParams=labkey.provenance.createProvenanceParams(name="final step",
+    recordingId=ra$recordingId, dataOutputs=do))
 }
 }
 \keyword{IO}

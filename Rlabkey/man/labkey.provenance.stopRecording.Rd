@@ -41,12 +41,17 @@ oi <- labkey.selectRows(baseUrl="https://labkey.org/labkey/", folderPath = "Prov
         queryName="Data",
         colSelect= c("LSID"),
         colFilter=makeFilter(c("Run/RowId","EQUAL","253")))
-mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1", "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
+mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1",
+        "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
 
-p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step", objectInputs=oi[["LSID"]], materialInputs=mi)
-r <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance", provenanceParams=p)
-run <- labkey.provenance.stopRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
-    provenanceParams=labkey.provenance.createProvenanceParams(name="final step", recordingId=r$recordingId))
+p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step",
+        objectInputs=oi[["LSID"]], materialInputs=mi)
+r <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/",
+        folderPath = "Provenance", provenanceParams=p)
+run <- labkey.provenance.stopRecording(baseUrl="https://labkey.org/labkey/",
+        folderPath = "Provenance",
+        provenanceParams=labkey.provenance.createProvenanceParams(name="final step",
+            recordingId=r$recordingId))
 }
 }
 \keyword{IO}

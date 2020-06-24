@@ -34,14 +34,19 @@ The generated recording ID which can be used in subsequent steps (or queries tha
 ## start a provenance recording and add a recording step
 library(Rlabkey)
 
-mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1", "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
+mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1",
+        "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
 
-p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step", materialInputs=mi)
-r <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance", provenanceParams=p)
-do <- data.frame(lsid="urn:lsid:labkey.com:AssayRunTSVData.Folder-251:12c70994-7ce5-1038-82f0-9c1487dbd334")
+p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step",
+        materialInputs=mi)
+r <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/",
+        folderPath = "Provenance", provenanceParams=p)
+do <- data.frame(
+        lsid="urn:lsid:labkey.com:AssayRunTSVData.Folder-251:12c70994-7ce5-1038-82f0-9c1487dbd334")
 
 labkey.provenance.addRecordingStep(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
-    provenanceParams=labkey.provenance.createProvenanceParams(name="additional step", recordingId=r$recordingId, dataOutputs=do))
+    provenanceParams=labkey.provenance.createProvenanceParams(name="additional step",
+        recordingId=r$recordingId, dataOutputs=do))
 }
 }
 \keyword{IO}
