@@ -19,11 +19,13 @@ getFolderPath(session)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}  \code{\link{lsFolders}}}
 \examples{
+\donttest{
 
 # library(Rlabkey)
 
-lks<- getSession("http://www.labkey.org", "/home")
+lks<- getSession("https://www.labkey.org", "/home")
 getFolderPath(lks)  #returns "/home"
 
+}
 }
 \keyword{file}

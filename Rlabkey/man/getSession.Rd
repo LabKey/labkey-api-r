@@ -45,7 +45,7 @@ The Rlabkey Users Guide is available by typing RlabkeyUsersGuide().
 
 # library(Rlabkey)
 
-s <- getSession("http://www.labkey.org", "/home")
+s <- getSession("https://www.labkey.org", "/home")
 s   #shows schemas
 
 ## using the curlOptions for generating debug tracesof network traffic
