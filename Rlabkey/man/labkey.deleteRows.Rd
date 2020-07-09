@@ -6,7 +6,7 @@ Specify rows of data to be deleted from the LabKey Server
 }
 \usage{
 labkey.deleteRows(baseUrl, folderPath,
-    schemaName, queryName, toDelete)
+    schemaName, queryName, toDelete, provenanceParams=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for LabKey server}
@@ -14,6 +14,9 @@ labkey.deleteRows(baseUrl, folderPath,
   \item{schemaName}{a string specifying the  \code{schemaName} for the query}
   \item{queryName}{a string specifying the  \code{queryName}}
   \item{toDelete}{a data frame containing a single column of data containing the data identifiers of the rows to be deleted} 
+  \item{provenanceParams}{the provenance parameter object which contains the options to include as part of a provenance recording.
+    This is a premium feature and requires the Provenance LabKey module to function correctly, if it is not present this parameter will be ignored.
+  }
 }
 \details{
 A single row or multiple rows of data can be deleted.  For the \code{toDelete} data frame, version 0.0.5 or later accepts either a single column 
@@ -40,7 +43,11 @@ deleted.
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \cr
-\code{\link{labkey.updateRows}}
+\code{\link{labkey.updateRows}},
+\code{\link{labkey.provenance.createProvenanceParams}},
+\code{\link{labkey.provenance.startRecording}},
+\code{\link{labkey.provenance.addRecordingStep}},
+\code{\link{labkey.provenance.stopRecording}}
 }
 
 \examples{

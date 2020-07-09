@@ -6,7 +6,7 @@ Insert new rows of data into the database.
 }
 \usage{
 labkey.insertRows(baseUrl, folderPath,
-    schemaName, queryName, toInsert, na)
+    schemaName, queryName, toInsert, na, provenanceParams=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -15,6 +15,9 @@ labkey.insertRows(baseUrl, folderPath,
   \item{queryName}{a string specifying the  \code{queryName} }
   \item{toInsert}{a data frame containing rows of data to be inserted}
   \item{na}{(optional) the value to convert NA's to, defaults to NULL}
+  \item{provenanceParams}{the provenance parameter object which contains the options to include as part of a provenance recording.
+    This is a premium feature and requires the Provenance LabKey module to function correctly, if it is not present this parameter will be ignored.
+  }
 }
 \details{
 A single row or multiple rows of data can be inserted.  The \code{toInsert} data frame must contain
@@ -36,7 +39,11 @@ inserted.
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.importRows}}, \code{\link{labkey.updateRows}}, \cr
-\code{\link{labkey.deleteRows}}
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.provenance.createProvenanceParams}},
+\code{\link{labkey.provenance.startRecording}},
+\code{\link{labkey.provenance.addRecordingStep}},
+\code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
 \donttest{
@@ -87,6 +94,41 @@ result <- labkey.deleteRows(baseUrl="http://localhost:8080/labkey",
     folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
     toDelete=deleterow)
 
+## Example of creating a provenance run with an initial step with material inputs, a second step
+## with provenance mapping to link existing samples with newly inserted samples, and a final step
+## with a data output
+##
+mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1",
+        "urn:lsid:labkey.com:Sample.251.MySamples:sample2"))
+p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step",
+        materialInputs=mi)
+ra <- labkey.provenance.startRecording(baseUrl="https://labkey.org/labkey/",
+        folderPath = "Provenance", provenanceParams=p)
+
+rows <- fromJSON(txt='[{
+        "name" : "sample3",
+        "protein" : "p3",
+        "prov:objectInputs" : [
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample21",
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample22"
+        ]
+    },{
+        "name" : "sample4",
+        "protein" : "p4",
+        "prov:objectInputs" : [
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample21",
+            "urn:lsid:labkey.com:Sample.251.MySamples:sample22"
+        ]
+    }
+]')
+
+labkey.insertRows(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
+    schemaName="samples", queryName="MySamples", toInsert=rows,
+    provenanceParams=labkey.provenance.createProvenanceParams(name="query step",
+        recordingId=ra$recordingId))
+labkey.provenance.stopRecording(baseUrl="https://labkey.org/labkey/", folderPath = "Provenance",
+    provenanceParams=labkey.provenance.createProvenanceParams(name="final step",
+    recordingId=ra$recordingId, dataOutputs=do))
 }
 }
 \keyword{IO}

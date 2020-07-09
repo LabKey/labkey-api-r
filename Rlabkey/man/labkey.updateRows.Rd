@@ -6,7 +6,7 @@ Send data from an R session to update existing rows of data in the database.
 }
 \usage{
 labkey.updateRows(baseUrl, folderPath,
-    schemaName, queryName, toUpdate)
+    schemaName, queryName, toUpdate, provenanceParams=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
@@ -14,6 +14,9 @@ labkey.updateRows(baseUrl, folderPath,
   \item{schemaName}{a string specifying the  \code{schemaName}for the query}
   \item{queryName}{a string specifying the  \code{queryName}} 
   \item{toUpdate}{a data frame containing the row(s) of data to be updated}
+  \item{provenanceParams}{the provenance parameter object which contains the options to include as part of a provenance recording.
+    This is a premium feature and requires the Provenance LabKey module to function correctly, if it is not present this parameter will be ignored.
+  }
 }
 \details{
 A single row or multiple rows of data can be updated.  The \code{toUpdate} data frame should contain 
@@ -34,7 +37,11 @@ updated.
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \cr
-\code{\link{labkey.deleteRows}}
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.provenance.createProvenanceParams}},
+\code{\link{labkey.provenance.startRecording}},
+\code{\link{labkey.provenance.addRecordingStep}},
+\code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
 \donttest{

@@ -1,3 +1,8 @@
+Changes in 2.5.0
+  o Add support for creating provenance runs : createProvenanceParams, startRecording, addRecordingStep, stopRecording
+  o Add provenance support to query APIs : insertRows, updateRows, deleteRows
+  o Add convenience functions to support creating conditional formats for domains
+
 Changes in 2.4.0
   o Issue 39955: Fix for labkey.saveBatch issue with using GET instead of POST for query to get assay Id from assay name
   o Issue 39955: Add batchPropertyList parameter to labkey.experiment.saveBatch to match behavior from deprecated labkey.saveBatch

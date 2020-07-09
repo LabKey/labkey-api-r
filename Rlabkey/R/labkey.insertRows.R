@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert, na=NULL)
+labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert, na=NULL, provenanceParams=NULL)
 {  
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -34,7 +34,12 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     toInsert <- convertFactorsToStrings(toInsert);
     nrows <- nrow(toInsert)
     ncols <- ncol(toInsert)
-    p1 <- toJSON(list(schemaName=schemaName, queryName=queryName, apiVersion=8.3), auto_unbox=TRUE)
+
+    params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
+    if (!missing(provenanceParams))
+        params$provenance = provenanceParams
+
+    p1 <- toJSON(params, auto_unbox=TRUE)
     cnames <- colnames(toInsert)
     p3 <- NULL
     for(j in 1:nrows)
