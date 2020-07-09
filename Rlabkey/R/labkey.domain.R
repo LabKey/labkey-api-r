@@ -250,11 +250,11 @@ labkey.domain.createConditionalFormat <- function(queryFilter, bold=FALSE, itali
 
 labkey.domain.createConditionalFormatQueryFilter <- function(filterType, value, additionalFilter=NULL, additionalValue=NULL)
 {
-    qf1 <- makeFilter(c("filter.column", filterType, value))[1]
+    qf1 <- makeFilter(c("format.column", filterType, value))[1]
     qf2 <- NULL
 
     if (!is.null(additionalValue) || !is.null(additionalFilter))
-        qf2 <- makeFilter(c("filter.column", additionalFilter, additionalValue))[1]
+        qf2 <- makeFilter(c("format.column", additionalFilter, additionalValue))[1]
 
     qf <- if(is.null(qf2)) qf1 else paste0(qf1, "&", qf2)
     return(qf)
