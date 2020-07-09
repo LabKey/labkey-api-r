@@ -19,7 +19,7 @@ schema objects (\code{labkey.getSchema}).
 Package: \tab Rlabkey\cr
 Type: \tab Package\cr
 Version: \tab 2.5.1\cr
-Date: \tab 2020-07-08\cr
+Date: \tab 2020-07-09\cr
 License: \tab Apache License 2.0\cr
 LazyLoad: \tab yes\cr
 }
