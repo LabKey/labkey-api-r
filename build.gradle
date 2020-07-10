@@ -1,4 +1,3 @@
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.labkey.gradle.task.CopyAndInstallRPackage
 import org.labkey.gradle.task.InstallRPackage
 import org.labkey.gradle.util.GroupNames
@@ -24,8 +23,8 @@ buildscript {
     }
 }
 
-File latestDir = project.file("latest");
 File buildOutputFile = new File(project.buildDir, "commands.out")
+File testDir = project.file("test")
 String rLibsUserPath = InstallRPackage.getRLibsUserPath(project)
 String rExe = InstallRPackage.getRPath()
 
@@ -34,7 +33,7 @@ project.task(
         group: "RBuild",
         description: "Run validation checks on the Rlabkey package",
         {Task task ->
-            task.outputs.dir project.file("${latestDir}/Rlabkey.Rcheck")
+            task.outputs.dir project.file("${project.buildDir}/Rlabkey.Rcheck")
             task.outputs.dir project.file("Rlabkey/src-i386")
             task.outputs.dir project.file("Rlabkey/src-x64")
             task.outputs.files project.fileTree(dir: "Rlabkey/src", includes: ["*.o", "*.dll"])
@@ -43,7 +42,7 @@ project.task(
 ).doLast {
     project.ant.exec(executable: rExe, output: buildOutputFile, append: true)
                 {
-                    arg(line:"CMD check --no-examples --as-cran ${latestDir}/*.tar.gz")
+                    arg(line:"CMD check --no-examples --as-cran ${project.buildDir}/*.tar.gz")
                 }
 }
 
@@ -63,25 +62,6 @@ project.task(
                             arg(line: "CMD build ${project.projectDir}/Rlabkey")
                             if (rLibsUserPath != null)
                                 env(key: "R_LIBS_USER", value: rLibsUserPath)
-                        }
-                        project.copy {CopySpec copy ->
-                            copy.from project.buildDir
-                            copy.include '*.tar.gz'
-                            copy.into latestDir
-                        }
-                        if (isWindows)
-                        {
-                            project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
-                            {
-                                arg(line: "CMD INSTALL --build ${project.projectDir}/build/*.tar.gz")
-                                if (rLibsUserPath != null)
-                                    env(key: "R_LIBS_USER", value: rLibsUserPath)
-                            }
-                        }
-                        project.copy {CopySpec copy ->
-                            copy.from project.buildDir
-                            copy.include '*.zip'
-                            copy.into latestDir
                         }
                     }
             )
@@ -118,10 +98,12 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
     CopyAndInstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install RLabKey and its dependencies"
+        task.packageName = "Rlabkey"
         task.packageNames = ["Rlabkey"]
-        task.installScript = "test/install-rlabkey-dependencies.R"
-        task.sourceDir = latestDir
-        task.dependsOn(project.task("build"))
+        task.installScript = "install-rlabkey-dependencies.R"
+        task.scriptDir = testDir
+        task.sourceDir = project.buildDir
+        task.dependsOn(project.tasks.getByName("build"))
         task.doFirst {
             project.copy {
                 CopySpec copy ->
@@ -138,9 +120,11 @@ project.tasks.register("installRuminex", CopyAndInstallRPackage) {
     CopyAndInstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install Ruminex and its dependencies"
+        task.packageName = "Ruminex"
         task.packageNames = ["Ruminex"]
-        task.installScript = "test/install-ruminex-dependencies.R"
-        task.sourceDir = project.file("test")
+        task.installScript = "install-ruminex-dependencies.R"
+        task.sourceDir = testDir
+        task.scriptDir = testDir
 }
 
 project.tasks.register("installKnitr",InstallRPackage) {
@@ -148,7 +132,9 @@ project.tasks.register("installKnitr",InstallRPackage) {
         task.group = GroupNames.DEPLOY
         task.description = "Install knitr and its dependencies"
         task.packageNames = ["knitr", "rmarkdown"]
-        task.installScript = "test/install-knitr.R"
+        task.scriptDir = project.file("test")
+        task.installScript = "install-knitr.R"
+        task.scriptDir = testDir
 }
 
 project.tasks.register("installEhrDependencies",InstallRPackage) {
@@ -156,7 +142,8 @@ project.tasks.register("installEhrDependencies",InstallRPackage) {
         task.group = GroupNames.DEPLOY
         task.description = "Install EHR Dependencies packages"
         task.packageNames = ["kinship2", "pedigree"]
-        task.installScript = "test/install-ehr-dependencies.R"
+        task.installScript = "install-ehr-dependencies.R"
+        task.scriptDir = testDir
 }
 
 
@@ -165,7 +152,8 @@ project.tasks.register("installMedimmuneDependencies", InstallRPackage) {
         task.group = GroupNames.DEPLOY
         task.description = "Install MedImmune dependencies"
         task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
-        task.installScript = "test/install-medimmune-dependencies.R"
+        task.installScript = "install-medimmune-dependencies.R"
+        task.scriptDir = testDir
 }
 
 
@@ -174,7 +162,8 @@ project.tasks.register("installRSurvival", InstallRPackage) {
         task.group = GroupNames.DEPLOY
         task.description = "Install RSurvival and its dependencies"
         task.packageNames = ["survival"]
-        task.installScript = "test/install-survival.R"
+        task.installScript = "install-survival.R"
+        task.scriptDir = testDir
 }
 
 project.tasks.register("install") {
