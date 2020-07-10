@@ -1,0 +1,101 @@
+import org.labkey.gradle.task.InstallRPackage
+import org.labkey.gradle.task.InstallRLabKey
+import org.labkey.gradle.task.InstallRuminex
+import org.labkey.gradle.util.GroupNames
+
+buildscript {
+  repositories {
+    maven {
+      url "${artifactory_contextUrl}/plugins-release"
+    }
+    if (gradlePluginsVersion.contains("SNAPSHOT"))
+    {
+      maven {
+        url "${artifactory_contextUrl}/plugins-snapshot-local"
+      }
+    }
+  }
+  dependencies {
+    classpath "org.labkey.build:gradlePlugins:${gradlePluginsVersion}"
+  }
+  configurations.all {
+    // Check for updates every build for SNAPSHOT dependencies
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+  }
+}
+
+String rLibsUserPath = InstallRPackage.getRLibsUserPath(project)
+
+project.tasks.register("clean", Delete) {
+    Delete task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Delete user directory containing R libraries (${rLibsUserPath})"
+        task.configure({
+            DeleteSpec delete ->
+                if (rLibsUserPath != null && new File(rLibsUserPath).exists())
+                    delete.delete rLibsUserPath
+        })
+}
+
+project.tasks.register("installRLabKey", InstallRLabKey) {
+    InstallRLabKey task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install RLabKey"
+}
+
+project.tasks.register("installRuminex", InstallRuminex) {
+    InstallRuminex task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install Ruminex package"
+        task.packageNames = ["Ruminex"]
+        task.installScript = "install-ruminex-dependencies.R"
+}
+
+project.tasks.register("installKnitr",InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install knitr package"
+        task.packageNames = ["knitr", "rmarkdown"]
+        task.installScript = "install-knitr.R"
+}
+
+project.tasks.register("installEhrDependencies",InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install EHR Dependencies packages"
+        task.packageNames = ["kinship2", "pedigree"]
+        task.installScript = "install-ehr-dependencies.R"
+}
+
+
+project.tasks.register("installMedimmuneDependencies", InstallRPackage)
+        {
+            InstallRPackage task ->
+                task.group = GroupNames.DEPLOY
+                task.description = "Install MedImmune dependencies"
+                task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
+                task.installScript = "install-medimmune-dependencies.R"
+        }
+
+
+project.tasks.register("installRSurvival", InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install RSurvival package"
+        task.packageNames = ["survival"]
+        task.installScript = "install-survival.R"
+}
+
+project.tasks.register("install") {
+    Task task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install R packages"
+        task.dependsOn(
+                project.tasks.installRLabKey,
+                project.tasks.installRuminex,
+                project.tasks.installKnitr,
+                project.tasks.installEhrDependencies,
+                project.tasks.installRSurvival,
+                project.tasks.installMedimmuneDependencies
+        )
+}

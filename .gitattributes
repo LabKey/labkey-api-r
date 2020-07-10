@@ -1,1 +1,20 @@
-* text=auto
+* text=auto !eol
+/Ruminex_0.0.9.tar.gz -text
+/build.gradle -text
+/check-installed.R -text
+/gradle.properties -text
+gradle/wrapper/gradle-wrapper.jar -text
+gradle/wrapper/gradle-wrapper.properties -text
+/gradlew -text
+/gradlew.bat -text
+/install-ehr-dependencies.R -text
+/install-flowStats.R -text
+/install-flowWorkspace.R -text
+/install-knitr.R -text
+/install-medimmune-dependencies.R -text
+/install-rlabkey-dependencies.R -text
+/install-ruminex-dependencies.R -text
+/install-survival.R -text
+/install-util.R -text
+/readme.txt -text
+/settings.gradle -text
