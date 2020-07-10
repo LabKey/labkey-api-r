@@ -3,27 +3,6 @@ import org.labkey.gradle.task.InstallRLabKey
 import org.labkey.gradle.task.InstallRuminex
 import org.labkey.gradle.util.GroupNames
 
-buildscript {
-  repositories {
-    maven {
-      url "${artifactory_contextUrl}/plugins-release"
-    }
-    if (gradlePluginsVersion.contains("SNAPSHOT"))
-    {
-      maven {
-        url "${artifactory_contextUrl}/plugins-snapshot-local"
-      }
-    }
-  }
-  dependencies {
-    classpath "org.labkey.build:gradlePlugins:${gradlePluginsVersion}"
-  }
-  configurations.all {
-    // Check for updates every build for SNAPSHOT dependencies
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-  }
-}
-
 String rLibsUserPath = InstallRPackage.getRLibsUserPath(project)
 
 project.tasks.register("clean", Delete) {
@@ -68,14 +47,13 @@ project.tasks.register("installEhrDependencies",InstallRPackage) {
 }
 
 
-project.tasks.register("installMedimmuneDependencies", InstallRPackage)
-        {
-            InstallRPackage task ->
-                task.group = GroupNames.DEPLOY
-                task.description = "Install MedImmune dependencies"
-                task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
-                task.installScript = "install-medimmune-dependencies.R"
-        }
+project.tasks.register("installMedimmuneDependencies", InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install MedImmune dependencies"
+        task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
+        task.installScript = "install-medimmune-dependencies.R"
+}
 
 
 project.tasks.register("installRSurvival", InstallRPackage) {
