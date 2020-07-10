@@ -1,16 +1,33 @@
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.labkey.gradle.task.CopyAndInstallRPackage
+import org.labkey.gradle.task.InstallRPackage
+import org.labkey.gradle.util.GroupNames
+
+buildscript {
+    repositories {
+        maven {
+            url "${artifactory_contextUrl}/plugins-release"
+        }
+        if (gradlePluginsVersion.contains("SNAPSHOT"))
+        {
+            maven {
+                url "${artifactory_contextUrl}/plugins-snapshot-local"
+            }
+        }
+    }
+    dependencies {
+        classpath "org.labkey.build:gradlePlugins:${gradlePluginsVersion}"
+    }
+    configurations.all {
+        // Check for updates every build for SNAPSHOT dependencies
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
 
 File latestDir = project.file("latest");
 File buildOutputFile = new File(project.buildDir, "commands.out")
-String rExe = "R"
-String rTermExe = "Rterm"
-String rHome = System.getenv("R_HOME")
-boolean isWindows = Os.isFamily(Os.FAMILY_NT) || Os.isFamily(Os.FAMILY_WINDOWS)
-if (isWindows && rHome != null)
-{
-    rExe = new File(rHome, "bin/R.exe").getAbsolutePath()
-    rTermExe = new File(rHome, "bin/x64/Rterm.exe").getAbsolutePath()
-}
+String rLibsUserPath = InstallRPackage.getRLibsUserPath(project)
+String rExe = InstallRPackage.getRPath()
 
 project.task(
         "check",
@@ -44,8 +61,8 @@ project.task(
                         project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
                         {
                             arg(line: "CMD build ${project.projectDir}/Rlabkey")
-                            if (System.getenv("R_LIBS_USER") != null)
-                                env(key: "R_LIBS_USER", value: System.getenv("R_LIBS_USER"))
+                            if (rLibsUserPath != null)
+                                env(key: "R_LIBS_USER", value: rLibsUserPath)
                         }
                         project.copy {CopySpec copy ->
                             copy.from project.buildDir
@@ -57,8 +74,8 @@ project.task(
                             project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
                             {
                                 arg(line: "CMD INSTALL --build ${project.projectDir}/build/*.tar.gz")
-                                if (System.getenv("R_LIBS_USER") != null)
-                                    env(key: "R_LIBS_USER", value: System.getenv("R_LIBS_USER"))
+                                if (rLibsUserPath != null)
+                                    env(key: "R_LIBS_USER", value: rLibsUserPath)
                             }
                         }
                         project.copy {CopySpec copy ->
@@ -84,30 +101,92 @@ project.task(
         }
 )
 
-project.task(
-        "install",
-        group: "RBuild",
-        description: "install the Rlabkey package to the local R instance. Must be run as administrator.",
-        {
-            doFirst {
-                if (isWindows)
-                {
-                    project.ant.exec(executable: rTermExe, dir: latestDir, input: project.file('test/instwin.r'), output: buildOutputFil, append: truee)
-                    {
-                        arg(line: "--vanilla")
-                        if (System.getenv("R_LIBS_USER") != null)
-                            env(key: "R_LIBS_USER", value: System.getenv("R_LIBS_USER"))
-                    }
-                }
-                if (Os.isFamily(Os.FAMILY_UNIX))
-                {
-                    project.ant.exec(executable: rExe, output: buildOutputFile, append: true)
-                    {
-                        arg(line: "CMD INSTALL Rlabkey")
-                        if (System.getenv("R_LIBS_USER") != null)
-                            env(key: "R_LIBS_USER", value: System.getenv("R_LIBS_USER"))
-                    }
-                }
+if (rLibsUserPath != null) {
+    project.tasks.register("cleanRLibsUser", Delete) {
+        Delete task ->
+            task.group = GroupNames.DEPLOY
+            task.description = "Delete user directory containing R libraries (${rLibsUserPath})"
+            task.configure({
+                DeleteSpec delete ->
+                    if (rLibsUserPath != null && new File(rLibsUserPath).exists())
+                        delete.delete rLibsUserPath
+            })
+    }
+}
+
+project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
+    CopyAndInstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install RLabKey and its dependencies"
+        task.packageNames = ["Rlabkey"]
+        task.installScript = "test/install-rlabkey-dependencies.R"
+        task.sourceDir = latestDir
+        task.dependsOn(project.task("build"))
+        task.doFirst {
+            project.copy {
+                CopySpec copy ->
+                    copy.from(project.file('test'))
+                    copy.into(rLibsUserPath)
+                    copy.include("listArchive.zip")
+                    copy.include("vignette.R")
+                    copy.include("instwin.r")
             }
         }
-)
+}
+
+project.tasks.register("installRuminex", CopyAndInstallRPackage) {
+    CopyAndInstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install Ruminex and its dependencies"
+        task.packageNames = ["Ruminex"]
+        task.installScript = "test/install-ruminex-dependencies.R"
+        task.sourceDir = project.file("test")
+}
+
+project.tasks.register("installKnitr",InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install knitr and its dependencies"
+        task.packageNames = ["knitr", "rmarkdown"]
+        task.installScript = "test/install-knitr.R"
+}
+
+project.tasks.register("installEhrDependencies",InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install EHR Dependencies packages"
+        task.packageNames = ["kinship2", "pedigree"]
+        task.installScript = "test/install-ehr-dependencies.R"
+}
+
+
+project.tasks.register("installMedimmuneDependencies", InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install MedImmune dependencies"
+        task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
+        task.installScript = "test/install-medimmune-dependencies.R"
+}
+
+
+project.tasks.register("installRSurvival", InstallRPackage) {
+    InstallRPackage task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install RSurvival and its dependencies"
+        task.packageNames = ["survival"]
+        task.installScript = "test/install-survival.R"
+}
+
+project.tasks.register("install") {
+    Task task ->
+        task.group = GroupNames.DEPLOY
+        task.description = "Install R packages"
+        task.dependsOn(
+                project.tasks.installRLabKey,
+                project.tasks.installRuminex,
+                project.tasks.installKnitr,
+                project.tasks.installEhrDependencies,
+                project.tasks.installRSurvival,
+                project.tasks.installMedimmuneDependencies
+        )
+}
