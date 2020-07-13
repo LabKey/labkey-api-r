@@ -21,7 +21,7 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
     CopyAndInstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install RLabKey and its dependencies"
-        task.packageLocation = project.buildDir
+        task.packageLocation = parent.buildDir
         task.packageNames = ["Rlabkey"]
         task.installScript = "install-rlabkey-dependencies.R"
         task.dependsOn(rootProject.tasks.getByName("build"))
@@ -51,7 +51,6 @@ project.tasks.register("installKnitr",InstallRPackage) {
         task.group = GroupNames.DEPLOY
         task.description = "Install knitr and its dependencies"
         task.packageNames = ["knitr", "rmarkdown"]
-        task.scriptDir = project.file("test")
         task.installScript = "install-knitr.R"
 }
 

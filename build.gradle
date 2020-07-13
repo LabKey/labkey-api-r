@@ -1,6 +1,4 @@
-import org.labkey.gradle.task.CopyAndInstallRPackage
 import org.labkey.gradle.task.InstallRPackage
-import org.labkey.gradle.util.GroupNames
 
 buildscript {
     repositories {
