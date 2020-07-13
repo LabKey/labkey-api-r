@@ -13,4 +13,4 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 ##
-install.packages(list.files(path = "./", pattern = "^Rlabkey.*tar.gz$", full.names=TRUE), lib=".", destdir=".", repos=NULL, type="source"
+install.packages(list.files(path = "./", pattern = "^Rlabkey.*tar.gz$", full.names=TRUE), lib=".", destdir=".", repos=NULL, type="source")

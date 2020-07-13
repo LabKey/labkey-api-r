@@ -28,12 +28,25 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
         task.doFirst {
             project.copy {
                 CopySpec copy ->
-                    copy.from(project.file('test'))
+                    copy.from(projectDir)
                     copy.into(rLibsUserPath)
                     copy.include("listArchive.zip")
                     copy.include("vignette.R")
                     copy.include("instwin.r")
             }
+        }
+        task.doLast {
+            project.ant.exec(
+                    dir: rLibsUserPath,
+                    executable: InstallRPackage.getRTermPath(),
+                    input: "${rLibsUserPath}/instwin.r",
+                    failifexecutionfails: "false",
+                    output: "${rLibsUserPath}/logs/instwin.log",
+                    logError: true
+            )
+                    {
+                        arg(line: "--vanilla --quiet")
+                    }
         }
 }
 
