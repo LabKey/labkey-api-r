@@ -1,4 +1,5 @@
 import org.labkey.gradle.task.InstallRPackage
+import org.labkey.gradle.util.GroupNames
 
 buildscript {
     repositories {
@@ -25,55 +26,69 @@ File buildOutputFile = new File(project.buildDir, "commands.out")
 String rLibsUserPath = InstallRPackage.getRLibsUserPath(project)
 String rExe = InstallRPackage.getRPath()
 
-project.task(
-        "check",
-        group: "RBuild",
-        description: "Run validation checks on the Rlabkey package",
-        {Task task ->
-            task.outputs.dir project.file("${project.buildDir}/Rlabkey.Rcheck")
-            task.outputs.dir project.file("Rlabkey/src-i386")
-            task.outputs.dir project.file("Rlabkey/src-x64")
-            task.outputs.files project.fileTree(dir: "Rlabkey/src", includes: ["*.o", "*.dll"])
-        }
 
-).doLast {
-    project.ant.exec(executable: rExe, output: buildOutputFile, append: true)
-                {
-                    arg(line:"CMD check --no-examples --as-cran ${project.buildDir}/*.tar.gz")
+project.tasks.register("check") {
+    Task task ->
+        group GroupNames.VERIFICATION
+        description "Run validation checks on the Rlabkey package"
+        task.outputs.dir project.file("${project.buildDir}/Rlabkey.Rcheck")
+        task.outputs.dir project.file("Rlabkey/src-i386")
+        task.outputs.dir project.file("Rlabkey/src-x64")
+        task.outputs.files project.fileTree(dir: "Rlabkey/src", includes: ["*.o", "*.dll"])
+
+        task.doLast {
+            File[] existingFiles = buildDir.listFiles(new FilenameFilter() {
+                @Override
+                boolean accept(File dir, String name) {
+                    return name.endsWith(".tar.gz");
                 }
+            })
+            if (existingFiles.length > 0) {
+                project.ant.exec(
+                        executable: rExe,
+                        output: buildOutputFile,
+                        append: true,
+                        dir: project.buildDir,
+                        logError: true
+                )
+                        {
+                            arg(line: "CMD check --no-examples --as-cran ${existingFiles[0]}")
+                        }
+            }
+        }
+        task.dependsOn build
 }
 
 
-project.task(
-        "build",
-        group: "RBuild",
-        description: "Build the Rlabkey package that can be installed and tested in R. Builds binary package on windows, source only on unix",
-        {Task task ->
-            task.inputs.files project.fileTree(dir: "Rlabkey", excludes: ["src-i386", "src-x64"]).files
-            task.outputs.dir project.buildDir
-            task.doFirst(
-                    {
-                        project.buildDir.mkdirs()
-                        project.ant.exec(executable: rExe, dir: project.buildDir, output: buildOutputFile, append: true)
-                        {
-                            arg(line: "CMD build ${project.projectDir}/Rlabkey")
-                            if (rLibsUserPath != null)
-                                env(key: "R_LIBS_USER", value: rLibsUserPath)
-                        }
-                    }
-            )
-        }
-)
+project.tasks.register("build") {
+    Task task ->
+        task.group GroupNames.BUILD
+        task.description "Build the Rlabkey package that can be installed and tested in R. Builds binary package on windows, source only on unix"
+        task.inputs.files project.fileTree(dir: "Rlabkey", excludes: ["src-i386", "src-x64"]).files
+        task.outputs.dir project.buildDir
+        task.doFirst(
+                {
+                    project.buildDir.mkdirs()
+                    project.ant.exec(
+                            executable: rExe,
+                            dir: project.buildDir,
+                            output: buildOutputFile,
+                            append: true,
+                            logError: true
+                    )
+                            {
+                                arg(line: "CMD build ${project.projectDir}/Rlabkey")
+                                if (rLibsUserPath != null)
+                                    env(key: "R_LIBS_USER", value: rLibsUserPath)
+                            }
+                }
+        )
+}
 
-project.tasks.check.dependsOn(project.tasks.build)
 
-project.task(
-        "clean",
-        group: "RBuild",
-        description: "Deletes all non-versioned files generated during the build process",
-        type: Delete,
-        {
-            delete project.tasks.check
-            delete project.tasks.build
-        }
-)
+project.tasks.register("clean", Delete) {
+        group GroupNames.BUILD
+        description "Deletes all non-versioned files generated during the build process"
+        delete project.tasks.check
+        delete project.tasks.build
+}
