@@ -18,19 +18,18 @@ lsProjects(baseUrl)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{lsFolders}}, \code{\link{lsSchemas}}}
 \examples{
+\donttest{
 
 ## get list of projects on server, connect a session in one project,
 ## then list the folders in that project
 # library(Rlabkey)
 
-lsProjects("http://www.labkey.org")
+lsProjects("https://www.labkey.org")
 
-lkorg <- getSession("http://www.labkey.org", "/home")
+lkorg <- getSession("https://www.labkey.org", "/home")
 lsFolders(lkorg)
 
-\dontrun{
-
-lkorg <- getSession("http://www.labkey.org", "/home/Study/ListDemo")
+lkorg <- getSession("https://www.labkey.org", "/home/Study/ListDemo")
 lsSchemas(lkorg)
 
 }

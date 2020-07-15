@@ -1,3 +1,7 @@
+Changes in 2.5.1
+  o Add "donttest" for those man page examples that use internet resources / queries
+  o Fix type in filter name for labkey.domain.createConditionalFormatQueryFilter
+
 Changes in 2.5.0
   o Add support for creating provenance runs : createProvenanceParams, startRecording, addRecordingStep, stopRecording
   o Add provenance support to query APIs : insertRows, updateRows, deleteRows

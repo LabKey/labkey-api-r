@@ -45,12 +45,14 @@ The available folders are returned as a three-column data frame containing
 \code{\link{labkey.security.moveContainer}}
 }
 \examples{
+\donttest{
 
 ## List of folders 
 # library(Rlabkey)
 
-folders <- labkey.getFolders("http://www.labkey.org", "/home")
+folders <- labkey.getFolders("https://www.labkey.org", "/home")
 folders
 
+}
 }
 \keyword{IO}

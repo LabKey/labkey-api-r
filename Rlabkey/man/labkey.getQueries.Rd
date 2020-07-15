@@ -39,16 +39,18 @@ https://www.labkey.org/project/home/begin.view}
 
 }
 \examples{
+\donttest{
 
 ## List of queries in a schema
 # library(Rlabkey)
 
 queriesDF <- labkey.getQueries(
-	baseUrl="http://www.labkey.org",
+	baseUrl="https://www.labkey.org",
 	folderPath="/home",
 	schemaName="lists"
 )
 queriesDF
 
+}
 }
 \keyword{IO}

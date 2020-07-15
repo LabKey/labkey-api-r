@@ -19,14 +19,16 @@ lsFolders(session)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{lsProjects}}, \code{\link{lsSchemas}}}
 \examples{
+\donttest{
 
 ##get a list if projects and folders
 # library(Rlabkey)
 
-lks<- getSession("http://www.labkey.org", "/home")
+lks<- getSession("https://www.labkey.org", "/home")
 
 #returns values "/home" , "/home/_menus" , ...
 lsFolders(lks)
 
+}
 }
 \keyword{file}
