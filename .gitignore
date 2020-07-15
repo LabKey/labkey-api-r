@@ -1,19 +1,9 @@
 .gradle
-*.class
 
-#IntelliJ 
+# IntelliJ
 .idea/shelf
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# CRAN R check artifacts
-Rlabkey.Rcheck/
-
-# Build artifacts - excluding everything that gets deleted by ant clean
+# Build artifacts
 build/
 src-i386/
 src-x64/

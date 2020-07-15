@@ -3,7 +3,7 @@
 **Note: ** this requires using the cygwin dlls from the Rtools installation, rather than any preexisting cygwin installation.
 
 * Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
-    * Tested with Rtools33
+    * Tested with Rtools35
     * Default components are correct
     * Do **not** unselect the Cygwin DLLs component
         * TCL/TK is not required
@@ -20,5 +20,4 @@
 
 * Install [qpdf](https://sourceforge.net/projects/qpdf/files/)
 
-* Run 'gradlew check' and 'gradlew build'
-
+* Run `./gradlew build`
