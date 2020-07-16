@@ -35,14 +35,20 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
         }
 }
 
-project.tasks.register("installRuminex", CopyAndInstallRPackage) {
-    CopyAndInstallRPackage task ->
+project.tasks.register("installRuminex", InstallRPackage) {
+    InstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install Ruminex and its dependencies"
-        task.packageLocation = project.projectDir
         task.packageNames = ["Ruminex"]
         task.installScript = "install-ruminex-dependencies.R"
         task.doLast {
+            project.copy {
+                CopySpec copy ->
+                    copy.from project.projectDir
+                    copy.into(rLibsUserPath)
+                    copy.include("Ruminex*.tar.gz")
+                    copy.rename("Ruminex.*.tar.gz", "Ruminex.tar.gz")
+            }
             ant.exec(
                     executable: InstallRPackage.getRPath(),
                     dir: rLibsUserPath,
@@ -53,6 +59,7 @@ project.tasks.register("installRuminex", CopyAndInstallRPackage) {
                     append: true
             )
                     {
+                        // `--no-multiarch` is a workaround for TeamCity build error: "ERROR: loading failed for 'i386'"
                         arg(line: "CMD INSTALL --no-multiarch -l ${rLibsUserPath} ${rLibsUserPath}/Ruminex.tar.gz")
                     }
         }
