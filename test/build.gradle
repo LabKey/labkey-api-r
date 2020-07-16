@@ -42,6 +42,20 @@ project.tasks.register("installRuminex", CopyAndInstallRPackage) {
         task.packageLocation = project.projectDir
         task.packageNames = ["Ruminex"]
         task.installScript = "install-ruminex-dependencies.R"
+        task.doLast {
+            ant.exec(
+                    executable: InstallRPackage.getRPath(),
+                    dir: rLibsUserPath,
+                    failifexecutionfails: true,
+                    searchpath: true,
+                    output: "${rLibsUserPath}/logs/ruminex2.log",
+                    logError: true,
+                    append: true
+            )
+                    {
+                        arg(line: "CMD INSTALL --no-multiarch -l ${rLibsUserPath} ${rLibsUserPath}/Ruminex.tar.gz")
+                    }
+        }
 }
 
 project.tasks.register("installKnitr",InstallRPackage) {
