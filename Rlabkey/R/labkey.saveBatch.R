@@ -28,13 +28,9 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)
 
-	## URL encode assay name (if not already encoded)
-	if(assayName==URLdecode(assayName)) {assayNameParam <- URLencode(assayName)}
-	else {assayNameParam <- assayName}
-
 	## Translate assay name to an ID
 	myurl <- paste(baseUrl,"assay",folderPath,"assayList.api", sep="")
-    params <- list(name=assayNameParam)
+    params <- list(name=assayName)
     assayInfoJSON <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
 	assayDef <- NULL
 	assayInfo<- fromJSON(assayInfoJSON, simplifyVector=FALSE, simplifyDataFrame=FALSE)
