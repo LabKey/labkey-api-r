@@ -1,3 +1,6 @@
+Changes in 2.5.3
+  o Issue 41071: Support connecting to multiple LabKey servers in the same session.
+
 Changes in 2.5.2
   o Fix for labkey.saveBatch URL encoding of assay name parameter, not needed with change to use labkey.post
 

@@ -15,34 +15,35 @@
 ##
 
 .lkdefaults <- new.env(parent=emptyenv());
+.lkcsrf <- new.env(parent=emptyenv());
 
 # Set the credentials used for all http or https requests. Note that if both apiKey and email/password are provided,
 # the apiKey will be given preference in labkey.getRequestOptions().
 labkey.setDefaults <- function(apiKey="", baseUrl="", email="", password="")
 {
     if (baseUrl != "")
-        .lkdefaults[["baseUrl"]] = baseUrl;
+        .lkdefaults$baseUrl = baseUrl;
 
     if (apiKey != "")
-        .lkdefaults[["apiKey"]] = apiKey;
+        .lkdefaults$apiKey = apiKey;
 
     if (email != "" && password != "") {
-        .lkdefaults[["email"]] = email;
-        .lkdefaults[["password"]] = password;
+        .lkdefaults$email = email;
+        .lkdefaults$password = password;
     }
 
     # for backward compatibility, clear defaults if setDefaults() is called with NO arguments
     if (baseUrl == "" && apiKey == "" && email == "" && password == "") {
-        if (!is.null(.lkdefaults[["baseUrl"]])) { rm("baseUrl", envir = .lkdefaults) }
-        if (!is.null(.lkdefaults[["apiKey"]])) { rm("apiKey", envir = .lkdefaults) }
-        if (!is.null(.lkdefaults[["email"]])) { rm("email", envir = .lkdefaults) }
-        if (!is.null(.lkdefaults[["password"]])) { rm("password", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults$baseUrl)) { rm("baseUrl", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults$apiKey)) { rm("apiKey", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults$email)) { rm("email", envir = .lkdefaults) }
+        if (!is.null(.lkdefaults$password)) { rm("password", envir = .lkdefaults) }
     }
 }
 
 isPasswordAuth <- function()
 {
-    return (!is.null(.lkdefaults[["password"]]) && .lkdefaults[["password"]] != "")
+    return (!is.null(.lkdefaults$password) && .lkdefaults$password != "")
 }
 
 ifApiKey <- function()
@@ -50,7 +51,7 @@ ifApiKey <- function()
     if (exists("labkey.apiKey", envir = .GlobalEnv)) {
         get("labkey.apiKey", envir = .GlobalEnv)
     } else {
-        .lkdefaults[["apiKey"]];
+        .lkdefaults$apiKey;
     }
 }
 
@@ -59,15 +60,15 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
     if (!is.null(baseUrl) && baseUrl != "")
     {
         # set the baseUrl if unset
-        if (is.null(.lkdefaults[["baseUrl"]]))
+        if (is.null(.lkdefaults$baseUrl) || (.lkdefaults$baseUrl != baseUrl))
         {
-            .lkdefaults[["baseUrl"]] = baseUrl
+            .lkdefaults$baseUrl = baseUrl
         }
         url <- baseUrl
     }
     else
     {
-        url <- .lkdefaults[["baseUrl"]]
+        url <- .lkdefaults$baseUrl
     }
 
     if (is.null(url))
@@ -121,10 +122,10 @@ normalizeSlash <- function(folderPath, leading = T, trailing = T) {
 ## helper to retrieve and cache the CSRF token
 labkey.getCSRF <- function()
 {
-    if (is.null(.lkdefaults[["csrf"]]))
+    urlBase <- labkey.getBaseUrl()
+    if (!is.null(urlBase))
     {
-        urlBase <- labkey.getBaseUrl()
-        if (!is.null(urlBase))
+        if (is.null(.lkcsrf[[urlBase]]))
         {
             if (substr(urlBase, nchar(urlBase), nchar(urlBase))!="/")
             {
@@ -138,11 +139,11 @@ labkey.getCSRF <- function()
             json <- fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE)
             if (!is.null(json$CSRF))
             {
-                .lkdefaults[["csrf"]] = json$CSRF
+                .lkcsrf[[urlBase]] = json$CSRF
             }
         }
+        return (.lkcsrf[[urlBase]])
     }
-    return (.lkdefaults[["csrf"]])
 }
 
 labkey.getRequestOptions <- function(method='GET', encoding=NULL)
@@ -187,7 +188,7 @@ labkey.getRequestOptions <- function(method='GET', encoding=NULL)
             headerFields <- c(headerFields, apikey=apikey)
         }
         else if (isPasswordAuth()) {
-            options <- c(options, authenticate(.lkdefaults[["email"]], .lkdefaults[["password"]]))
+            options <- c(options, authenticate(.lkdefaults$email, .lkdefaults$password))
         }
         else {
             options <- c(options, config(netrc=1))
@@ -231,15 +232,15 @@ processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 
 labkey.setDebugMode <- function(debug=FALSE)
 {
-    .lkdefaults[["debug"]] = debug;
+    .lkdefaults$debug = debug;
 }
 
 isDebug <- function()
 {
-    if (is.null(.lkdefaults[["debug"]])) {
+    if (is.null(.lkdefaults$debug)) {
         return (FALSE)
     }
-    return (.lkdefaults[["debug"]])
+    return (.lkdefaults$debug)
 }
 
 
