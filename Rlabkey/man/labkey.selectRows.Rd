@@ -18,7 +18,14 @@ labkey.selectRows(baseUrl = NULL, folderPath, schemaName, queryName,
   \item{schemaName}{a string specifying the  \code{schemaName} for the query}
   \item{queryName}{a string specifying the \code{queryName}}
   \item{viewName}{(optional) a string specifying the \code{viewName} associated with the query. If not specified, the default view determines the rowset returned.  }
-  \item{colSelect}{(optional) a vector of strings specifying which columns of a dataset or view to import. The wildcard character ("*") may also be used here to get all columns including those not in the default view.}
+  \item{colSelect}{(optional) a vector of strings specifying which columns of a dataset or view to import.
+       \itemize{
+    	      \item{ The wildcard character ("*") may also be used here to get all columns including those not in the default view. }
+    	      \item{ If you include a column that is a lookup (foreign key) the value of the primary key for that target will be returned. }
+    	      \item{ Use a backslash character ("/") to include non-primary key columns from a lookup target (foreign key), e.g "LookupColumnName/targetColumn". }
+    	      \item{ When using a string to specify the colSelect set, the column names must be separated by a comma and not include spaces between the names. }
+        }
+    }
   \item{maxRows}{(optional) an integer specifying how many rows of data to return. If no value is specified, all rows are returned.}
   \item{rowOffset}{(optional) an integer specifying which row of data should be the first row in the retrieval. If no
 value is specified, the retrieval starts with the first row.}
@@ -43,14 +50,14 @@ column name, operator and value of the filter(s) to be applied to the retrieved 
   \item{method}{(optional) HTTP method to use for the request, defaults to POST.}
 }
 \details{
-A full dataset or any portion of a dataset can be downloaded  into an R data frame using the 
+A full dataset or any portion of a dataset can be downloaded into an R data frame using the
 \code{labkey.selectRows} function. Function arguments are the components of the url that identify
 the location of the data and what actions should be taken on the data prior to import
 (ie, sorting, selecting particular columns or maximum number of rows, etc.).
 
 Stored queries in LabKey Server have an associated default view and may have one or more named views.  Views determine the column set of
-the return data frame.  View columns can be a subset or superset of the columns of the underlying query-- a subset if columns from the
-query are left out of the view, and a superset if lookup columns in the underlying query are used to include columns from related queries.  
+the return data frame.  View columns can be a subset or superset of the columns of the underlying query (a subset if columns from the
+query are left out of the view, and a superset if lookup columns in the underlying query are used to include columns from related queries).
 Views can also include filter and sort properties that will make their result set different from the underlying query.
 If no view is specified, the columns and rows returned are determined by the default view, which may not be the same as the 
 result rows of the underlying query.  Please see the topic on Saving Views in the LabKey online documentation.
@@ -62,8 +69,8 @@ It may be the best option for displaying to another user, but may make scripting
 that are used as arguments to labkey function calls.  It is the default for the new \code{\link{getRows}} session-based
 function.
 \code{colNameOpt='rname'} transforms the field name value into valid R names by substituting an underscore for both
-spaces and forward slach (/) characters, and the lower casing the entire name.  It is the way a data frame is passed to a
-script running at the LabKey server in the R View feature of the data grid.  If you are writing scripts for running in an 
+spaces and forward slash (/) characters and lower casing the entire name.  This option is the way a data frame is passed to a
+script running in a LabKey server in the R View feature of the data grid.  If you are writing scripts for running in an
 R view on the server, or if you prefer to work with legal r names in the returned grid, this option may be useful.
 
 For backward compatibility, column names returned by \code{labkey.executeSql} and \code{labkey.selectRows} 
