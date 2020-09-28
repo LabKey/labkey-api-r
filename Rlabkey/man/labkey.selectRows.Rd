@@ -114,6 +114,11 @@ subsetcols <- labkey.selectRows(baseUrl="http://localhost:8080/labkey",
     folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
     colSelect=colSelect)
 
+## including columns from a lookup (foreign key) field
+lookupcols <- labkey.selectRows(baseUrl="http://localhost:8080/labkey",
+    folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
+    colSelect="TextFld,IntFld,IntFld/LookupValue")
+
 }
 }
 \keyword{IO}
