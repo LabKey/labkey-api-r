@@ -40,6 +40,7 @@ labkey.domain.get <- function(baseUrl=NULL, folderPath, schemaName, queryName)
     if (is.null(result$queryName)) result$queryName = NA
     if (is.null(result$templateDescription)) result$templateDescription = NA
     if (is.null(result$instructions)) result$instructions = NA
+    if (is.null(result$domainKindName)) result$domainKindName = NA
 
     return (result)
 }

@@ -1,3 +1,6 @@
+Changes in 2.5.4
+  o Fix for labkey.domain.get to handle new "domainKindName" property null check
+
 Changes in 2.5.3
   o Issue 41071: Support connecting to multiple LabKey servers in the same session.
 
