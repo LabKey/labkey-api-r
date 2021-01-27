@@ -1,3 +1,6 @@
+Changes in 2.6.0
+  o Add labkey.pipeline functions to be able to get pipeline protocol information and start jobs / analysis
+
 Changes in 2.5.5
   o Add labkey.getRequestOptions to NAMESPACE export listing
 
