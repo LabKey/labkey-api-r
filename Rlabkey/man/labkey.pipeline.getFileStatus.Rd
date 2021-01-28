@@ -12,10 +12,10 @@ labkey.pipeline.getFileStatus(baseUrl=NULL, folderPath,
   \item{baseUrl}{a string specifying the \code{baseUrl} for the LabKey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{taskId}{a string identifier for the pipeline}
+  \item{protocolName}{a string name of the analysis protocol}
   \item{path}{a string for the relative path from the folder's pipeline root}
   \item{files}{a list of names of the files within the subdirectory described
     by the path property}
-  \item{protocolName}{a string name of the analysis protocol}
 }
 \value{
 The response will contain a list of file status objects, i.e. files, each of which
