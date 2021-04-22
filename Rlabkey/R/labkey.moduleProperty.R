@@ -75,7 +75,7 @@ labkey.setModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
 
     property <- list()
     property$moduleName = moduleName
-    property$userId = 0 ##currently do not support individualized properties
+    property$userId = 0 ## Ignored and no longer required, as of 21.7. Remove this parameter once compatibility with < 21.7 is no longer needed.
     property$propName = propName
     property$value = propValue
     property$currentContainer = TRUE
