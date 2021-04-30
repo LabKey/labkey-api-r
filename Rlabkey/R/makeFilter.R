@@ -107,8 +107,13 @@
 								# Table/Query-wise operators
 								#
 
-								"Q"="q"
+								"Q"="q",
 
+                                #
+                                # Ontology filters
+                                #
+								"ONTOLOGY_IN_SUBTREE"="concept:insubtree",
+								"ONTOLOGY_NOT_IN_SUBTREE"="concept:notinsubtree",
 								)
 
  				if(is.null(fop)==TRUE) stop ("Invalid operator name.")
