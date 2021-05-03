@@ -109,9 +109,9 @@
 
 								"Q"="q",
 
-                                #
-                                # Ontology filters
-                                #
+								#
+								# Ontology filters
+								#
 								"ONTOLOGY_IN_SUBTREE"="concept:insubtree",
 								"ONTOLOGY_NOT_IN_SUBTREE"="concept:notinsubtree",
 								)
