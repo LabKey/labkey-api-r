@@ -213,14 +213,13 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(name) || missing(df) || missing(domainKind))
         stop (paste("A value must be specified for each of baseUrl, folderPath, name, df or domainKind."))
 
-    # Add option for study dataset creation to skip validation check for required properties (see DataSetDomainKind.createDomain)
-    if (domainKind == "StudyDatasetVisit" || domainKind == "StudyDatatsetDate")
-    {
-        if (is.null(options))
-            options <- list(strictFieldValidation = FALSE)
-        else
-            options <- c(options, list(strictFieldValidation = FALSE))
-    }
+    if (is.null(options))
+        options <- list()
+
+    # Add option for study dataset and data class creation to skip validation check for required properties,
+    # see DataSetDomainKind.createDomain and ExperimentServiceImpl.createDataClass
+    if (domainKind == "StudyDatasetVisit" || domainKind == "StudyDatatsetDate" || domainKind == "DataClass")
+        options <- c(options, list(strictFieldValidation = FALSE))
 
     if (is.null(schemaName))
     {
