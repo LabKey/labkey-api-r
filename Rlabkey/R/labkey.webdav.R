@@ -69,7 +69,7 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE)
     processResponse(response)
 }
 
-labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
+labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files", description=NULL)
 {
     if (missing(localFile)) {
         stop (paste("A value must be specified for localFile"))
@@ -83,6 +83,10 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
     options <- labkey.getRequestOptions(method="POST")
 
     pbody <- upload_file(localFile)
+
+    if (!is.null(description)) {
+        url <- paste0(url, "?description=", URLencode(description))
+    }
 
     if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
         print(paste0("URL: ", url))
