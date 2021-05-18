@@ -58,4 +58,10 @@ For Variable Name: enter RLABKEY_CAINFO_FILE\cr
 For Variable Value: enter the path of the ca-bundle.crt you created above.\cr
 Hit the Ok buttons to close all the windows.\cr
 Now you can start R and begin working.
+
+\cr \cr
+
+This command can also be used to provide an alternate location / path to your
+\code{.netrc} file. Example:\cr
+\code{labkey.setCurlOptions(NETRC_FILE = '/path/to/alternate/_netrc')}
 }
