@@ -40,6 +40,7 @@ inserted.
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.importRows}}, \code{\link{labkey.updateRows}}, \cr
 \code{\link{labkey.deleteRows}},
+\code{\link{labkey.query.import}},
 \code{\link{labkey.provenance.createProvenanceParams}},
 \code{\link{labkey.provenance.startRecording}},
 \code{\link{labkey.provenance.addRecordingStep}},

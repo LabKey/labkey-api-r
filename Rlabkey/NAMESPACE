@@ -44,6 +44,7 @@ export(labkey.pipeline.getPipelineContainer)
 export(labkey.pipeline.getProtocols)
 export(labkey.pipeline.getFileStatus)
 export(labkey.pipeline.startAnalysis)
+export(labkey.query.import)
 
 S3method(print, LabkeySession)
 S3method(print, LabkeySchemaList)

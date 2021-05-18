@@ -244,7 +244,7 @@ labkey.domain.createAndLoad <- function(baseUrl=NULL, folderPath, name, descript
     labkey.domain.create(baseUrl = baseUrl, folderPath = folderPath, domainKind = domainKind,
         domainDesign = design, options = options)
 
-    labkey.insertRows(baseUrl = baseUrl, folderPath = folderPath, schemaName = schemaName, queryName= name, df)
+    labkey.query.import(baseUrl, folderPath, schemaName, queryName= name, toImport = df)
 }
 
 labkey.domain.createConditionalFormat <- function(queryFilter, bold=FALSE, italic=FALSE, strikeThrough=FALSE, textColor="", backgroundColor="")

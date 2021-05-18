@@ -11,8 +11,8 @@ labkey.importRows(baseUrl, folderPath,
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{schemaName}{a string specifying the  \code{schemaName} for the query}
-  \item{queryName}{a string specifying the  \code{queryName} }
+  \item{schemaName}{a string specifying the \code{schemaName} for the query}
+  \item{queryName}{a string specifying the \code{queryName} }
   \item{toImport}{a data frame containing rows of data to be imported}
   \item{na}{(optional) the value to convert NA's to, defaults to NULL}
 }
@@ -20,9 +20,9 @@ labkey.importRows(baseUrl, folderPath,
 Multiple rows of data can be imported in bulk.  The \code{toImport} data frame must contain
 values for each column in the dataset and must be created with the \code{stringsAsFactors} option
 set to FALSE. The names of the data in the data frame must be the column names from the
-LabKey Server.To import a value of NULL, use an empty string ("") in the data frame (regardless of the database column type).
-Also, when importing data into a study dataset, the sequence number must be specified. \cr \cr
-Note: requires LabKey server version 13.3 or greater.
+LabKey Server. To import a value of NULL, use an empty string ("") in the data frame
+(regardless of the database column type). Also, when importing data into a study dataset, the
+sequence number must be specified.
 }
 
 \value{
@@ -35,8 +35,8 @@ number as passed in the request.
 \author{Cory Nathe}
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}},
-\code{\link{labkey.insertRows}}, \code{\link{labkey.updateRows}}, \cr
-\code{\link{labkey.deleteRows}}
+\code{\link{labkey.insertRows}}, \code{\link{labkey.updateRows}}, \code{\link{labkey.deleteRows}},
+\code{\link{labkey.query.import}}
 }
 \examples{
 \donttest{

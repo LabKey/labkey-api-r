@@ -38,6 +38,7 @@ updated.
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \cr
 \code{\link{labkey.deleteRows}},
+\code{\link{labkey.query.import}},
 \code{\link{labkey.provenance.createProvenanceParams}},
 \code{\link{labkey.provenance.startRecording}},
 \code{\link{labkey.provenance.addRecordingStep}},
