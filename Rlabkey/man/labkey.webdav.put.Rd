@@ -20,7 +20,7 @@ labkey.webdav.put(
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{remoteFilePath}{the destination path of this file on the remote server, relative to the folder root. }
   \item{fileSet}{(optional) the name of file server fileSet, which is typically "@files" (the default value for this argument). In some cases this might be "@pipeline" or "@fileset". }
-  \item{description}{(optional) the description to attach to this file on the remove server. }
+  \item{description}{(optional) the description to attach to this file on the remote server. }
 }
 \details{
 Upload a single file from the local machine to a LabKey Server using WebDAV.
