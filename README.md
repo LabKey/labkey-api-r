@@ -32,6 +32,13 @@ Install tools needed for building R packages. [Build tools](https://cran.r-proje
 
 After all tools are installed, run `./gradlew build`.
 
+If you encounter any LaTex related errors during the `build` or `check` steps, try the following:
+- See installation docs from [https://yihui.name/tinytex/](https://yihui.name/tinytex/).
+  - `curl -sL "https://yihui.name/gh/tinytex/tools/install-unx.sh" | sh`
+- For an error like `! LaTeX Error: File 'longtable.sty' not found.`
+  - `tlmgr search --global --file "/longtable.sty"`
+  - `tlmgr install latex-tools`
+
 ## Installing
 
 `./gradlew installRLabkey` will install Rlabkey and its dependencies into your user's package library (`R_LIBS_USER`)
