@@ -18,8 +18,8 @@ schema objects (\code{labkey.getSchema}).
 \tabular{ll}{
 Package: \tab Rlabkey\cr
 Type: \tab Package\cr
-Version: \tab 2.6.0\cr
-Date: \tab 2021-02-02\cr
+Version: \tab 2.7.0\cr
+Date: \tab 2021-05-19\cr
 License: \tab Apache License 2.0\cr
 LazyLoad: \tab yes\cr
 }

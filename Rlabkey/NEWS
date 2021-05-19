@@ -1,3 +1,10 @@
+Changes in 2.7.0
+  o Add ontology filter types to makeFilter
+  o Issue 43107: Fix for labkey.domain.createAndLoad to set strictFieldValidation to false for study datasets and data classes
+  o Issue 42950: Add param to labkey.webdav.put for setting the file description
+  o Issue 42546: Add new labkey.query.import command which uses file import to bulk import rows to a query/table
+  o Update labkey.domain.createAndLoad to use the new labkey.query.import command for the bulk data import
+
 Changes in 2.6.0
   o Add labkey.pipeline functions to be able to get pipeline protocol information and start jobs / analysis
 
