@@ -89,3 +89,40 @@ labkey.security.moveContainer <- function(baseUrl=NULL, folderPath, destinationP
 
     return (fromJSON(response))
 }
+
+labkey.security.impersonateUser <- function(baseUrl = NULL, folderPath, userId = NULL, email = NULL)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
+        stop (paste("A value must be specified for both baseUrl and folderPath."))
+    if (missing(userId) && missing(email))
+        stop (paste("A value must be specified for either userId or email."))
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    params <- list()
+    if(!missing(userId)) {params <- c(params, list(userId = userId))}
+    if(!missing(email)) {params <- c(params, list(email = email))}
+
+    url <- paste(baseUrl, "user", folderPath, "impersonateUser.api", sep="")
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (labkey.whoAmI())
+}
+
+labkey.security.stopImpersonating <- function(baseUrl = NULL)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl))
+        stop (paste("A value must be specified for baseUrl."))
+
+    url <- paste(baseUrl, "login/", "stopImpersonating.api", sep="")
+    labkey.post(url, toJSON(list()))
+
+    return (labkey.whoAmI())
+}

@@ -1,3 +1,6 @@
+Changes in 2.8.0
+  o Issue 43358: Add support for impersonating users (labkey.security.impersonateUser and labkey.security.stopImpersonating)
+
 Changes in 2.7.0
   o Add ontology filter types to makeFilter
   o Issue 43107: Fix for labkey.domain.createAndLoad to set strictFieldValidation to false for study datasets and data classes

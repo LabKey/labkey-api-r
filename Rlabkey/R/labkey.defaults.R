@@ -119,6 +119,17 @@ normalizeSlash <- function(folderPath, leading = T, trailing = T) {
   return(folderPath)
 }
 
+labkey.whoAmI <- function(baseUrl=NULL)
+{
+    baseUrl <- labkey.getBaseUrl(baseUrl)
+    myUrl <- paste(baseUrl, "login/", "whoAmI.view", sep="")
+    options <- labkey.getRequestOptions()
+    verboseOutput("OPTIONS", options)
+    response <- GET(url=myUrl, config=options)
+    r <- processResponse(response, haltOnError=FALSE)
+    return (fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE))
+}
+
 ## helper to retrieve and cache the CSRF token
 labkey.getCSRF <- function()
 {
@@ -131,12 +142,7 @@ labkey.getCSRF <- function()
             {
                 urlBase <- paste(urlBase,"/",sep="")
             }
-            myUrl <- paste(urlBase, "login/", "whoAmI.view", sep="")
-            options = labkey.getRequestOptions()
-            verboseOutput("OPTIONS", options)
-            response <- GET(url=myUrl, config=options)
-            r <- processResponse(response, haltOnError=FALSE)
-            json <- fromJSON(r, simplifyVector=FALSE, simplifyDataFrame=FALSE)
+            json <- labkey.whoAmI(urlBase)
             if (!is.null(json$CSRF))
             {
                 .lkcsrf[[urlBase]] = json$CSRF
