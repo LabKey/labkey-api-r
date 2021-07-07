@@ -17,8 +17,8 @@ and whether or not the user is impersonated.
 
 \author{Cory Nathe}
 \seealso{
-\code{\link{labkey.whoAmI}},
-\code{\link{labkey.security.impersonateUser}}
+\code{\link{labkey.security.impersonateUser}},
+\code{\link{labkey.security.stopImpersonating}}
 }
 \examples{
 \donttest{
