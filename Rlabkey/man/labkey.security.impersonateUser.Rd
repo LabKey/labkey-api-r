@@ -17,9 +17,9 @@ labkey.security.impersonateUser(baseUrl=NULL, folderPath,
 }
 \details{
 Admins may impersonate other users to perform actions on their behalf.
-Site users may impersonate any user in any project. Project admins must
+Site admins may impersonate any user in any project. Project admins must
 execute this command in a project in which they have admin permission
-and may impersonate any user that has access to the project.
+and may impersonate only users that have access to the project.
 
 To finish an impersonation session use
 \code{\link{labkey.security.stopImpersonating}}.
