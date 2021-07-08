@@ -25,7 +25,7 @@ and whether or not the user is impersonated.
 
 library(Rlabkey)
 
-labkey.security.stopImpersonating(baseUrl="http://labkey/")
+labkey.whoAmI(baseUrl="http://labkey/")
 
 }
 }
