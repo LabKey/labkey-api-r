@@ -108,7 +108,6 @@ project.tasks.register("install") {
                 project.tasks.installRuminex,
                 project.tasks.installKnitr,
                 project.tasks.installEhrDependencies,
-                project.tasks.installRSurvival,
-                project.tasks.installMedimmuneDependencies
+                project.tasks.installRSurvival
         )
 }
