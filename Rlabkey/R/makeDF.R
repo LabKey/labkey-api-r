@@ -203,7 +203,7 @@ return(filtered)
 			if(length(existing[rname == existing]) ==0)
 				{break;}
 			else 
-				{rname<- c(rname + as.character(i))}
+				{rname<- c(paste0(rname, i))}
         } 
   	}    	
   	return (rname)
