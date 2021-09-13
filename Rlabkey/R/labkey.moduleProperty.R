@@ -36,6 +36,10 @@ labkey.getModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
     if (exists("response"))
     {
         result <- (fromJSON(response))
+        if (is.null(result$id))
+        {
+            return ("User does not have permission to perform this operation")
+        }
         if (is.null(result$moduleProperties))
         {
             return (paste("Module property does not exist for", moduleName, "module in folder", folderPath))
