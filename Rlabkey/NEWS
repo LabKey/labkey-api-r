@@ -1,5 +1,6 @@
 Changes in 2.8.1
   o Issue 43890: Fix for makeDF rname string concatenation
+  o Issue 43853: Update error message for labkey.getModuleProperty() call when user does not have perm to requested container
 
 Changes in 2.8.0
   o Issue 43358: Add support for impersonating users (labkey.security.impersonateUser and labkey.security.stopImpersonating)
