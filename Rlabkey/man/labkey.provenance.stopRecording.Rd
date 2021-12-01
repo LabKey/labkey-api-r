@@ -11,7 +11,7 @@ labkey.provenance.stopRecording(baseUrl=NULL, folderPath, provenanceParams = NUL
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl} for the labkey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
-  \item{provenanceParams}{the provenance parameter object which contains the options to include in this recording step}
+  \item{provenanceParams}{the provenance parameter object which contains the options to include in this recording step, including the recording ID}
 }
 \details{
 Function to stop the provenance recording associated with the recording ID, this will create a provenance run

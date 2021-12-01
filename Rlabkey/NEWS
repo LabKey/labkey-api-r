@@ -1,3 +1,6 @@
+Changes in 2.8.2
+  o Issue 44110: Allow specification of a run name in the provenance API.
+
 Changes in 2.8.1
   o Issue 43890: Fix for makeDF rname string concatenation
   o Issue 43853: Update error message for labkey.getModuleProperty() call when user does not have perm to requested container

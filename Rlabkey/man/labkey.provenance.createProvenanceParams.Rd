@@ -7,7 +7,7 @@ Note: this function is in beta and not yet final, changes should be expected so 
 }
 \usage{
 labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, description=NULL,
-        materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
+        runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
         inputObjectUriProperty=NULL, outputObjectUriProperty=NULL, objectInputs=NULL,
         objectOutputs=NULL, provenanceMap=NULL)
 }
@@ -15,6 +15,7 @@ labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, descriptio
   \item{recordingId}{(optional) the recording ID to associate with other steps using the same ID}
   \item{name}{(optional) the name of this provenance step}
   \item{description}{(optional) the description of this provenance step}
+  \item{runName}{(optional) the name of the provenance run, if none if specified a default run name will be created}
   \item{materialInputs}{(optional) the list of materials (samples) to be used as the provenance run input. The data structure should be a dataframe with the column name describing the data type (lsid, id)}
   \item{materialOutputs}{(optional) the list of materials (samples) to be used as the provenance run output. The data structure should be a dataframe with the column name describing the data type (lsid, id)}
   \item{dataInputs}{(optional) the list of data inputs to be used for the run provenance map}

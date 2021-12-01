@@ -18,7 +18,7 @@
 ## provenance functions
 ##
 labkey.provenance.createProvenanceParams <- function(recordingId=NULL, name=NULL, description=NULL,
-        materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
+        runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
         inputObjectUriProperty=NULL, outputObjectUriProperty=NULL, objectInputs=NULL, objectOutputs=NULL,
         provenanceMap=NULL)
 {
@@ -30,6 +30,8 @@ labkey.provenance.createProvenanceParams <- function(recordingId=NULL, name=NULL
         param$name = name
     if (!missing(description))
         param$description = description
+    if (!missing(runName))
+        param$runName = runName
 
     if (!missing(materialInputs))
     {
