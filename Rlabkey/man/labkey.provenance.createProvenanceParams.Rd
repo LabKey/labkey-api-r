@@ -7,9 +7,9 @@ Note: this function is in beta and not yet final, changes should be expected so 
 }
 \usage{
 labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, description=NULL,
-        runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
-        inputObjectUriProperty=NULL, outputObjectUriProperty=NULL, objectInputs=NULL,
-        objectOutputs=NULL, provenanceMap=NULL)
+        runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL,
+        dataOutputs=NULL, inputObjectUriProperty=NULL, outputObjectUriProperty=NULL,
+        objectInputs=NULL, objectOutputs=NULL, provenanceMap=NULL)
 }
 \arguments{
   \item{recordingId}{(optional) the recording ID to associate with other steps using the same ID}
