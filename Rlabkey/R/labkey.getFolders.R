@@ -40,6 +40,14 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 
 	curfld <- decode
 	curfld$effectivePermissions = paste(curfld$effectivePermissions, collapse=",")
+
+    # Issue 44619: account for missing properties if the parent is root
+    for (col in resultCols) {
+        if (is.null(curfld[[col]])) {
+            curfld[[col]] = "";
+        }
+    }
+
 	allpaths <- matrix(data=unlist(curfld[resultCols]), nrow=1, ncol=length(resultCols), byrow=TRUE)
 	childflds <- curfld$children[]
 	while (length(childflds)>0)

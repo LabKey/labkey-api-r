@@ -1,3 +1,6 @@
+Changes in 2.8.3
+  o Issue 44619: labkey.getFolders() update to account for missing properties if the parent is root
+
 Changes in 2.8.2
   o Issue 44110: Allow specification of a run name in the provenance API.
 
