@@ -9,7 +9,7 @@ Note: this function is in beta and not yet final, changes should be expected so 
 labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, description=NULL,
         runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL,
         dataOutputs=NULL, inputObjectUriProperty=NULL, outputObjectUriProperty=NULL,
-        objectInputs=NULL, objectOutputs=NULL, provenanceMap=NULL)
+        objectInputs=NULL, objectOutputs=NULL, provenanceMap=NULL, params=NULL, properties=NULL)
 }
 \arguments{
   \item{recordingId}{(optional) the recording ID to associate with other steps using the same ID}
@@ -25,6 +25,8 @@ labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, descriptio
   \item{objectInputs}{(optional) the list of object inputs to be used for the run provenance map}
   \item{objectOutputs}{(optional) the list of object outputs to be used for the run provenance map}
   \item{provenanceMap}{(optional) the provenance map to be used directly for the run step. The data structure should be a dataframe with the column names of 'from' and 'to' to indicate which sides of the mapping the identifiers refer to}
+  \item{params}{(optional) the list of initial run step parameters. Parameters supported in the parameter list such as name, description, runName, can be specified in this data structure as well as other run step parameters not available in the parameter list}
+  \item{properties}{(optional) custom property values to associate with the run step. The data structure should be a dataframe with the property URIs as column names and the column value to associate with the property. The Vocabulary domain and fields must have been created prior to using}
 }
 \details{
 This function can be used to generate a provenance parameter object which can then be used as an argument
@@ -66,6 +68,18 @@ mi <- data.frame(lsid=c("urn:lsid:labkey.com:Sample.251.MySamples:sample1",
 
 p <- labkey.provenance.createProvenanceParams(name="step1", description="initial step",
         objectInputs=oi[["LSID"]], materialInputs=mi)
+
+## add run step properties and custom properties to the provenance params
+props <- data.frame(
+    "urn:lsid:labkey.com:Vocabulary.Folder-996:ProvenanceDomain#version"=c(22.3),
+    "urn:lsid:labkey.com:Vocabulary.Folder-996:ProvenanceDomain#instrumentName"=c("NAb plate reader"), check.names=FALSE)
+params <- list()
+params$comments <- "adding additional step properties"
+params$activityDate <- "2022-3-21"
+params$startTime <- "2022-3-21 12:35:00"
+params$endTime <- "2022-3-22 02:15:30"
+params$recordCount <- 2
+p <- labkey.provenance.createProvenanceParams(recordingId=ra$recordingId, name="step2", properties=props, params=params)
 
 }
 }

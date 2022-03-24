@@ -20,10 +20,12 @@
 labkey.provenance.createProvenanceParams <- function(recordingId=NULL, name=NULL, description=NULL,
         runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL, dataOutputs=NULL,
         inputObjectUriProperty=NULL, outputObjectUriProperty=NULL, objectInputs=NULL, objectOutputs=NULL,
-        provenanceMap=NULL)
+        provenanceMap=NULL, params=NULL, properties=NULL)
 {
     param <- list()
 
+    if (!missing(params))
+        param <- params
     if (!missing(recordingId))
         param$recordingId = recordingId
     if (!missing(name))
@@ -63,6 +65,14 @@ labkey.provenance.createProvenanceParams <- function(recordingId=NULL, name=NULL
             stop (paste("The 'dataOutputs' parameter must be a list of data outputs."))
 
         param$dataOutputs = dataOutputs
+    }
+
+    if (!missing(properties))
+    {
+        if (!is.list(properties))
+            stop (paste("The 'properties' parameter must be a list of property URIs to values."))
+
+        param$properties = properties
     }
 
     if (!missing(inputObjectUriProperty))

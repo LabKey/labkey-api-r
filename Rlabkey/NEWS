@@ -1,3 +1,6 @@
+Changes in 2.8.4
+  o Update labkey.provenance.createProvenanceParams to support custom properties (and standard run step properties)
+
 Changes in 2.8.3
   o Issue 44619: labkey.getFolders() update to account for missing properties if the parent is root
 
