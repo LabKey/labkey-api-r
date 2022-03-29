@@ -9,7 +9,8 @@ Note: this function is in beta and not yet final, changes should be expected so 
 labkey.provenance.createProvenanceParams(recordingId=NULL, name=NULL, description=NULL,
         runName=NULL, materialInputs=NULL, materialOutputs=NULL, dataInputs=NULL,
         dataOutputs=NULL, inputObjectUriProperty=NULL, outputObjectUriProperty=NULL,
-        objectInputs=NULL, objectOutputs=NULL, provenanceMap=NULL, params=NULL, properties=NULL)
+        objectInputs=NULL, objectOutputs=NULL, provenanceMap=NULL,
+        params=NULL, properties=NULL)
 }
 \arguments{
   \item{recordingId}{(optional) the recording ID to associate with other steps using the same ID}
@@ -72,7 +73,8 @@ p <- labkey.provenance.createProvenanceParams(name="step1", description="initial
 ## add run step properties and custom properties to the provenance params
 props <- data.frame(
     "urn:lsid:labkey.com:Vocabulary.Folder-996:ProvenanceDomain#version"=c(22.3),
-    "urn:lsid:labkey.com:Vocabulary.Folder-996:ProvenanceDomain#instrumentName"=c("NAb plate reader"), check.names=FALSE)
+    "urn:lsid:labkey.com:Vocabulary.Folder-996:ProvenanceDomain#instrumentName"=c("NAb reader"),
+    check.names=FALSE)
 params <- list()
 params$comments <- "adding additional step properties"
 params$activityDate <- "2022-3-21"
