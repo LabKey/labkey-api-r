@@ -81,7 +81,8 @@ params$activityDate <- "2022-3-21"
 params$startTime <- "2022-3-21 12:35:00"
 params$endTime <- "2022-3-22 02:15:30"
 params$recordCount <- 2
-p <- labkey.provenance.createProvenanceParams(recordingId=ra$recordingId, name="step2", properties=props, params=params)
+p <- labkey.provenance.createProvenanceParams(recordingId=ra$recordingId, name="step2",
+    properties=props, params=params)
 
 }
 }
