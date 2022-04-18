@@ -20,4 +20,4 @@ OS.type <- .Platform$OS.type
 #     # Workaround for https://github.com/jyypma/nloptr/issues/40
 #     install.dependencies("nloptr", github_deps=c("jyypma/nloptr"))
 # }
-install.dependencies("Ruminex", c("drc", "xtable", "alr3", "Cairo", "plotrix", "vctrs", "nloptr"))
+install.dependencies("Ruminex", c("vctrs", "nloptr", "drc", "xtable", "alr3", "Cairo", "plotrix"))
