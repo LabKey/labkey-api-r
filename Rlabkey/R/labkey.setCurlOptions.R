@@ -32,7 +32,7 @@ labkey.setCurlOptions <- function(...)
     }
 
     # default curl options
-    options <- config(ssl_verifyhost=2, ssl_verifypeer=TRUE, followlocation=TRUE, sslversion=1L, useragent = "Rlabkey")
+    options <- config(ssl_verifyhost=2, ssl_verifypeer=TRUE, followlocation=TRUE, sslversion=1L, useragent = "LabKey R API")
 
     # check if a certificate bundle has been specified from the environment variable
     vars <- Sys.getenv("RLABKEY_CAINFO_FILE")
