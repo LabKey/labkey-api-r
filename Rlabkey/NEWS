@@ -1,3 +1,8 @@
+Changes in 2.9.0
+  o Add support for creating Freezer Manager freezer hierarchies
+  o New labkey.storage NAMESPACE: labkey.storage.create, labkey.storage.update, labkey.storage.delete
+  o Note: only supported for LabKey Server v22.10
+
 Changes in 2.8.4
   o Update labkey.provenance.createProvenanceParams to support custom properties (and standard run step properties)
 
