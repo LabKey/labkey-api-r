@@ -30,11 +30,19 @@ A list containing a data element with the property values for the updated storag
 library(Rlabkey)
 ## create a storage unit type and then update it to change some properties
 
-plateType = labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Storage Unit Type", props=list(name="Test 8X12 Well Plate", unitType="Plate", rows=8, cols=12 ))
+plateType = labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Storage Unit Type",
+    props=list(name="Test 8X12 Well Plate", unitType="Plate", rows=8, cols=12 )
+)
 
-plateType = labkey.storage.update(baseUrl="http://labkey/", folderPath="home",
-    type="Storage Unit Type", props=list(rowId=plateType$data$rowId, positionFormat="NumAlpha", positionOrder="ColumnRow" ))
+plateType = labkey.storage.update(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Storage Unit Type",
+    props=list(rowId=plateType$data$rowId, positionFormat="NumAlpha", positionOrder="ColumnRow" )
+)
 }
 }
 \keyword{IO}

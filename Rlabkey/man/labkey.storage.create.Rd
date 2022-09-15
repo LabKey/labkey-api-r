@@ -30,20 +30,40 @@ A list containing a data element with the property values for the newly created 
 library(Rlabkey)
 ## create a storage Freezer with a Shelf and 2 Plates on that Shelf
 
-freezer <- labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Freezer", props=list(name="Test Freezer", description="My example storage freezer"))
+freezer <- labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Freezer",
+    props=list(name="Test Freezer", description="My example storage freezer")
+)
 
-shelf = labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Shelf", props=list(name="Test Shelf", locationId=freezer$data$rowId ))
+shelf = labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Shelf",
+    props=list(name="Test Shelf", locationId=freezer$data$rowId )
+)
 
-plateType = labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Storage Unit Type", props=list(name="Test 8X12 Well Plate", unitType="Plate", rows=8, cols=12 ))
+plateType = labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Storage Unit Type",
+    props=list(name="Test 8X12 Well Plate", unitType="Plate", rows=8, cols=12 )
+)
 
-plate1 = labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Terminal Storage Location", props=list(name="Plate #1", typeId=plateType$data$rowId, locationId=shelf$data$rowId ))
+plate1 = labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Terminal Storage Location",
+    props=list(name="Plate #1", typeId=plateType$data$rowId, locationId=shelf$data$rowId )
+)
 
-plate2 = labkey.storage.create(baseUrl="http://labkey/", folderPath="home",
-    type="Terminal Storage Location", props=list(name="Plate #2", typeId=plateType$data$rowId, locationId=shelf$data$rowId ))
+plate2 = labkey.storage.create(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Terminal Storage Location",
+    props=list(name="Plate #2", typeId=plateType$data$rowId, locationId=shelf$data$rowId )
+)
 }
 }
 \keyword{IO}
