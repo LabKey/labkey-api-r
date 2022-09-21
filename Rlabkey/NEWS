@@ -195,13 +195,11 @@ Changes in version 2.1.117
         IN, NOT_IN, EQUALS_NONE_OF, CONTAINS_ONE_OF, and CONTAINS_NONE_OF
 
 Changes in version 2.1.116
-Minor change to makeFiler.R to use curlEscape instead of URLencode for encoding the colFilter parameters.
+  o Minor change to makeFiler.R to use curlEscape instead of URLencode for encoding the colFilter parameters.
 
 Changes in version 2.1.110
-Major expansion of Rlabkey.  Added metadata functions, session-based access function, much faster rjson parsing on 
-returned data sets, many bug fixes related to null handling.  
-See the Rlabkey Users Guide for an overview of the package.
-	
+  o Major expansion of Rlabkey.  Added metadata functions, session-based access function, much faster rjson parsing on returned data sets, many bug fixes related to null handling.
+  o See the Rlabkey Users Guide for an overview of the package.
 
 Changes in Version 0.0.9
   o Misc bug fixes
