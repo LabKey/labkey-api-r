@@ -1,5 +1,5 @@
 Changes in 2.9.1
-  o Freezer Manager API - add Primary Storage option to storage related action documentation
+  o Freezer Manager API - add Primary Storage option to storage-related action documentation
 
 Changes in 2.9.0
   o Add support for creating Freezer Manager freezer hierarchies
