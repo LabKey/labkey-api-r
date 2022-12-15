@@ -2,8 +2,8 @@
 \alias{labkey.storage.create}
 \title{Create a new LabKey Freezer Manager storage item}
 \description{
-Create a new LabKey Freezer Manager storage item that can be used in the creation of a freezer hierarchy.
-Storage items can be of the following types: Physical Location, Freezer, Shelf, Rack, Canister,
+Create a new LabKey Freezer Manager storage item that can be used in the creation of a storage hierarchy.
+Storage items can be of the following types: Physical Location, Freezer, Primary Storage, Shelf, Rack, Canister,
 Storage Unit Type, or Terminal Storage Location.
 }
 \usage{

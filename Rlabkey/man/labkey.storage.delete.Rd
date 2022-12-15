@@ -2,10 +2,10 @@
 \alias{labkey.storage.delete}
 \title{Delete a LabKey Freezer Manager storage item}
 \description{
-Delete an existing LabKey Freezer Manager storage item. Note that deletion of freezers or locations within the
-freezer hierarchy will cascade the delete down the hierarchy to remove child locations and terminal storage locations.
-Samples in the deleted freezer location(s) will not be deleted but will be removed from storage.
-Storage items can be of the following types: Physical Location, Freezer, Shelf, Rack, Canister,
+Delete an existing LabKey Freezer Manager storage item. Note that deletion of freezers, primary storage, or locations
+within the storage hierarchy will cascade the delete down the hierarchy to remove child locations and terminal storage
+locations. Samples in the deleted storage location(s) will not be deleted but will be removed from storage.
+Storage items can be of the following types: Physical Location, Freezer, Primary Storage, Shelf, Rack, Canister,
 Storage Unit Type, or Terminal Storage Location.
 }
 \usage{

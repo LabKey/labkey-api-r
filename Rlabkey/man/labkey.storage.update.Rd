@@ -2,8 +2,8 @@
 \alias{labkey.storage.update}
 \title{Update a LabKey Freezer Manager storage item}
 \description{
-Update an existing LabKey Freezer Manager storage item to change its properties or location within the freezer hierarchy.
-Storage items can be of the following types: Physical Location, Freezer, Shelf, Rack, Canister,
+Update an existing LabKey Freezer Manager storage item to change its properties or location within the storage hierarchy.
+Storage items can be of the following types: Physical Location, Freezer, Primary Storage, Shelf, Rack, Canister,
 Storage Unit Type, or Terminal Storage Location.
 }
 \usage{
