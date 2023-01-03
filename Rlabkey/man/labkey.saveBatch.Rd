@@ -21,8 +21,7 @@ labkey.saveBatch(baseUrl, folderPath, assayName, resultDataFrame,
 This function has been deprecated and will be removed in a future release, please use labkey.experiment.saveBatch instead as
 it supports the newer options for saving batch objects.
 
-To save an R data.frame an assay results sets, you must create a named assay using the "General" assay provider.  Detailed 
-instructions are available in the Rlabkey Users Guide, accessible by entering RlabkeyUsersGuide() at the R command prompt.
+To save an R data.frame an assay results sets, you must create a named assay using the "General" assay provider.
 Note that saveBatch currently supports only a single run with one result set per batch.
 }
 

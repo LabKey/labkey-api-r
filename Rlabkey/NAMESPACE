@@ -10,7 +10,6 @@ export(labkey.selectRows, labkey.executeSql, makeFilter, labkey.insertRows, labk
 export("getSchema")
 export("getFolderPath")
 export("saveResults")
-export("RlabkeyUsersGuide")
 export(labkey.experiment.createData)
 export(labkey.experiment.createMaterial)
 export(labkey.experiment.createRun)

@@ -65,6 +65,5 @@ https://www.labkey.org/project/home/begin.view}
 \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \cr
 \code{\link{labkey.updateRows}}, \code{\link{labkey.deleteRows}}
 \cr
-The Rlabkey Users Guide is available by typing RlabkeyUsersGuide().
 }
 

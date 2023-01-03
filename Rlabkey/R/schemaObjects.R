@@ -438,15 +438,3 @@
 		      class="LabkeyField", schemaName=schemaName, queryName=queryName)
 	}
 
-
-## the following function allows for the user guide to be opened via R command
-RlabkeyUsersGuide <- function(view=TRUE)
-{
-     f <- system.file("doc", "usersguide.pdf", package = "Rlabkey")
-    if (view) {
-        if (.Platform$OS.type == "windows") 
-            shell.exec(f)
-        else system(paste(Sys.getenv("R_PDFVIEWER"), f, "&"))
-    }
-    return(f)
-}

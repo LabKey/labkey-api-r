@@ -33,13 +33,10 @@ by getRows(), and \code{maxRows}, which sets a default value for this parameter 
 
 \value{
 getSession returns a session object that represents a specific user within a specific project folder within the LabKey Server identified by the baseUrl.  
-The combination of user, server and project/folder determines the security context of the client program.  See the Rlabkey Users Guide for more
-discussion of how the user identity is established.
+The combination of user, server and project/folder determines the security context of the client program.
 }
 \author{Peter Hussey}
-\seealso{\code{\link{getRows}}, \code{\link{getSchema}}, \code{\link{getLookups}} \code{\link{saveResults}}\cr
-The Rlabkey Users Guide is available by typing RlabkeyUsersGuide().
-}
+\seealso{\code{\link{getRows}}, \code{\link{getSchema}}, \code{\link{getLookups}} \code{\link{saveResults}}}
 \examples{
 \dontrun{
 

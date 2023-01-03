@@ -7,7 +7,6 @@ Rlabkey is an interface between the R language and LabKey Server that has been d
 - **`test/`** - Scripts for testing Rlabkey and for installing test dependencies.
   - **`vignette.R`** - R test script designed to connect to a LabKey instance on localhost with a project named "apisamples"
   - **`listArchive.zip`** - List archive used by `vignette.R` and Selenium tests
-- **`docs/`** - The source files for the Users Guide, plus a latex doc and corresponding Pdf describing the package build environment.
 
 ### `/labkey-api-r/Rlabkey`
 Contains all source code for Rlabkey and its documentation.
@@ -15,7 +14,6 @@ Contains all source code for Rlabkey and its documentation.
 - **`NAMESPACE`** - Specifies the public function names.  Developer maintained.
 - **`NEWS`** - Document of change history for this project, developer maintaind.
 - **`inst/doc/`** - Folder for documents
-  - **`usersguide.pdf`** Documentation from `/docs/UserGuide` printed to PDF
 - **`man/`** - Source files for function-by-function reference documentation.  After a successful build, a final pdf of the function reference documentation can be found in Rlabkey.Rcheck/Rlabkey-manual.pdf.
 - **`R/`** - R Source files for package functions
 - **`src/`** - Source files for a faster implementation of Json parsing for retrieved data.  Written in C, built at package install time.
