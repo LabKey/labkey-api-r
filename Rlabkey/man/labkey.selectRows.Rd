@@ -92,7 +92,7 @@ The requested data are returned in a data frame with stringsAsFactors set to FAL
 
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## select from a list named AllTypes
 # library(Rlabkey)

@@ -32,7 +32,7 @@ The data frame containing the list of indices definitions, concatenated with the
 \code{\link{labkey.domain.drop}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create a list of indices definitions to use for a domain design
 library(Rlabkey)

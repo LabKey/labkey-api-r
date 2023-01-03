@@ -22,7 +22,7 @@ labkey.rstudio.initReport(apiKey = "", baseUrl = "", folderPath,
 \item{skipEdit}{(TRUE | FALSE) TRUE to open file in editor}
 }
 \examples{
-\donttest{
+\dontrun{
 ## RStudio console only
 library(Rlabkey)
 labkey.rstudio.initReport(apiKey="session|abcdef0123456789abcdef0123456789",

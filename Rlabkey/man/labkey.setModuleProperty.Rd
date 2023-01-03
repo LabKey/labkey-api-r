@@ -19,7 +19,7 @@ labkey.setModuleProperty(baseUrl=NULL, folderPath, moduleName, propName, propVal
 \item{propValue}{The module property value to save}
 }
 \examples{
-\donttest{
+\dontrun{
 library(Rlabkey)
 labkey.setModuleProperty(baseUrl="http://labkey/", folderPath="flowProject",
     moduleName="flow", propName="ExportToScriptFormat", propValue="zip")

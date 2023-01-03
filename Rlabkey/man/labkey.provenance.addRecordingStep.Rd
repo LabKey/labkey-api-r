@@ -29,7 +29,7 @@ The generated recording ID which can be used in subsequent steps (or queries tha
 \code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## start a provenance recording and add a recording step
 library(Rlabkey)

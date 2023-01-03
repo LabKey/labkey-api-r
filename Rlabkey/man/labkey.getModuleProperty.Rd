@@ -17,7 +17,7 @@ labkey.getModuleProperty(baseUrl=NULL, folderPath, moduleName, propName)
 \item{propName}{The module property name}
 }
 \examples{
-\donttest{
+\dontrun{
 library(Rlabkey)
 labkey.getModuleProperty(baseUrl="http://labkey/", folderPath="flowProject",
     moduleName="flow", propName="ExportToScriptFormat")

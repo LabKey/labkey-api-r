@@ -13,7 +13,7 @@ labkey.rstudio.initSession(requestId, baseUrl)
 \item{baseUrl}{server location including context path, if any. e.g. https://www.labkey.org/}
 }
 \examples{
-\donttest{
+\dontrun{
 ## RStudio console only
 library(Rlabkey)
 labkey.rstudio.initSession(requestId="a60228c8-9448-1036-a7c5-ab541dc15ee9",

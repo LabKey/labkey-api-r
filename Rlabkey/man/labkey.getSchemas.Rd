@@ -33,7 +33,7 @@ https://www.labkey.org/project/home/begin.view}
 
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## List of schemas
 # library(Rlabkey)

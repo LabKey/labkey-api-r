@@ -27,7 +27,7 @@ Create an experiment material object which can be used as either input or output
 \code{\link{labkey.experiment.createRun}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

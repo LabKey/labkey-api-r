@@ -41,7 +41,7 @@ discussion of how the user identity is established.
 The Rlabkey Users Guide is available by typing RlabkeyUsersGuide().
 }
 \examples{
-\donttest{
+\dontrun{
 
 # library(Rlabkey)
 

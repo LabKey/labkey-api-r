@@ -47,7 +47,7 @@ inserted.
 \code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## Insert, update and delete
 ## Note that users must have the necessary permissions in the database

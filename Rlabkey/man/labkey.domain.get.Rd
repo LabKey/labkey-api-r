@@ -31,7 +31,7 @@ A list containing elements describing the domain. The structure is the same as a
 \code{\link{labkey.domain.drop}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## retrieve an existing domain
 library(Rlabkey)

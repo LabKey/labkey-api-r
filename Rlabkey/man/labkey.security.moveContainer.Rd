@@ -33,7 +33,7 @@ Returns a success message for the container move action with the new path.
 \code{\link{labkey.security.deleteContainer}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

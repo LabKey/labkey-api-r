@@ -33,7 +33,7 @@ A list containing elements describing the domain design. Any of the APIs which t
 \code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create a data frame and infer it's fields, then create a domain design from it
 library(Rlabkey)

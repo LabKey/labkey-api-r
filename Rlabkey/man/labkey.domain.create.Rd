@@ -90,7 +90,7 @@ A list containing elements describing the newly created domain.
 \code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create a data frame and infer it's fields, then create a domain design from it
 library(Rlabkey)

@@ -31,7 +31,7 @@ A list containing elements describing the domain after the update. The structure
 \code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 ## change the type of one of the columns

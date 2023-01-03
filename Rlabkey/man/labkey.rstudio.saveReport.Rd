@@ -18,7 +18,7 @@ labkey.rstudio.saveReport(folderPath, reportEntityId, reportFilename,
 \item{useWarning}{(TRUE | FALSE) TRUE to prompt user choices to save}
 }
 \examples{
-\donttest{
+\dontrun{
 ## RStudio console only
 library(Rlabkey)
 labkey.rstudio.saveReport(folderPath="home",

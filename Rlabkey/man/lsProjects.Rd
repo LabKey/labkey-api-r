@@ -18,7 +18,7 @@ lsProjects(baseUrl)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{lsFolders}}, \code{\link{lsSchemas}}}
 \examples{
-\donttest{
+\dontrun{
 
 ## get list of projects on server, connect a session in one project,
 ## then list the folders in that project

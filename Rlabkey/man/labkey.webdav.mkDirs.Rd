@@ -36,7 +36,7 @@ TRUE if the folder was created successfully
 \code{\link{labkey.webdav.downloadFolder}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

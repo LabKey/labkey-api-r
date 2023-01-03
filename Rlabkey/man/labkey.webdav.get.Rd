@@ -40,7 +40,7 @@ TRUE or FALSE, depending on if this file was downloaded and exists locally.  Wil
 \code{\link{labkey.webdav.downloadFolder}}
 }
 \examples{
-\donttest{
+\dontrun{
 ## download a single file from a LabKey Server
 library(Rlabkey)
 

@@ -14,7 +14,7 @@ labkey.setDebugMode(debug = FALSE)
 
 \author{Cory Nathe}
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 labkey.setDebugMode(TRUE)

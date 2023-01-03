@@ -27,7 +27,7 @@ Returns the count of the number of rows deleted.
 \code{\link{labkey.deleteRows}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create a data frame and infer it's fields
 library(Rlabkey)

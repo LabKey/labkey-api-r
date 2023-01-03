@@ -80,7 +80,7 @@ A list containing the newly uploaded data frame rows.
 \code{\link{labkey.domain.drop}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

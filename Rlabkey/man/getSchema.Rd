@@ -21,7 +21,7 @@ schema objects is essentially the same as the schema and query objects shown in 
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}}
 \examples{
-\donttest{
+\dontrun{
 
 ## the basics of using session, schema, and query objects
 # library(Rlabkey)

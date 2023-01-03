@@ -55,7 +55,7 @@ additional details may be included in the response object related to those optio
 \code{\link{labkey.insertRows}}, \code{\link{labkey.updateRows}}, \code{\link{labkey.importRows}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## Note that users must have the necessary permissions in the database
 ## to be able to modify data through the use of these functions

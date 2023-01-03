@@ -45,7 +45,7 @@ The available folders are returned as a three-column data frame containing
 \code{\link{labkey.security.moveContainer}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## List of folders 
 # library(Rlabkey)

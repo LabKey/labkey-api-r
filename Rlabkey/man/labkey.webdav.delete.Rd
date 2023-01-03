@@ -36,7 +36,7 @@ TRUE if the folder was deleted successfully
 \code{\link{labkey.webdav.downloadFolder}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

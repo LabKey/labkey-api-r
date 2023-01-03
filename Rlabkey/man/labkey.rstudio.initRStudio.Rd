@@ -17,7 +17,7 @@ labkey.rstudio.initRStudio(apiKey = "", baseUrl = "", folderPath, skipViewer = F
 \item{skipViewer}{(TRUE | FALSE) TRUE to skip setting up LabKey schema viewer in RStudio}
 }
 \examples{
-\donttest{
+\dontrun{
 ## RStudio console only
 library(Rlabkey)
 labkey.rstudio.initRStudio(apiKey="session|abcdef0123456789abcdef0123456789",

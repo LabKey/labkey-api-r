@@ -53,7 +53,7 @@ A list with each item under this folder.  Each item (file or directory) is a lis
 \code{\link{labkey.webdav.downloadFolder}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

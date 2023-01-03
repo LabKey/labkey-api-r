@@ -32,7 +32,7 @@ Each field will contain the list of attributes and values for that field definit
 \code{\link{labkey.domain.drop}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create a data frame and infer it's fields
 library(Rlabkey)

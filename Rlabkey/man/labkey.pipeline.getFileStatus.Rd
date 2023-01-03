@@ -35,7 +35,7 @@ the files if the user initiated processing, i.e. submitType.
 \code{\link{labkey.pipeline.startAnalysis}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 labkey.pipeline.getFileStatus(
     baseUrl="http://labkey/",

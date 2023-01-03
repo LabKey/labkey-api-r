@@ -30,7 +30,7 @@ as detailed in \code{\link{labkey.getQueryDetails}}
 \code{\link{labkey.getQueryDetails}}, \code{\link{labkey.getDefaultViewDetails}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## Details  of fields of a query referenced by a lookup field
 # library(Rlabkey)

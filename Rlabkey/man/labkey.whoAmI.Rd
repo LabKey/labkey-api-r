@@ -21,7 +21,7 @@ and whether or not the user is impersonated.
 \code{\link{labkey.security.stopImpersonating}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

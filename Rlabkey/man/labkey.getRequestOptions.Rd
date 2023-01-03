@@ -17,7 +17,7 @@ labkey.getRequestOptions(method = 'GET', encoding = NULL)
 
 \author{Cory Nathe}
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 labkey.getRequestOptions()

@@ -28,7 +28,7 @@ that with getRows the default is 'fieldname' instead of 'caption'.
 \code{\link{labkey.selectRows}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## simple example of getting data using schema objects
 # library(Rlabkey)

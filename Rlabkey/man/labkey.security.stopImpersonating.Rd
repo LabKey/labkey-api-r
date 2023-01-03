@@ -27,7 +27,7 @@ Returns a success message based on a call to \code{\link{labkey.whoAmI}}.
 \code{\link{labkey.security.impersonateUser}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

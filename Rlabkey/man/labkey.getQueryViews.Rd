@@ -37,7 +37,7 @@ The available views for a query are returned as a three-column data frame, with 
 
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## List of views defined for a query in a schema
 # library(Rlabkey)

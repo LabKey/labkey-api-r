@@ -39,7 +39,7 @@ number as passed in the request.
 \code{\link{labkey.query.import}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## Note that users must have the necessary permissions in the database
 ## to be able to modify data through the use of these functions

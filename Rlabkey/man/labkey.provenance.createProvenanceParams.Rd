@@ -45,7 +45,7 @@ A list containing elements describing the passed in provenance parameters.
 \code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create provenance params with material inputs and data outputs
 library(Rlabkey)

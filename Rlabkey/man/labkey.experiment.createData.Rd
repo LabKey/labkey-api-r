@@ -29,7 +29,7 @@ Create an experiment data object which can be used as either input or output dat
 \code{\link{labkey.experiment.createRun}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

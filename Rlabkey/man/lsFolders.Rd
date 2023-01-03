@@ -19,7 +19,7 @@ lsFolders(session)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{lsProjects}}, \code{\link{lsSchemas}}}
 \examples{
-\donttest{
+\dontrun{
 
 ##get a list if projects and folders
 # library(Rlabkey)

@@ -40,7 +40,7 @@ to assemble the data structure that saveBatch expects.
 \code{\link{labkey.experiment.createRun}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 
@@ -73,7 +73,7 @@ runConfig <- fromJSON(txt='{"assayId": 310,
     "name" : "api imported run with plate metadata",
     "properties" : {
         "PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd"
-    }}
+    }
 }')
 
 plateMetadata <- fromJSON(txt='{

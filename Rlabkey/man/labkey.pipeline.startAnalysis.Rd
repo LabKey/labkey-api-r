@@ -50,7 +50,7 @@ On success, the response will contain the jobGUID string value for the newly cre
 \code{\link{labkey.pipeline.getFileStatus}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 labkey.pipeline.startAnalysis(
     baseUrl="http://labkey/",

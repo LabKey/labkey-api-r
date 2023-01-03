@@ -40,7 +40,7 @@ The string specifying a query filter in LabKey filter URL format.
 \code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

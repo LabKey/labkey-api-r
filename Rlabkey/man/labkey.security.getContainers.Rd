@@ -35,7 +35,7 @@ path, type, folderType, and effectivePermissions.
 \code{\link{labkey.security.moveContainer}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

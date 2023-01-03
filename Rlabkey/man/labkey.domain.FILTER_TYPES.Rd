@@ -28,7 +28,7 @@ A named list of strings.
 \code{\link{labkey.domain.createConditionalFormatQueryFilter}}
 }
 \examples{
-\donttest{
+\dontrun{
 library(Rlabkey)
 
 qf <- labkey.domain.FILTER_TYPES

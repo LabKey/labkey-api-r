@@ -17,7 +17,7 @@ has not been previously set, the function will remember the baseUrl value in pac
 return the formatted baseUrl. Skip baseUrl parameter to get previously set baseUrl.
 }
 \examples{
-\donttest{
+\dontrun{
 ## Example of getting previously set baseUrl
 library(Rlabkey)
 labkey.setDefaults(apiKey="session|abcdef0123456789abcdef0123456789",

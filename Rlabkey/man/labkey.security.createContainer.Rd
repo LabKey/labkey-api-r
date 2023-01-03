@@ -35,7 +35,7 @@ Returns information about the newly created container.
 \code{\link{labkey.security.moveContainer}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

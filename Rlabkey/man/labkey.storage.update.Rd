@@ -25,7 +25,7 @@ A list containing a data element with the property values for the updated storag
 \code{\link{labkey.storage.delete}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 ## create a storage unit type and then update it to change some properties

@@ -28,7 +28,7 @@ Returns a success message for the container deletion action.
 \code{\link{labkey.security.moveContainer}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

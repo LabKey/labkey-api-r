@@ -43,7 +43,7 @@ TRUE or FALSE, depending on if this folder was successfully downloaded
 \code{\link{labkey.webdav.delete}}
 }
 \examples{
-\donttest{
+\dontrun{
 ## download folder from a LabKey Server
 library(Rlabkey)
 

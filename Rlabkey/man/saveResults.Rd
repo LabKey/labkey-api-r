@@ -32,7 +32,7 @@ https://www.labkey.org/project/home/begin.view}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{getSchema}}, \code{\link{getLookups}} \code{\link{getRows}}}
 \examples{
-\donttest{
+\dontrun{
 
 ## Very simple example of an analysis flow:  query some data,
 ## calculate some stats, then save the calculations as an assay

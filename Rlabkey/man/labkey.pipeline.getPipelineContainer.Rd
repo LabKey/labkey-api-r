@@ -31,7 +31,7 @@ The response will contain the following:
 \code{\link{labkey.pipeline.startAnalysis}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 labkey.pipeline.getPipelineContainer(
     baseUrl="http://labkey/",

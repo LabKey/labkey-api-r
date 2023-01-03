@@ -25,7 +25,7 @@ A list containing a data element with the property values for the newly created 
 \code{\link{labkey.storage.delete}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 ## create a storage Freezer with a Shelf and 2 Plates on that Shelf

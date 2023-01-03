@@ -33,7 +33,7 @@ to assemble the data structure that saveRuns expects.
 \code{\link{labkey.experiment.createRun}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

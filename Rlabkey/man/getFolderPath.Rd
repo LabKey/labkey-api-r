@@ -19,7 +19,7 @@ getFolderPath(session)
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}  \code{\link{lsFolders}}}
 \examples{
-\donttest{
+\dontrun{
 
 # library(Rlabkey)
 

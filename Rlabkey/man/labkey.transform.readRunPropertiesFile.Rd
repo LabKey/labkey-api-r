@@ -18,7 +18,7 @@ into the running script as a replacement variable. To use that replacement varia
 you can pass in the runInfoPath parameter as "${runInfo}".\cr
 }
 \examples{
-\donttest{
+\dontrun{
 
 # library(Rlabkey)
 

@@ -69,7 +69,7 @@ The available schemas are returned as a data frame,
 \code{\link{labkey.getDefaultViewDetails}}, \code{\link{labkey.getLookupDetails}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## Details  of fields of a query
 # library(Rlabkey)

@@ -27,7 +27,7 @@ This function will delete an existing domain along with any data that may have b
 \code{\link{labkey.domain.create}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## delete an existing domain
 library(Rlabkey)

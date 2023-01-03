@@ -27,7 +27,7 @@ A list containing a data element with the property values for the deleted storag
 \code{\link{labkey.storage.update}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 ## delete a freezer and its child locations and terminal storage locations

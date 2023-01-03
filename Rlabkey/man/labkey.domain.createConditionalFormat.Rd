@@ -41,7 +41,7 @@ The data frame containing values describing a conditional format.
 \code{\link{labkey.domain.FILTER_TYPES}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

@@ -17,7 +17,7 @@ This helper function will most likely be used within an assay transform script a
 labkey.transform.readRunPropertiesFile function has been called to load the full set of run properties.\cr
 }
 \examples{
-\donttest{
+\dontrun{
 
 # library(Rlabkey)
 

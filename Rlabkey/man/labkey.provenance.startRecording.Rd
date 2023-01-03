@@ -31,7 +31,7 @@ The generated recording ID which can be used in subsequent steps (or queries tha
 \code{\link{labkey.provenance.stopRecording}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## create provenance params with material inputs and data outputs and start a recording
 library(Rlabkey)

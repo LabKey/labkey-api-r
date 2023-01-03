@@ -26,7 +26,7 @@ a lookup query object are compound names relative to the base query object used 
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{getRows}} \code{\link{getSchema}}}
 \examples{
-\donttest{
+\dontrun{
 
 ##  get fields from lookup tables and add to query
 # library(Rlabkey)

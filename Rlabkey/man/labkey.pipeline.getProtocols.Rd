@@ -37,7 +37,7 @@ names is the default.
 \code{\link{labkey.pipeline.startAnalysis}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 labkey.pipeline.getProtocols(
     baseUrl="http://labkey/",

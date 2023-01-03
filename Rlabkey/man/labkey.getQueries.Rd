@@ -39,7 +39,7 @@ https://www.labkey.org/project/home/begin.view}
 
 }
 \examples{
-\donttest{
+\dontrun{
 
 ## List of queries in a schema
 # library(Rlabkey)

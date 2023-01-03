@@ -30,7 +30,7 @@ The serialized provenance run that was created.
 \code{\link{labkey.provenance.addRecordingStep}}
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(Rlabkey)
 

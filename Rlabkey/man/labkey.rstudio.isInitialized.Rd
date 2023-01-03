@@ -8,7 +8,7 @@ LabKey-RStudio integration helper. Not intended for use outside RStudio.
 labkey.rstudio.isInitialized()
 }
 \examples{
-\donttest{
+\dontrun{
 ## RStudio console only
 library(Rlabkey)
 labkey.rstudio.isInitialized()

@@ -40,7 +40,7 @@ TRUE if the file was uploaded successfully
 \code{\link{labkey.webdav.downloadFolder}}
 }
 \examples{
-\donttest{
+\dontrun{
 ## upload a single file to a LabKey Server
 library(Rlabkey)
 
