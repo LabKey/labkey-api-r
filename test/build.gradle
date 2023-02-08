@@ -60,15 +60,6 @@ project.tasks.register("installEhrDependencies",InstallRPackage) {
 }
 
 
-project.tasks.register("installMedimmuneDependencies", InstallRPackage) {
-    InstallRPackage task ->
-        task.group = GroupNames.DEPLOY
-        task.description = "Install MedImmune dependencies"
-        task.packageNames = ["doBy", "gdata", "jsonlite", "openxlsx", "tidyr", "xml2"]
-        task.installScript = "install-medimmune-dependencies.R"
-}
-
-
 project.tasks.register("installRSurvival", InstallRPackage) {
     InstallRPackage task ->
         task.group = GroupNames.DEPLOY
