@@ -15,9 +15,4 @@
 ##
 
 source("install-util.R")
-# OS.type <- .Platform$OS.type
-# if (OS.type == "unix") {
-#     # Workaround for https://github.com/jyypma/nloptr/issues/40
-#     install.dependencies("nloptr", github_deps=c("jyypma/nloptr"))
-# }
 install.dependencies("luminex", c("drc", "xtable", "Cairo", "plotrix"))
