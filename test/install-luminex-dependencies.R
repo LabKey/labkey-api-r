@@ -20,4 +20,4 @@ source("install-util.R")
 #     # Workaround for https://github.com/jyypma/nloptr/issues/40
 #     install.dependencies("nloptr", github_deps=c("jyypma/nloptr"))
 # }
-install.dependencies("luminex", c("drc", "xtable", "Cairo", "plotrix"))
+install.dependencies("luminex", c("drc", "xtable", "Cairo", "plotrix", "nloptr"))
