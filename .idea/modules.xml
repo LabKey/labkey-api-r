@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/labkey-api-r.iml" filepath="$PROJECT_DIR$/.idea/modules/labkey-api-r.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test/labkey-api-r.test.iml" filepath="$PROJECT_DIR$/.idea/modules/test/labkey-api-r.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test/remoteapi.labkey-api-r.test.iml" filepath="$PROJECT_DIR$/.idea/modules/test/remoteapi.labkey-api-r.test.iml" />
     </modules>
   </component>
 </project>
