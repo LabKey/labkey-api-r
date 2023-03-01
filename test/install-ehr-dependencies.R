@@ -15,5 +15,5 @@
 ##
 
 source("install-util.R")
-install.dependencies("kinship2", c("getopt", "Matrix", "quadprog", "kinship2"))
+install.dependencies("kinship2", c("getopt", "Matrix", "quadprog", "kinship2", "dplyr"))
 install.dependencies("pedigree", c("HaploSim", "reshape", "pedigree"))
