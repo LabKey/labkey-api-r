@@ -20,7 +20,7 @@ return the formatted baseUrl. Skip baseUrl parameter to get previously set baseU
 \dontrun{
 ## Example of getting previously set baseUrl
 library(Rlabkey)
-labkey.setDefaults(apiKey="session|abcdef0123456789abcdef0123456789",
+labkey.setDefaults(apiKey="abcdef0123456789abcdef0123456789",
     baseUrl="http://labkey/")
 labkey.getBaseUrl()
 

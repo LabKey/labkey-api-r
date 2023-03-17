@@ -20,7 +20,7 @@ labkey.rstudio.initRStudio(apiKey = "", baseUrl = "", folderPath, skipViewer = F
 \dontrun{
 ## RStudio console only
 library(Rlabkey)
-labkey.rstudio.initRStudio(apiKey="session|abcdef0123456789abcdef0123456789",
+labkey.rstudio.initRStudio(apiKey="abcdef0123456789abcdef0123456789",
     baseUrl="http://labkey/", folderPath="home")
 
 }

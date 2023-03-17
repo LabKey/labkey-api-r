@@ -47,15 +47,19 @@ labkey.setDefaults(email="testing@localhost.test", password="password")
 ## Functions invoked at this point respect the role assignments and
 ## other authorizations of the specified user
 
-labkey.setDefaults(apiKey="apikey|abcdef0123456789abcdef0123456789")
+## A user can create an API key via the LabKey UI and set it as follows:
+
+labkey.setDefaults(apiKey="abcdef0123456789abcdef0123456789")
 
 ## Functions invoked at this point respect the role assignments and
 ## other authorizations of the user who created the API key
 
-labkey.setDefaults(apiKey="session|abcdef0123456789abcdef0123456789")
+## A user can create a session key via the LabKey UI and set it as follows:
+
+labkey.setDefaults(apiKey="0123456789abcdef0123456789abcdef")
 
 ## Functions invoked at this point share authorization
-## and session information with the browser session
+## and session information with the user's browser session
 
 labkey.setDefaults() # called without any parameters will reset/clear the environment variables
 

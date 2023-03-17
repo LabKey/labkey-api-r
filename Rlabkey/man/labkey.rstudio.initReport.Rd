@@ -25,7 +25,7 @@ labkey.rstudio.initReport(apiKey = "", baseUrl = "", folderPath,
 \dontrun{
 ## RStudio console only
 library(Rlabkey)
-labkey.rstudio.initReport(apiKey="session|abcdef0123456789abcdef0123456789",
+labkey.rstudio.initReport(apiKey="abcdef0123456789abcdef0123456789",
     baseUrl="http://labkey/", folderPath="home",
     reportEntityId="0123456a-789b-1000-abcd-01234567abcde")
 
