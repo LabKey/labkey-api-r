@@ -7,8 +7,9 @@ If the includeSubfolders config option is set to true, it will also return infor
 the user is allowed to see.
 }
 \usage{
-labkey.security.getContainers(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE,
-    includeSubfolders=FALSE, depth=50)
+labkey.security.getContainers(baseUrl=NULL, folderPath,
+    includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50,
+    includeChildWorkbooks=TRUE, includeStandardProperties = TRUE)
 }
 \arguments{
   \item{baseUrl}{A string specifying the \code{baseUrl} for the labkey server.}
@@ -16,6 +17,8 @@ labkey.security.getContainers(baseUrl=NULL, folderPath, includeEffectivePermissi
   \item{includeEffectivePermissions}{If set to false, the effective permissions for this container resource will not be included (defaults to true).}
   \item{includeSubfolders}{If set to true, the entire branch of containers will be returned. If false, only the immediate children of the starting container will be returned (defaults to false).}
   \item{depth}{May be used to control the depth of recursion if includeSubfolders is set to true.}
+  \item{includeChildWorkbooks}{If true, include child containers of type workbook in the response (defaults to TRUE).}
+  \item{includeStandardProperties}{If true, include the standard container properties like title, formats, etc. in the response (defaults to TRUE).}
 }
 \details{
 This function returns information about the specified container, including the user's current permissions within that container.
@@ -41,7 +44,8 @@ library(Rlabkey)
 
 labkey.security.getContainers(
     baseUrl="http://labkey/", folderPath = "home",
-    includeEffectivePermissions = FALSE, includeSubfolders = TRUE, depth = 2
+    includeEffectivePermissions = FALSE, includeSubfolders = TRUE, depth = 2,
+    includeChildWorkbooks = FALSE, includeStandardProperties = FALSE
 )
 
 }

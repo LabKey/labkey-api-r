@@ -7,7 +7,9 @@ Fetch a list of all folders accessible to the current user, starting from a give
 \usage{
 labkey.getFolders(baseUrl, folderPath,
         includeEffectivePermissions=TRUE,
-        includeSubfolders=FALSE, depth=50)
+        includeSubfolders=FALSE, depth=50,
+        includeChildWorkbooks=TRUE,
+        includeStandardProperties=TRUE)
 }
 \arguments{
   \item{baseUrl}{a string specifying the address of the LabKey Server, including the context root}
@@ -15,6 +17,8 @@ labkey.getFolders(baseUrl, folderPath,
   \item{includeEffectivePermissions}{If set to false, the effective permissions for this container resource will not be included. (defaults to TRUE).}
   \item{includeSubfolders}{whether the search for subfolders should recurse down the folder hierarchy}
   \item{depth}{maximum number of subfolder levels to show if includeSubfolders=TRUE}
+  \item{includeChildWorkbooks}{If true, include child containers of type workbook in the response (defaults to TRUE).}
+  \item{includeStandardProperties}{If true, include the standard container properties like title, formats, etc. in the response (defaults to TRUE).}
 }
 \details{
 Folders are a hierarchy of containers for data and files.   The are the place where permissions are set 

@@ -14,7 +14,8 @@
 # limitations under the License.
 ##
 
-labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50)
+labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50,
+    includeChildWorkbooks=TRUE, includeStandardProperties=TRUE)
 {
 	baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -27,9 +28,13 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	## Formatting
 	if(includeSubfolders) {inclsf <- paste("1&depth=", depth, sep="")} else {inclsf <- "0"}
 	if(includeEffectivePermissions) {inclep <- "1"} else {inclep <- "0"}
+	if(includeChildWorkbooks) {inclcw <- "1"} else {inclcw <- "0"}
+	if(includeStandardProperties) {inclsp <- "1"} else {inclsp <- "0"}
 
 	## Construct url
-	myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,"&includeEffectivePermissions=",inclep, sep="")
+	myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,
+	    "&includeEffectivePermissions=",inclep,"&includeChildWorkbooks=",inclcw,"&includeStandardProperties=",inclsp,
+	    sep="")
 
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl);

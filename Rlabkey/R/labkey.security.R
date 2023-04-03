@@ -16,9 +16,11 @@
 
 ## Returns information about the specified container, including the user's current permissions within that container.
 ##
-labkey.security.getContainers <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50)
+labkey.security.getContainers <- function(baseUrl=NULL, folderPath, includeEffectivePermissions=TRUE, includeSubfolders=FALSE, depth=50,
+    includeChildWorkbooks=TRUE, includeStandardProperties=TRUE)
 {
-    results = labkey.getFolders(baseUrl, folderPath, includeEffectivePermissions, includeSubfolders, depth)
+    results = labkey.getFolders(baseUrl, folderPath, includeEffectivePermissions, includeSubfolders, depth,
+                                includeChildWorkbooks, includeStandardProperties)
     return (results)
 }
 
