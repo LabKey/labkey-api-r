@@ -29,7 +29,13 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	if(includeSubfolders) {inclsf <- paste("1&depth=", depth, sep="")} else {inclsf <- "0"}
 	if(includeEffectivePermissions) {inclep <- "1"} else {inclep <- "0"}
 	if(includeChildWorkbooks) {inclcw <- "1"} else {inclcw <- "0"}
-	if(includeStandardProperties) {inclsp <- "1"} else {inclsp <- "0"}
+
+	inclsp <- "0"
+	resultCols = c("name", "path", "id", "effectivePermissions")
+	if(includeStandardProperties) {
+	    inclsp <- "1"
+	    resultCols = c("name", "path", "id", "title", "type", "folderType", "effectivePermissions")
+	}
 
 	## Construct url
 	myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,
@@ -40,8 +46,6 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	mydata <- labkey.get(myurl);
 
 	decode <- fromJSON(mydata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
-
-	resultCols = c("name", "path", "id", "title", "type", "folderType", "effectivePermissions")
 
 	curfld <- decode
 	curfld$effectivePermissions = paste(curfld$effectivePermissions, collapse=",")
@@ -65,7 +69,11 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	}
 
 	allpathsDF <- data.frame(allpaths, stringsAsFactors=FALSE)
-	colnames(allpathsDF) <- c("name", "folderPath", "id", "title", "type", "folderType", "effectivePermissions")
+	if(includeStandardProperties) {
+	    colnames(allpathsDF) <- c("name", "folderPath", "id", "title", "type", "folderType", "effectivePermissions")
+    } else {
+        colnames(allpathsDF) <- c("name", "folderPath", "id", "effectivePermissions")
+    }
 
 	return(allpathsDF)
 }
