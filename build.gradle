@@ -4,8 +4,9 @@ import org.labkey.gradle.util.GroupNames
 buildscript {
     repositories {
         mavenCentral()
+        gradlePluginPortal()
         maven {
-            url "${artifactory_contextUrl}/plugins-release"
+            url "${artifactory_contextUrl}/plugins-release-no-proxy"
         }
         if (gradlePluginsVersion.contains("SNAPSHOT"))
         {
@@ -17,7 +18,7 @@ buildscript {
     dependencies {
         classpath "org.labkey.build:gradlePlugins:${gradlePluginsVersion}"
     }
-    configurations.all {
+    configurations.configureEach {
         // Check for updates every build for SNAPSHOT dependencies
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
