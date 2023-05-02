@@ -38,7 +38,7 @@ labkey.getDefaultViewDetails <- function(baseUrl=NULL, folderPath, schemaName, q
 	return(viewDetails)
 }
 
-## internal reoutine that handles all of these
+## internal routine that handles all of these
 getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDefaultView=FALSE, lookupKey=NULL)
 {
 	baseUrl=labkey.getBaseUrl(baseUrl)
