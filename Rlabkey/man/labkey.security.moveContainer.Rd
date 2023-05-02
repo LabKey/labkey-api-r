@@ -31,6 +31,7 @@ Returns a success message for the container move action with the new path.
 \code{\link{labkey.security.getContainers}},
 \code{\link{labkey.security.createContainer}},
 \code{\link{labkey.security.deleteContainer}}
+\code{\link{labkey.security.renameContainer}}
 }
 \examples{
 \dontrun{

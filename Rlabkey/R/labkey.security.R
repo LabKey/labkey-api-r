@@ -92,6 +92,33 @@ labkey.security.moveContainer <- function(baseUrl=NULL, folderPath, destinationP
     return (fromJSON(response))
 }
 
+## Renames an existing container at the given container path. This action allows for updating the container
+## name, title, or both.
+##
+labkey.security.renameContainer <- function(baseUrl=NULL, folderPath, name=NULL, title=NULL, addAlias=TRUE)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
+        stop (paste("A value must be specified for both baseUrl and folderPath."))
+    if (missing(name) && missing(title))
+            stop (paste("A value must be specified for either name or title."))
+
+    params <- list()
+    if(is.null(name)==FALSE) {params <- c(params, list(name=name))}
+    if(is.null(title)==FALSE) {params <- c(params, list(title=title))}
+    if(is.null(addAlias)==FALSE) {params <- c(params, list(addAlias=addAlias))}
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "admin", folderPath, "renameContainer.api", sep="")
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response))
+}
+
 labkey.security.impersonateUser <- function(baseUrl = NULL, folderPath, userId = NULL, email = NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)

@@ -33,6 +33,7 @@ Returns information about the newly created container.
 \code{\link{labkey.security.getContainers}},
 \code{\link{labkey.security.deleteContainer}},
 \code{\link{labkey.security.moveContainer}}
+\code{\link{labkey.security.renameContainer}}
 }
 \examples{
 \dontrun{

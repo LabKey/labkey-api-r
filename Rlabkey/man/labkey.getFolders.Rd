@@ -47,6 +47,7 @@ The available folders are returned as a three-column data frame containing
 \code{\link{labkey.security.createContainer}},
 \code{\link{labkey.security.deleteContainer}},
 \code{\link{labkey.security.moveContainer}}
+\code{\link{labkey.security.renameContainer}}
 }
 \examples{
 \dontrun{

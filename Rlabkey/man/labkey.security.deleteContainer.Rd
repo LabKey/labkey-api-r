@@ -26,6 +26,7 @@ Returns a success message for the container deletion action.
 \code{\link{labkey.security.getContainers}},
 \code{\link{labkey.security.createContainer}},
 \code{\link{labkey.security.moveContainer}}
+\code{\link{labkey.security.renameContainer}}
 }
 \examples{
 \dontrun{

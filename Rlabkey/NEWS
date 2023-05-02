@@ -1,3 +1,6 @@
+Changes in 2.11.0
+  o Add labkey.security.renameContainer
+
 Changes in 2.10.0
   o Update documentation to reflect removal of "apikey|" and "session|" prefixes from API keys and session keys
   o Issue 47202: Options to reduce payload of getContainers.api response: includeChildWorkbooks, includeStandardProperties
