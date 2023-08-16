@@ -53,6 +53,9 @@ NO_MV_INDICATOR\cr
 Q\cr
 ONTOLOGY_IN_SUBTREE\cr
 ONTOLOGY_NOT_IN_SUBTREE\cr
+EXP_CHILD_OF\cr
+EXP_PARENT_OF\cr
+EXP_LINEAGE_OF\cr
 
 When using the MISSING, NOT_MISSING, MV_INDICATOR, or NO_MV_INDICATOR operators, an empty string should be supplied as the value.
 See example below.

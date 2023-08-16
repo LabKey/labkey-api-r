@@ -10,6 +10,9 @@ Changes in 2.10.0
 Changes in 2.9.1
   o Freezer Manager API - add Primary Storage option to storage-related action documentation
 
+Changes in TBD
+  o Issue 48298: Add Lineage filter types to makeFilter
+
 Changes in 2.9.0
   o Add support for creating Freezer Manager freezer hierarchies
   o New labkey.storage NAMESPACE: labkey.storage.create, labkey.storage.update, labkey.storage.delete

@@ -50,16 +50,16 @@
  								"DATE_GT"="dategt",
  								"DATE_GREATER_THAN"="dategt",
 
+ 								"LT"="lt",
+ 								"LESS_THAN"="lt",
+ 								"DATE_LT"="datelt",
+ 								"DATE_LESS_THAN"="datelt",
+
  								"GTE"="gte",
  								"GREATER_THAN_OR_EQUAL_TO"="gte",
  								"GREATER_THAN_OR_EQUAL"="gte",
  								"DATE_GTE"="dategte",
  								"DATE_GREATER_THAN_OR_EQUAL"="dategte",
-
- 								"LT"="lt",
- 								"LESS_THAN"="lt",
- 								"DATE_LT"="datelt",
- 								"DATE_LESS_THAN"="datelt",
 
  								"LTE"="lte",
  								"LESS_THAN_OR_EQUAL_TO"="lte",
@@ -110,10 +110,17 @@
 								"Q"="q",
 
 								#
-								# Ontology filters
+								# Ontology operators
 								#
 								"ONTOLOGY_IN_SUBTREE"="concept:insubtree",
 								"ONTOLOGY_NOT_IN_SUBTREE"="concept:notinsubtree",
+
+								#
+								# Lineage operators
+								#
+                                "EXP_CHILD_OF" = "exp:childof",
+                                "EXP_PARENT_OF" = "exp:parentof",
+                                "EXP_LINEAGE_OF" = "exp:lineageof",
 								)
 
  				if(is.null(fop)==TRUE) stop ("Invalid operator name.")
