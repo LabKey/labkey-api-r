@@ -1,3 +1,6 @@
+Changes in 2.12.0
+  o Issue 48298: Add Lineage filter types to makeFilter
+
 Changes in 2.11.0
   o Add labkey.security.renameContainer
   o Note: only supported for LabKey Server v23.5
@@ -9,9 +12,6 @@ Changes in 2.10.0
 
 Changes in 2.9.1
   o Freezer Manager API - add Primary Storage option to storage-related action documentation
-
-Changes in TBD
-  o Issue 48298: Add Lineage filter types to makeFilter
 
 Changes in 2.9.0
   o Add support for creating Freezer Manager freezer hierarchies

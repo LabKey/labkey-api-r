@@ -118,9 +118,9 @@
 								#
 								# Lineage operators
 								#
-                                "EXP_CHILD_OF" = "exp:childof",
-                                "EXP_PARENT_OF" = "exp:parentof",
-                                "EXP_LINEAGE_OF" = "exp:lineageof",
+								"EXP_CHILD_OF" = "exp:childof",
+								"EXP_PARENT_OF" = "exp:parentof",
+								"EXP_LINEAGE_OF" = "exp:lineageof",
 								)
 
  				if(is.null(fop)==TRUE) stop ("Invalid operator name.")
