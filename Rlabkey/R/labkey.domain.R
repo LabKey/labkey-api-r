@@ -42,6 +42,11 @@ labkey.domain.get <- function(baseUrl=NULL, folderPath, schemaName, queryName)
     if (is.null(result$instructions)) result$instructions = NA
     if (is.null(result$domainKindName)) result$domainKindName = NA
 
+    # Issue 41677: domain indices come back with columnNames as character[] but need to be list for saveDomain
+    if (!is.null(result$indices)) {
+        result$indices$columnNames = lapply(result$indices$columnNames, as.list)
+    }
+
     return (result)
 }
 
