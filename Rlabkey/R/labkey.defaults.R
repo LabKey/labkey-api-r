@@ -249,6 +249,19 @@ isDebug <- function()
     return (.lkdefaults$debug)
 }
 
+labkey.setWafEncoding <- function(wafEncode=TRUE)
+{
+    .lkdefaults$wafEncode = wafEncode;
+}
+
+isWafEncoding <- function()
+{
+    if (is.null(.lkdefaults$wafEncode)) {
+        return (TRUE)
+    }
+    return (.lkdefaults$wafEncode)
+}
+
 
 isRequestError <- function(response, status_code) 
 {
@@ -305,4 +318,19 @@ verboseOutput <- function(title, content)
         print(content)
         print(paste("*******************END ",title,"*********************", sep=""))
     }
+}
+
+# Obfuscates content that's often intercepted by web application firewalls that are scanning for likely
+# SQL or script injection. We have a handful of endpoints that intentionally accept SQL or script, so we
+# encode the text to avoid tripping alarms. It's a simple BASE64 encoding that obscures the content, and lets the
+# WAF scan for and reject malicious content on all other parameters. See Issue 48509.
+wafEncode <- function(value)
+{
+    if (!is.null(value) && is.character(value))
+    {
+        value <- URLencode(value)
+        value <- base64_enc(value)
+        value <- paste0("/*{{base64/x-www-form-urlencoded/wafText}}*/", value)
+    }
+    return (value)
 }

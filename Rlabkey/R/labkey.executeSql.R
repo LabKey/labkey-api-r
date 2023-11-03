@@ -31,6 +31,9 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
     ## Construct url
     myurl <- paste(baseUrl, "query", folderPath, "executeSql.api", sep="")
 
+    ## Apply wafEncode, if requested
+    if (isWafEncoding()) sql <- wafEncode(sql)
+
     ## Construct parameters
     params <- list(schemaName=schemaName, apiVersion=8.3, sql=sql)
     if(is.null(maxRows)==FALSE) {params <- c(params, list(maxRows=maxRows))}

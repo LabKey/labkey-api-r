@@ -1,5 +1,9 @@
 Changes in 2.13.0
   o Issue 41677: Fix for domain get/save round tripping of domain indices (need to use list() for index columnNames)
+  o Obfuscate SQL parameters passed by labkey.executeSql to avoid rejection by web application firewalls
+    o Earliest compatible LabKey Server version: 23.9.0
+    o This command is no longer compatible with earlier versions of LabKey Server (23.8.x and before) by default,
+        however, if targeting an older server, calling labkey.setWafEncoding(FALSE) will restore the previous behavior.
 
 Changes in 2.12.0
   o Issue 48298: Add Lineage filter types to makeFilter
