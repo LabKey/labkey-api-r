@@ -10,7 +10,7 @@ server, pass FALSE to this method.
 labkey.setWafEncoding(wafEncode = TRUE)
 }
 \arguments{
-  \item{debug}{a boolean specifying if wafEncode mode is enabled or disabled}
+  \item{wafEncode}{a boolean specifying if wafEncode mode is enabled or disabled}
 }
 
 \author{Cory Nathe}

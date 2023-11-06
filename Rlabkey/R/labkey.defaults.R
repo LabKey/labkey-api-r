@@ -328,9 +328,24 @@ wafEncode <- function(value)
 {
     if (!is.null(value) && is.character(value))
     {
-        value <- URLencode(value)
+        value <- encodeURIComponent(value)
         value <- base64_enc(value)
+        value <- gsub("\n", "", value) # jsonlite:base64_enc concats long strings with \n char
         value <- paste0("/*{{base64/x-www-form-urlencoded/wafText}}*/", value)
     }
+    return (value)
+}
+
+# URL Encode string.
+# NOTE: made to match JavaScript encodeURIComponent()
+encodeURIComponent <- function(value)
+{
+    value <- URLencode(value, reserved = TRUE)
+    # The following characters need to be decoded to match server side behavior: !  * ' ( )
+    value <- gsub("%21", "!", value)
+    value <- gsub("%2A", "*", value)
+    value <- gsub("%27", "'", value)
+    value <- gsub("%28", "(", value)
+    value <- gsub("%29", ")", value)
     return (value)
 }
