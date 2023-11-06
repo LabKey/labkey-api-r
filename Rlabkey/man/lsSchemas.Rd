@@ -16,7 +16,7 @@ lsSchemas(session)
 \value{ A character array containing the available schema names
 }
 \author{Peter Hussey}
-\seealso{\code{\link{getSession}}, {\code{\link{lsFolders}}, \code{\link{lsProjects}}}
+\seealso{\code{\link{getSession}}, \code{\link{lsFolders}}, \code{\link{lsProjects}}}
 }
 \examples{
 \dontrun{

@@ -30,7 +30,7 @@ To see the save result on LabKey server, click on the "SimpleMeans" assay in the
 \references{
 https://www.labkey.org/project/home/begin.view}
 \author{Peter Hussey}
-\seealso{\code{\link{getSession}}, \code{\link{getSchema}}, \code{\link{getLookups}} \code{\link{getRows}}}
+\seealso{\code{\link{getSession}}, \code{\link{getSchema}}, \code{\link{getLookups}}, \code{\link{getRows}}}
 \examples{
 \dontrun{
 

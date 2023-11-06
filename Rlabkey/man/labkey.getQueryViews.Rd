@@ -19,20 +19,27 @@ A named query view is created by using the \dQuote{Customize View} button option
 Use \code{getDefaultViewDetails} to get inforation about the default (unnamed) view.
 }
 \value{
-The available views for a query are returned as a three-column data frame, with one row per view output field.
-
-\code{viewName} {The name of the view, or NA for the default view.}\cr
-\code{fieldName} {The name of a field within the view, as defined in the query object to which the field belongs}\cr 
-\code{key} {The name of the field relative to the base query,  Use this value in the colSelect parameter of \code{labkey.selectRows()} .}\cr 
+The available views for a query are returned as a three-column data frame, with one row per view output field. \cr
+\item{viewName}{The name of the view, or NA for the default view.} \cr
+\item{fieldName}{The name of a field within the view, as defined in the query object to which the field belongs} \cr
+\item{key}{The name of the field relative to the base query,  Use this value in the colSelect parameter of \code{labkey.selectRows()}.} \cr
 
 }
 \references{https://www.labkey.org/Documentation/wiki-page.view?name=savingViews}
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
-{Retrieve data:  } \code{\link{labkey.selectRows}},\code{\link{makeFilter}}, \code{\link{labkey.executeSql}} \cr
-{Modify data:  } \code{\link{labkey.updateRows}}, \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \code{\link{labkey.deleteRows}} \cr
-{List available data: } \code{\link{labkey.getSchemas}}, \code{\link{labkey.getQueries}},
-\code{\link{labkey.getQueryDetails}},\code{\link{labkey.getDefaultViewDetails}},\code{\link{labkey.getLookupDetails}}
+\code{\link{labkey.selectRows}},
+\code{\link{makeFilter}},
+\code{\link{labkey.executeSql}},
+\code{\link{labkey.updateRows}},
+\code{\link{labkey.insertRows}},
+\code{\link{labkey.importRows}},
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.getSchemas}},
+\code{\link{labkey.getQueries}},
+\code{\link{labkey.getQueryDetails}},
+\code{\link{labkey.getDefaultViewDetails}},
+\code{\link{labkey.getLookupDetails}}
 
 
 }

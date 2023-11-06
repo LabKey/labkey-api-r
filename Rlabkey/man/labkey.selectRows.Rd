@@ -85,10 +85,18 @@ The requested data are returned in a data frame with stringsAsFactors set to FAL
 
 \author{Valerie Obenchain}
 \seealso{
-{Retrieve data:  } \code{\link{makeFilter}}, \code{\link{labkey.executeSql}} \cr
-{Modify data:  } \code{\link{labkey.updateRows}}, \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \code{\link{labkey.deleteRows}}\cr
-{List available data: } \code{\link{labkey.getSchemas}}, \code{\link{labkey.getQueries}}, \code{\link{labkey.getQueryViews}},
-\code{\link{labkey.getQueryDetails}},\code{\link{labkey.getDefaultViewDetails}},\code{\link{labkey.getLookupDetails}},
+\code{\link{makeFilter}},
+\code{\link{labkey.executeSql}},
+\code{\link{labkey.updateRows}},
+\code{\link{labkey.insertRows}},
+\code{\link{labkey.importRows}},
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.getSchemas}},
+\code{\link{labkey.getQueries}},
+\code{\link{labkey.getQueryViews}},
+\code{\link{labkey.getQueryDetails}},
+\code{\link{labkey.getDefaultViewDetails}},
+\code{\link{labkey.getLookupDetails}}
 
 }
 \examples{

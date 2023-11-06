@@ -20,22 +20,29 @@ the data that is visible depends on the current user's permissions in a given fo
 Function arguments identify the location of the server and the folder path.
 }
 \value{
-The available queries are returned as a three-column data frame containing {one row for each field} for each query 
-in the specified schema.  The three columns are
-
-\code{queryName}{the name of the query object, repeated once for every field defined as output of the query.}  \cr
-\code{fieldName} {the name of a query output field} \cr 
-\code{caption}{the caption of the named field as shown in the column header of a data grid, also known as a label}\cr 
+The available queries are returned as a three-column data frame containing one row for each field for each query
+in the specified schema.  The three columns are \cr
+\item{queryName}{the name of the query object, repeated once for every field defined as output of the query.}  \cr
+\item{fieldName}{the name of a query output field} \cr
+\item{caption}{the caption of the named field as shown in the column header of a data grid, also known as a label} \cr
 
 }
 \references{http://www.omegahat.net/RCurl/,\cr
 https://www.labkey.org/project/home/begin.view}
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
-{Retrieve data:  } \code{\link{labkey.selectRows}}, \code{\link{makeFilter}}, \code{\link{labkey.executeSql}} \cr
-{Modify data:  } \code{\link{labkey.updateRows}}, \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \code{\link{labkey.deleteRows}}\cr
-{List available data: } \code{\link{labkey.getSchemas}}, \code{\link{labkey.getQueryViews}}, 
-\code{\link{labkey.getQueryDetails}}, \code{\link{labkey.getDefaultViewDetails}}, \code{\link{labkey.getLookupDetails}}
+\code{\link{labkey.selectRows}},
+\code{\link{makeFilter}},
+\code{\link{labkey.executeSql}},
+\code{\link{labkey.updateRows}},
+\code{\link{labkey.insertRows}},
+\code{\link{labkey.importRows}},
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.getSchemas}},
+\code{\link{labkey.getQueryViews}},
+\code{\link{labkey.getQueryDetails}},
+\code{\link{labkey.getDefaultViewDetails}},
+\code{\link{labkey.getLookupDetails}}
 
 }
 \examples{

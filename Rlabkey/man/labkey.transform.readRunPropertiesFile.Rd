@@ -14,8 +14,7 @@ labkey.transform.readRunPropertiesFile(runInfoPath)
 
 \details{
 The most common scenario is that the assay transform script will get the run properties file path added
-into the running script as a replacement variable. To use that replacement variable for this helper function,
-you can pass in the runInfoPath parameter as "${runInfo}".\cr
+into the running script as a replacement variable.\cr
 }
 \examples{
 \dontrun{

@@ -39,34 +39,41 @@ every record from the target queryName appears in the output whether or not ther
 
 }
 \value{
-The available schemas are returned as a data frame,
-
-\code{queryName} {the name of the query, repeated n times, where n is the number of output fields from the query} \cr
-\code{fieldName} {the fully qualified name of the field, relative to the specified queryName.  } \cr 
-\code{caption}  {a more readable label for the data field, appears as a column header in grids} \cr 
-\code{fieldKey} {the name part that identifies this field within its containing table, independent of its use as a lookup target.}\cr 
-\code{type} {a string specifying the field type, e.g. Text, Number, Date, Integer}\cr 
-\code{isNullable} {TRUE if the field can be left empty (null)} \cr
-\code{isKeyField} {TRUE if the field is part of the primary key} \cr
-\code{isAutoIncrement} {TRUE if the system will automatically assign a sequential integer in this on inserting a record}\cr 
-\code{isVersionField} {TRUE if the field issued to detect changes since last read} \cr
-\code{isHidden} {TRUE if the field is not displayed by default} \cr
-\code{isSelectable} {reserved for future use. }\cr
-\code{isUserEditable} {reserved for future use.}\cr
-\code{isReadOnly} {reserved for future use}\cr
-\code{isMvEnabled} {reserved for future use}\cr
-\code{lookupKeyField}  {for a field defined as a lookup the primary key column of the query referenced by the lookup field;  NA for non-lookup fields} \cr
-\code{lookupSchemaName} {the schema of the query referenced by the lookup field;  NA for non-lookup fields} \cr
-\code{lookupDisplayField} {the field from the query referenced by the lookup field that is shown by default in place of the lookup field;  NA for non-lookup fields} \cr 
-\code{lookupQueryName} {the query referenced by the lookup field;  NA for non-lookup fields.  A non-NA value indicates that you can use this field in a call to getLookups} \cr 
-\code{lookupIsPublic} {reserved for future use}\cr
+The available schemas are returned as a data frame:
+\item{queryName}{the name of the query, repeated n times, where n is the number of output fields from the query} \cr
+\item{fieldName}{the fully qualified name of the field, relative to the specified queryName.} \cr
+\item{caption}{a more readable label for the data field, appears as a column header in grids} \cr
+\item{fieldKey}{the name part that identifies this field within its containing table, independent of its use as a lookup target.} \cr
+\item{type}{a string specifying the field type, e.g. Text, Number, Date, Integer} \cr
+\item{isNullable}{TRUE if the field can be left empty (null)} \cr
+\item{isKeyField}{TRUE if the field is part of the primary key} \cr
+\item{isAutoIncrement}{TRUE if the system will automatically assign a sequential integer in this on inserting a record} \cr
+\item{isVersionField}{TRUE if the field issued to detect changes since last read} \cr
+\item{isHidden}{TRUE if the field is not displayed by default} \cr
+\item{isSelectable}{reserved for future use.} \cr
+\item{isUserEditable}{reserved for future use.} \cr
+\item{isReadOnly}{reserved for future use} \cr
+\item{isMvEnabled}{reserved for future use} \cr
+\item{lookupKeyField}{for a field defined as a lookup the primary key column of the query referenced by the lookup field;  NA for non-lookup fields} \cr
+\item{lookupSchemaName}{the schema of the query referenced by the lookup field;  NA for non-lookup fields} \cr
+\item{lookupDisplayField}{the field from the query referenced by the lookup field that is shown by default in place of the lookup field;  NA for non-lookup fields} \cr
+\item{lookupQueryName}{the query referenced by the lookup field;  NA for non-lookup fields.  A non-NA value indicates that you can use this field in a call to getLookups} \cr
+\item{lookupIsPublic}{reserved for future use} \cr
 }
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
-{Retrieve data:  } \code{\link{labkey.selectRows}}, \code{\link{makeFilter}}, \code{\link{labkey.executeSql}} \cr
-{Modify data:  } \code{\link{labkey.updateRows}}, \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \code{\link{labkey.deleteRows}} \cr
-{List available data: } \code{\link{labkey.getSchemas}}, \code{\link{labkey.getQueries}}, \code{\link{labkey.getQueryViews}}, 
-\code{\link{labkey.getDefaultViewDetails}}, \code{\link{labkey.getLookupDetails}}
+\code{\link{labkey.selectRows}},
+\code{\link{makeFilter}},
+\code{\link{labkey.executeSql}},
+\code{\link{labkey.updateRows}},
+\code{\link{labkey.insertRows}},
+\code{\link{labkey.importRows}},
+\code{\link{labkey.deleteRows}},
+\code{\link{labkey.getSchemas}},
+\code{\link{labkey.getQueries}},
+\code{\link{labkey.getQueryViews}},
+\code{\link{labkey.getDefaultViewDetails}},
+\code{\link{labkey.getLookupDetails}}
 }
 \examples{
 \dontrun{
