@@ -1,4 +1,4 @@
-Changes in 2.13.0
+Changes in 3.0.0
   o Issue 41677: Fix for domain get/save round tripping of domain indices (need to use list() for index columnNames)
   o Encode SQL parameters passed by labkey.executeSql to avoid rejection by web application firewalls
     o Earliest compatible LabKey Server version: 23.9.0
