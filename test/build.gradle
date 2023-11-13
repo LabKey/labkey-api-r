@@ -21,7 +21,7 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
     CopyAndInstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install RLabKey and its dependencies"
-        task.packageLocation = parent.buildDir
+        task.packageLocation = parent.layout.buildDirectory
         task.packageNames = ["Rlabkey"]
         task.installScript = "install-rlabkey-dependencies.R"
         task.dependsOn(rootProject.tasks.getByName("build"))
