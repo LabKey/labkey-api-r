@@ -21,10 +21,13 @@ project.tasks.register("installRLabKey", CopyAndInstallRPackage) {
     CopyAndInstallRPackage task ->
         task.group = GroupNames.DEPLOY
         task.description = "Install RLabKey and its dependencies"
-        task.packageLocation = parent.layout.buildDirectory
+        task.packageLocation = parent.layout.buildDirectory.get().asFile
         task.packageNames = ["Rlabkey"]
         task.installScript = "install-rlabkey-dependencies.R"
-        task.dependsOn(rootProject.tasks.getByName("build"))
+        try {
+            task.dependsOn(rootProject.tasks.named("build"))
+        }
+        catch (UnknownTaskException ignored) {}
         task.doFirst {
             project.copy {
                 CopySpec copy ->
