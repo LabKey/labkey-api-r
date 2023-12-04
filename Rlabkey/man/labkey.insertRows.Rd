@@ -6,7 +6,8 @@ Insert new rows of data into the database.
 }
 \usage{
 labkey.insertRows(baseUrl, folderPath,
-    schemaName, queryName, toInsert, na, provenanceParams=NULL)
+    schemaName, queryName, toInsert, na,
+    provenanceParams=NULL, options=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}

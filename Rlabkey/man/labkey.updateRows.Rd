@@ -6,7 +6,8 @@ Send data from an R session to update existing rows of data in the database.
 }
 \usage{
 labkey.updateRows(baseUrl, folderPath,
-    schemaName, queryName, toUpdate, provenanceParams=NULL)
+    schemaName, queryName, toUpdate,
+    provenanceParams=NULL, options=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the labkey server}

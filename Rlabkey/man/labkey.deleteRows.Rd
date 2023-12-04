@@ -6,7 +6,8 @@ Specify rows of data to be deleted from the LabKey Server
 }
 \usage{
 labkey.deleteRows(baseUrl, folderPath,
-    schemaName, queryName, toDelete, provenanceParams=NULL)
+    schemaName, queryName, toDelete,
+    provenanceParams=NULL, options=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for LabKey server}
