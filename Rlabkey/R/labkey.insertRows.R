@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert, na=NULL, provenanceParams=NULL)
+labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toInsert, na=NULL, provenanceParams=NULL, options = NULL)
 {  
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -23,6 +23,8 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
     if (missing(queryName)) stop (paste("A value must be specified for queryName."))
     if (missing(toInsert)) stop (paste("A value must be specified for toInsert."))
+    if (!missing(options) & !is.list(options))
+        stop (paste("The options parameter must be a list data structure."))
 
     ## Default showAllRows=TRUE
     showAllRows=TRUE
@@ -38,6 +40,8 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
     if (!missing(provenanceParams))
         params$provenance = provenanceParams
+    if (!missing(options))
+        params <- c(params, options)
 
     p1 <- toJSON(params, auto_unbox=TRUE)
     cnames <- colnames(toInsert)

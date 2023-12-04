@@ -18,13 +18,22 @@ labkey.insertRows(baseUrl, folderPath,
   \item{provenanceParams}{the provenance parameter object which contains the options to include as part of a provenance recording.
     This is a premium feature and requires the Provenance LabKey module to function correctly, if it is not present this parameter will be ignored.
   }
+  \item{options}{(optional) a list containing options specific to the insert action of the query}
 }
 \details{
 A single row or multiple rows of data can be inserted.  The \code{toInsert} data frame must contain
 values for each column in the dataset and must be created with the \code{stringsAsFactors} option
 set to FALSE. The names of the data in the data frame must be the column names from the
 LabKey Server.To insert a value of NULL, use an empty string ("") in the data frame (regardless of the database column type). 
-Also, when inserting data into a study dataset, the sequence number must be specified..
+Also, when inserting data into a study dataset, the sequence number must be specified.
+\cr \cr
+The list of valid options for each query will vary, but some common examples include:
+    \itemize{
+        \item{ \code{auditBehavior (string)} : Can be used to override the audit behavior for the table the query is acting on.
+            The set of types include: NONE, SUMMARY, and DETAILED.}
+        \item{ \code{auditUserComment (string)} : Can be used to provide a comment from the user that will be attached to
+            certain detailed audit log records.}
+    }
 }
 
 \value{
@@ -70,7 +79,8 @@ newrow <- data.frame(
 
 insertedRow <- labkey.insertRows("http://localhost:8080/labkey",
     folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
-    toInsert=newrow)
+    toInsert=newrow, options=list(auditBehavior="DETAILED",
+    auditUserComment="testing audit comment for insert"))
 newRowId <- insertedRow$rows[[1]]$RowId
 
 selectedRow<-labkey.selectRows("http://localhost:8080/labkey",
@@ -85,7 +95,8 @@ updaterow=data.frame(
 
 updatedRow <- labkey.updateRows("http://localhost:8080/labkey",
     folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
-    toUpdate=updaterow)
+    toUpdate=updaterow, options=list(auditBehavior="DETAILED",
+    auditUserComment="testing audit comment for update"))
 selectedRow<-labkey.selectRows("http://localhost:8080/labkey",
     folderPath="/apisamples", schemaName="lists", queryName="AllTypes",
     colFilter=makeFilter(c("RowId", "EQUALS", newRowId)))

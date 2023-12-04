@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toDelete, provenanceParams=NULL)
+labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, toDelete, provenanceParams=NULL, options = NULL)
 {  
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -26,6 +26,8 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
     if (missing(queryName)) stop (paste("A value must be specified for queryName."))
     if (missing(toDelete)) stop (paste("A value must be specified for toDelete."))
+    if (!missing(options) & !is.list(options))
+        stop (paste("The options parameter must be a list data structure."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)
@@ -38,6 +40,8 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
     if (!missing(provenanceParams))
         params$provenance = provenanceParams
+    if (!missing(options))
+        params <- c(params, options)
 
     p1 <- toJSON(params, auto_unbox=TRUE)
     cnames <- colnames(toDelete)

@@ -22,7 +22,7 @@ labkey.query.import <- function(baseUrl=NULL, folderPath, schemaName, queryName,
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(schemaName) || missing(queryName) || missing(toImport))
         stop (paste("A value must be specified for each of baseUrl, folderPath, schemaName, queryName, and toImport."))
     if (!missing(options) & !is.list(options))
-        stop (paste("options must be a list data structure."))
+        stop (paste("The options parameter must be a list data structure."))
 
     ## normalize the folder path
     folderPath <- encodeFolderPath(folderPath)

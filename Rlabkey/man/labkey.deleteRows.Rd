@@ -17,6 +17,7 @@ labkey.deleteRows(baseUrl, folderPath,
   \item{provenanceParams}{the provenance parameter object which contains the options to include as part of a provenance recording.
     This is a premium feature and requires the Provenance LabKey module to function correctly, if it is not present this parameter will be ignored.
   }
+  \item{options}{(optional) a list containing options specific to the insert action of the query}
 }
 \details{
 A single row or multiple rows of data can be deleted.  For the \code{toDelete} data frame, version 0.0.5 or later accepts either a single column 
@@ -30,6 +31,14 @@ used \dQuote{behind the scenes} for database manipulation. It is the column name
 the Rlabkey functions when a column name is expected. To identify a particular column name in a dataset on
 a web site, use the \dQuote{export to R script} option available as a drop down option under the \dQuote{views} 
 tab for each dataset.
+
+The list of valid options for each query will vary, but some common examples include:
+    \itemize{
+        \item{ \code{auditBehavior (string)} : Can be used to override the audit behavior for the table the query is acting on.
+            The set of types include: NONE, SUMMARY, and DETAILED.}
+        \item{ \code{auditUserComment (string)} : Can be used to provide a comment from the user that will be attached to
+            certain detailed audit log records.}
+    }
 }
 \value{
 A list is returned with named categories of \bold{command}, \bold{rowsAffected}, \bold{rows}, \bold{queryName}, \bold{containerPath} and \bold{schemaName}.

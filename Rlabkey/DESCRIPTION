@@ -1,6 +1,6 @@
 Package: Rlabkey
-Version: 3.0.0
-Date: 2023-11-06
+Version: 3.1.0
+Date: 2023-12-04
 Title: Data Exchange Between R and 'LabKey' Server
 Author: Peter Hussey 
 Maintainer: Cory Nathe <cnathe@labkey.com>
