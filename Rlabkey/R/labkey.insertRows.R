@@ -34,8 +34,6 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
 
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toInsert <- convertFactorsToStrings(toInsert);
-    nrows <- nrow(toInsert)
-    ncols <- ncol(toInsert)
 
     params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
     if (!missing(provenanceParams))
@@ -43,19 +41,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options))
         params <- c(params, options)
 
-    p1 <- toJSON(params, auto_unbox=TRUE)
-    cnames <- colnames(toInsert)
-    p3 <- NULL
-    for(j in 1:nrows)
-    {
-        cvalues <- as.list(toInsert[j,])
-        names(cvalues) <- cnames
-        cvalues[is.na(cvalues)] = na
-        p2 <- toJSON(cvalues, auto_unbox=TRUE)
-        p3 <- c(p3, p2)
-    }
-    p3 <- paste(p3, collapse=",")
-    pbody <- paste(substr(p1, 1, nchar(p1)-1), ', \"rows\":[' ,p3, "] }", sep="")
+    pbody <- jsonEncodeRowsAndParams(toInsert, params, TRUE)
 
     myurl <- paste(baseUrl, "query", folderPath, "insertRows.api", sep="")
 

@@ -232,3 +232,25 @@ convertFactorsToStrings <- function(df)
     df[factors] <- lapply(df[factors], as.character)
     return(df);
 }
+
+# JSON encode "rows" post body
+jsonEncodeRowsAndParams <- function(rows, params, checkIsNa=FALSE)
+{
+    nrows <- nrow(rows)
+    p1 <- toJSON(params, auto_unbox=TRUE)
+    cnames <- colnames(rows)
+    p3 <- NULL
+    for(j in 1:nrows)
+    {
+        cvalues <- as.list(rows[j,])
+        names(cvalues) <- cnames
+        if (checkIsNa) {
+            cvalues[is.na(cvalues)] = na
+        }
+        p2 <- toJSON(cvalues, auto_unbox=TRUE)
+        p3 <- c(p3, p2)
+    }
+    p3 <- paste(p3, collapse=",")
+    pbody <- paste(substr(p1, 1, nchar(p1) - 1),', \"rows\":[',p3,"] }",sep="")
+    return(pbody)
+}
