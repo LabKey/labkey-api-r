@@ -6,7 +6,7 @@ export(labkey.selectRows, labkey.executeSql, makeFilter, labkey.insertRows, labk
 	labkey.rstudio.initSession, labkey.rstudio.initRStudio, labkey.rstudio.initReport, labkey.rstudio.saveReport, labkey.rstudio.isInitialized,
 	labkey.transform.readRunPropertiesFile, labkey.transform.getRunPropertyValue, labkey.setDebugMode, labkey.setWafEncoding,
 	labkey.webdav.get, labkey.webdav.put, labkey.webdav.delete, labkey.webdav.mkDir, labkey.webdav.mkDirs, labkey.webdav.pathExists, labkey.webdav.listDir, labkey.webdav.downloadFolder,
-	labkey.truncateTable)
+	labkey.truncateTable, labkey.moveRows)
 export("getSchema")
 export("getFolderPath")
 export("saveResults")
