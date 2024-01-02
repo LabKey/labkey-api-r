@@ -1,3 +1,7 @@
+Changes in 3.2.0
+  o Add labkey.moveRows
+  o Note: only supported for LabKey Server v24.1
+
 Changes in 3.1.0
   o Issue 48490: Add options parameter to labkey.insertRows, labkey.updateRows, labkey.deleteRows to support
         specifying the "auditBehavior" and "auditUserComment" properties for the action
