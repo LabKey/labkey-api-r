@@ -53,7 +53,7 @@ deleted.
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 
 \code{\link{labkey.insertRows}}, \code{\link{labkey.importRows}}, \cr
-\code{\link{labkey.updateRows}},
+\code{\link{labkey.updateRows}}, \code{\link{labkey.moveRows}}, \cr
 \code{\link{labkey.provenance.createProvenanceParams}},
 \code{\link{labkey.provenance.startRecording}},
 \code{\link{labkey.provenance.addRecordingStep}},
