@@ -234,7 +234,7 @@ convertFactorsToStrings <- function(df)
 }
 
 # JSON encode "rows" post body
-jsonEncodeRowsAndParams <- function(rows, params, checkIsNa=FALSE)
+jsonEncodeRowsAndParams <- function(rows, params, na=NULL)
 {
     nrows <- nrow(rows)
     p1 <- toJSON(params, auto_unbox=TRUE)
@@ -244,7 +244,7 @@ jsonEncodeRowsAndParams <- function(rows, params, checkIsNa=FALSE)
     {
         cvalues <- as.list(rows[j,])
         names(cvalues) <- cnames
-        if (checkIsNa) {
+        if (!is.null(na)) {
             cvalues[is.na(cvalues)] = na
         }
         p2 <- toJSON(cvalues, auto_unbox=TRUE)

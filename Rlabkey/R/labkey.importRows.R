@@ -33,7 +33,7 @@ labkey.importRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toImport <- convertFactorsToStrings(toImport);
     params <- list(schemaName=schemaName, queryName=queryName, apiVersion=8.3)
-    pbody <- jsonEncodeRowsAndParams(toImport, params, TRUE)
+    pbody <- jsonEncodeRowsAndParams(toImport, params, na)
 
     myurl <- paste(baseUrl, "query", folderPath, "importRows.api", sep="")
 

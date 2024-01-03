@@ -37,7 +37,7 @@ labkey.moveRows <- function(baseUrl=NULL, folderPath, targetFolderPath, schemaNa
     if (!missing(options))
         params <- c(params, options)
 
-    pbody <- jsonEncodeRowsAndParams(toMove, params, FALSE)
+    pbody <- jsonEncodeRowsAndParams(toMove, params, NULL)
 
     myurl <- paste(baseUrl, "query", folderPath, "moveRows.api", sep="")
 

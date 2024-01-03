@@ -41,7 +41,7 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options))
         params <- c(params, options)
 
-    pbody <- jsonEncodeRowsAndParams(toDelete, params, FALSE)
+    pbody <- jsonEncodeRowsAndParams(toDelete, params, NULL)
 
     myurl <- paste(baseUrl, "query", folderPath, "deleteRows.api", sep="")
 

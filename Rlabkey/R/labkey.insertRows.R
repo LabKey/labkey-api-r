@@ -41,7 +41,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options))
         params <- c(params, options)
 
-    pbody <- jsonEncodeRowsAndParams(toInsert, params, TRUE)
+    pbody <- jsonEncodeRowsAndParams(toInsert, params, na)
 
     myurl <- paste(baseUrl, "query", folderPath, "insertRows.api", sep="")
 

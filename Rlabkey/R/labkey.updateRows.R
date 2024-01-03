@@ -41,7 +41,7 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options))
         params <- c(params, options)
 
-    pbody <- jsonEncodeRowsAndParams(toUpdate, params, FALSE)
+    pbody <- jsonEncodeRowsAndParams(toUpdate, params, NULL)
 
     myurl <- paste(baseUrl, "query", folderPath, "updateRows.api", sep="")
 
