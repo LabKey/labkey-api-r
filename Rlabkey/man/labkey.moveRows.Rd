@@ -1,8 +1,8 @@
 \name{labkey.moveRows}
 \alias{labkey.moveRows}
-\title{Delete rows of data from a LabKey database}
+\title{Move rows of data from a LabKey database}
 \description{
-Specify rows of data to be deleted from the LabKey Server
+Specify rows of data to be moved from the LabKey Server
 }
 \usage{
 labkey.moveRows(baseUrl, folderPath, targetFolderPath,
