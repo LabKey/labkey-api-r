@@ -13,6 +13,7 @@ Description: The 'LabKey' client library for R makes it easy for R users to
 License: Apache License 2.0
 Copyright: Copyright (c) 2010-2018 LabKey Corporation
 LazyLoad: true
+BugReports: https://github.com/LabKey/labkey-api-r/issues
 Depends: httr, jsonlite
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.11.0)
