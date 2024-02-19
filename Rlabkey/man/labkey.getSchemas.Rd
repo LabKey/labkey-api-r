@@ -22,7 +22,7 @@ Function arguments are the components of the url that identify the location of t
 The available schemas are returned as a single-column data frame.
 }
 \references{http://www.omegahat.net/RCurl/,\cr
-https://www.labkey.org/project/home/begin.view}
+https://www.labkey.org/home/project-begin.view}
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
 \code{\link{labkey.selectRows}},

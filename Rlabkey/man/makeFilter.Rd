@@ -67,7 +67,7 @@ The function returns either a single string or an array of strings to be use in 
 \code{colFilter} argument of the \code{labkey.selectRows} function.
 }
 \references{http://www.omegahat.net/RCurl/, \cr
-https://www.labkey.org/project/home/begin.view}
+https://www.labkey.org/home/project-begin.view}
 \author{Valerie Obenchain}
 \seealso{\code{\link{labkey.selectRows}}}
 \examples{

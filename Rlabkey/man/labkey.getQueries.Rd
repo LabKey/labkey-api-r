@@ -28,7 +28,7 @@ in the specified schema.  The three columns are \cr
 
 }
 \references{http://www.omegahat.net/RCurl/,\cr
-https://www.labkey.org/project/home/begin.view}
+https://www.labkey.org/home/project-begin.view}
 \author{Peter Hussey, peter@labkey.com}
 \seealso{
 \code{\link{labkey.selectRows}},

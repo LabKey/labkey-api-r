@@ -58,7 +58,7 @@ Multiple such blocks can exist in one file.
 \author{Valerie Obenchain
 }
 \references{http://www.omegahat.net/RCurl/,\cr
-https://www.labkey.org/project/home/begin.view}
+https://www.labkey.org/home/project-begin.view}
 \keyword{ package }
 \seealso{
 \code{\link{labkey.selectRows}}, \code{\link{labkey.executeSql}}, \code{\link{makeFilter}}, 

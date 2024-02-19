@@ -28,7 +28,7 @@ To see the save result on LabKey server, click on the "SimpleMeans" assay in the
 \value{an object representing the assay.
 }
 \references{
-https://www.labkey.org/project/home/begin.view}
+https://www.labkey.org/home/project-begin.view}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{getSchema}}, \code{\link{getLookups}}, \code{\link{getRows}}}
 \examples{

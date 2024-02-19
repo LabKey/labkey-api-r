@@ -14,7 +14,7 @@ lsProjects(baseUrl)
 }
 \value{ A character array containing the available projects, relative to the root. These values can be set on a session using curFolder<-
 }
-\references{https://www.labkey.org/project/home/begin.view}
+\references{https://www.labkey.org/home/project-begin.view}
 \author{Peter Hussey}
 \seealso{\code{\link{getSession}}, \code{\link{lsFolders}}, \code{\link{lsSchemas}}}
 \examples{
