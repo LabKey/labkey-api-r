@@ -21,6 +21,11 @@
 # the apiKey will be given preference in labkey.getRequestOptions().
 labkey.setDefaults <- function(apiKey="", baseUrl="", email="", password="")
 {
+    # with any reset of the defaults, clear the httr session cookies (https://stackoverflow.com/questions/39979393/how-to-remove-cookies-preserved-by-httrget)
+    if (!is.null(.lkdefaults$baseUrl)) {
+        handle_reset(.lkdefaults$baseUrl)
+    }
+
     if (baseUrl != "")
         .lkdefaults$baseUrl = baseUrl;
 

@@ -1,3 +1,6 @@
+Changes in 3.2.1
+  o labkey.setDefaults to clear httr session cookies
+
 Changes in 3.2.0
   o Add labkey.moveRows
   o Note: only supported for LabKey Server v24.1
