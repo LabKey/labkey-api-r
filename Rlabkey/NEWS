@@ -3,7 +3,7 @@ Changes in 3.2.1
 
 Changes in 3.2.0
   o Add labkey.moveRows
-  o Note: only supported for LabKey Server v24.1
+  o Note: only supported for LabKey Server v24.1 or later
 
 Changes in 3.1.0
   o Issue 48490: Add options parameter to labkey.insertRows, labkey.updateRows, labkey.deleteRows to support
@@ -21,12 +21,12 @@ Changes in 2.12.0
 
 Changes in 2.11.0
   o Add labkey.security.renameContainer
-  o Note: only supported for LabKey Server v23.5
+  o Note: only supported for LabKey Server v23.5 or later
 
 Changes in 2.10.0
   o Update documentation to reflect removal of "apikey|" and "session|" prefixes from API keys and session keys
   o Issue 47202: Options to reduce payload of getContainers.api response: includeChildWorkbooks, includeStandardProperties
-  o Note: only supported for LabKey Server v23.3
+  o Note: only supported for LabKey Server v23.3 or later
 
 Changes in 2.9.1
   o Freezer Manager API - add Primary Storage option to storage-related action documentation
@@ -34,7 +34,7 @@ Changes in 2.9.1
 Changes in 2.9.0
   o Add support for creating Freezer Manager freezer hierarchies
   o New labkey.storage NAMESPACE: labkey.storage.create, labkey.storage.update, labkey.storage.delete
-  o Note: only supported for LabKey Server v22.10
+  o Note: only supported for LabKey Server v22.10 or later
 
 Changes in 2.8.4
   o Update labkey.provenance.createProvenanceParams to support custom properties (and standard run step properties)
