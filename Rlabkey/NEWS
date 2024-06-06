@@ -1,4 +1,4 @@
-Changes in 3.2.1
+Changes in 3.2.2
   o Issue 50592: labkey.setDefaults to also clear the CSRF token cache when clearing the httr session cookies
 
 Changes in 3.2.1
