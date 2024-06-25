@@ -65,36 +65,6 @@ run <- labkey.experiment.createRun(
 labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home",
         protocolName=labkey.experiment.SAMPLE_DERIVATION_PROTOCOL, runList=run)
 
-## import an assay run which includes plate metadata
-
-df <- data.frame(participantId=c(1:3), visitId = c(10,20,30), welllocation = c("A1", "D11", "F12"))
-
-runConfig <- fromJSON(txt='{"assayId": 310,
-    "name" : "api imported run with plate metadata",
-    "properties" : {
-        "PlateTemplate" : "urn:lsid:labkey.com:PlateTemplate.Folder-6:d8bbec7d-34cd-1038-bd67-b3bd"
-    }
-}')
-
-plateMetadata <- fromJSON(txt='{
-      "control" : {
-        "positive" : {"dilution":  0.005},
-        "negative" : {"dilution":  1.0}
-      },
-      "sample" : {
-        "SA01" : {"dilution": 1.0, "ID" : 111, "Barcode" : "BC_111", "Concentration" : 0.0125},
-        "SA02" : {"dilution": 2.0, "ID" : 222, "Barcode" : "BC_222"},
-        "SA03" : {"dilution": 3.0, "ID" : 333, "Barcode" : "BC_333"},
-        "SA04" : {"dilution": 4.0, "ID" : 444, "Barcode" : "BC_444"}
-      }
-    }')
-
-run <- labkey.experiment.createRun(runConfig, dataRows = df, plateMetadata = plateMetadata)
-labkey.experiment.saveBatch(
-    baseUrl="http://labkey/", folderPath="home",
-    assayConfig=list(assayId = 310), runList=run
-)
-
 }
 }
 \keyword{IO}

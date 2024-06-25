@@ -66,7 +66,7 @@ labkey.experiment.createMaterial <- function(config, sampleSetId = NULL, sampleS
 
 ## Create an ExpRun object
 ##
-labkey.experiment.createRun <- function(config, dataInputs = NULL, dataOutputs = NULL, dataRows = NULL, materialInputs = NULL, materialOutputs = NULL, plateMetadata = NULL)
+labkey.experiment.createRun <- function(config, dataInputs = NULL, dataOutputs = NULL, dataRows = NULL, materialInputs = NULL, materialOutputs = NULL)
 {
     ## check required parameters
     if (missing(config))
@@ -125,11 +125,6 @@ labkey.experiment.createRun <- function(config, dataInputs = NULL, dataOutputs =
     	}
 
         run$dataRows <- rowsVector
-    }
-
-    if (!is.null(plateMetadata))
-    {
-        run$plateMetadata = plateMetadata;
     }
     return (run)
 }

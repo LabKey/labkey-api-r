@@ -1,3 +1,6 @@
+Changes in 3.2.3
+  o Remove deprecated support for JSON based assay plate metadata
+
 Changes in 3.2.2
   o Issue 50592: labkey.setDefaults to also clear the CSRF token cache when clearing the httr session cookies
 
