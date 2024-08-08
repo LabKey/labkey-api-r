@@ -198,3 +198,43 @@ labkey.experiment.saveRuns <- function(baseUrl=NULL, folderPath, protocolName, r
 
     return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
 }
+
+## Get lineage parent/child relationships and information for exp objects by LSID(s)
+##
+## Optional parameters (passed via options) include:
+##   parents: (boolean) include parent objects in the lineage
+##   children: (boolean) include child objects in the lineage
+##   depth: (integer) the depth of the lineage to retrieve
+##   expType: the type of experiment objects to retrieve lineage for
+##   cpasType: the type of CPAS object to retrieve lineage for
+##   runProtocolLsid: the LSID of the run protocol to retrieve lineage for
+##   includeProperties: (boolean) include properties in the lineage response
+##   includeInputsAndOutputs: (boolean) include inputs and outputs in the lineage response
+##   includeRunSteps: (boolean) include run steps in the lineage response
+##
+labkey.experiment.lineage <- function(baseUrl=NULL, folderPath, lsids, options = NULL)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    ## check required parameters
+    if (missing(folderPath))
+        stop (paste("A value must be specified for folderPath."))
+    if (missing(lsids))
+        stop (paste("A value must be specified for lsids."))
+    if (!missing(lsids) & !(is.vector(lsids) && is.atomic(lsids)))
+        stop (paste("The lsids parameter must be a vector data structure."))
+    if (!missing(options) & !is.list(options))
+        stop (paste("The options parameter must be a list data structure."))
+
+    params <- list(lsids=lsids)
+    if (!missing(options))
+        params <- c(params, options)
+
+    ## normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    url <- paste(baseUrl, "experiment", folderPath, "lineage.api", sep="")
+    response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
+
+    return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
+}

@@ -1,4 +1,7 @@
 Changes in 3.2.3
+  o Add labkey.experiment.lineage API to support getting parent/child relationships for exp objects by LSID
+
+Changes in 3.2.3
   o Remove deprecated support for JSON based assay plate metadata
 
 Changes in 3.2.2
