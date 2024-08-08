@@ -52,7 +52,7 @@ labkey.experiment.lineage(
     parents=TRUE,
     children=TRUE,
     depth=10,
-    #expType="Material",
+    expType="Material",
     includeProperties=TRUE,
     includeInputsAndOutputs=FALSE,
     includeRunSteps=FALSE
