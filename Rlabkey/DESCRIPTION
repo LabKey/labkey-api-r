@@ -2,8 +2,13 @@ Package: Rlabkey
 Version: 3.3.0
 Date: 2024-08-08
 Title: Data Exchange Between R and 'LabKey' Server
-Author: Peter Hussey 
-Maintainer: Cory Nathe <cnathe@labkey.com>
+Authors@R: c(person(given = "Peter",
+                    family = "Hussey",
+                    role = "aut"),
+             person(given = "Cory",
+                    family = "Nathe",
+                    role = "cre",
+                    email = "cnathe@labkey.com"))
 Description: The 'LabKey' client library for R makes it easy for R users to
     load live data from a 'LabKey' Server, <https://www.labkey.com/>,
     into the R environment for analysis, provided users have permissions
