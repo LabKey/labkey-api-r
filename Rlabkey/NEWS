@@ -1,4 +1,4 @@
-Changes in 3.2.3
+Changes in 3.3.0
   o Add labkey.experiment.lineage API to support getting parent/child relationships for exp objects by LSID
 
 Changes in 3.2.3
