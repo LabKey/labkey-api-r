@@ -237,7 +237,7 @@ convertFactorsToStrings <- function(df)
 jsonEncodeRowsAndParams <- function(rows, params, na=NULL)
 {
     nrows <- nrow(rows)
-    p1 <- toJSON(params, auto_unbox=TRUE)
+    p1 <- toJSON(params, auto_unbox=TRUE, digits = NA) # digits = NA to avoid trimming values (Issue 51160)
     cnames <- colnames(rows)
     p3 <- NULL
     for(j in 1:nrows)
@@ -247,7 +247,7 @@ jsonEncodeRowsAndParams <- function(rows, params, na=NULL)
         if (!is.null(na)) {
             cvalues[is.na(cvalues)] = na
         }
-        p2 <- toJSON(cvalues, auto_unbox=TRUE)
+        p2 <- toJSON(cvalues, auto_unbox=TRUE, digits = NA) # digits = NA to avoid trimming values (Issue 51160)
         p3 <- c(p3, p2)
     }
     p3 <- paste(p3, collapse=",")

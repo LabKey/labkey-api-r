@@ -1,6 +1,6 @@
 Package: Rlabkey
-Version: 3.3.0
-Date: 2024-08-08
+Version: 3.4.0
+Date: 2024-10-22
 Title: Data Exchange Between R and 'LabKey' Server
 Authors@R: c(person(given = "Peter",
                     family = "Hussey",
