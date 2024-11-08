@@ -279,19 +279,19 @@ logMessage <- function(msg) {
 
 labkey.webdav.doDownloadFolder <- function(localDir, baseUrl=NULL, folderPath, remoteFilePath, depth, overwriteFiles=TRUE, mergeFolders=TRUE, fileSet="@files")
 {
-    # Note: this should use unencoded values to match the ID in JSON
     baseUrl <- normalizeSlash(baseUrl, leading = F, trailing = F)
-    folderPath <- normalizeSlash(folderPath, leading = F)
+    folderPath <- encodeFolderPath(folderPath);
     fileSet <- normalizeSlash(fileSet, leading = F, trailing = F)
-    remoteFilePath <- normalizeSlash(remoteFilePath, leading = F)
+    remoteFilePath <- normalizeSlash(encodeRemotePath(remoteFilePath), leading = F)
     localDir <- normalizeFolder(localDir)
-    
-    prefix <- paste0("/_webdav/", folderPath, fileSet, '/')  
-    
+
+    # Issue 51606: match file path prefix to the href values returned in listDir, which are URL encoded paths
+    prefix <- paste0("/_webdav", folderPath, encodeRemotePath(fileSet), '/')
+
     files <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     for (file in files[["files"]]) {
-      relativeToRemoteRoot <- sub(prefix, "", file[["id"]])
-      relativeToDownloadStart <- sub(paste0(prefix, remoteFilePath), "", file[["id"]])
+      relativeToRemoteRoot <- sub(prefix, "", file[["href"]])
+      relativeToDownloadStart <- sub(paste0(prefix, remoteFilePath), "", file[["href"]])
 
       localPath <- file.path(localDir, relativeToDownloadStart)
       if (file[["isdirectory"]]) {

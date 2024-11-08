@@ -1,3 +1,6 @@
+Changes in 3.4.1
+  o Issue 51606: labkey.webdav.downloadFolder to match file path prefix to the href values returned in listDir, which are URL encoded paths
+
 Changes in 3.4.0
   o Issue 51160: update jsonEncodeRowsAndParams() to better handle decimal values for toJSON()
 
