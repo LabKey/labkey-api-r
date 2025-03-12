@@ -1,3 +1,6 @@
+Changes in 3.4.2
+  o Add showProgressBar parameter to labkey.webdav.downloadFolder and labkey.webdav.get
+
 Changes in 3.4.1
   o Issue 51606: labkey.webdav.downloadFolder to match file path prefix to the href values returned in listDir, which are URL encoded paths
   o Note: requires LabKey Server v24.12 or later
