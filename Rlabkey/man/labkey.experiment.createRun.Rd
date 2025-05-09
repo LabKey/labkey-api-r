@@ -10,7 +10,7 @@ labkey.experiment.createRun(config,
     materialInputs = NULL, materialOutputs = NULL)
 }
 \arguments{
-  \item{config}{a list of base experiment object properties}
+  \item{config}{A list of base experiment object properties. Note that run domain properties must be added to a properties sub-object.}
   \item{dataInputs}{(optional) a list of experiment data objects to be used as data inputs to the run}
   \item{dataOutputs}{(optional) a list of experiment data objects to be used as data outputs to the run}
   \item{dataRows}{(optional) a data frame containing data rows to be uploaded to the assay backed run}
@@ -42,8 +42,12 @@ m1 <- labkey.experiment.createMaterial(
         list(name = "87444063.2604.626"), sampleSetName = "Study Specimens")
 m2 <- labkey.experiment.createMaterial(
         list(name = "87444063.2604.625"), sampleSetName = "Study Specimens")
+
+## create the run configuration and include optional run level properties
+runConfig <- list(name="new run", properties <- list(textField="run prop 1", floatField=3.14))
+
 run <- labkey.experiment.createRun(
-        list(name="new run"), materialInputs = m1, materialOutputs = m2)
+        runConfig, materialInputs = m1, materialOutputs = m2)
 labkey.experiment.saveBatch(baseUrl="http://labkey/", folderPath="home",
         protocolName=labkey.experiment.SAMPLE_DERIVATION_PROTOCOL, runList=run)
 

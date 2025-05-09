@@ -1,3 +1,6 @@
+Changes in 3.4.4
+  o Update documentation for experiment.createRun to include an example of inserting run level properties
+
 Changes in 3.4.3
   o Bugfix to labkey.selectRows when group_concat based field has a NULL value. Related to github issue #112
 
