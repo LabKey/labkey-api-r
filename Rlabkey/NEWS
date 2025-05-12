@@ -1,5 +1,6 @@
 Changes in 3.4.3
   o Bugfix to labkey.selectRows when group_concat based field has a NULL value. Related to github issue #112
+  o Issue 53043: labkey.webdav.downloadFolder to account for contextPath in file href paths
 
 Changes in 3.4.2
   o Add showProgressBar parameter to labkey.webdav.downloadFolder and labkey.webdav.get

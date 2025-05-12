@@ -295,8 +295,15 @@ labkey.webdav.doDownloadFolder <- function(localDir, baseUrl=NULL, folderPath, r
 
     files <- labkey.webdav.listDir(baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=remoteFilePath)
     for (file in files[["files"]]) {
-      relativeToRemoteRoot <- sub(prefix, "", file[["href"]])
-      relativeToDownloadStart <- sub(paste0(prefix, remoteFilePath), "", file[["href"]])
+      # Issue 53043: the files list href includes the server contextPath, so trim that if available
+      fileHref <- file[["href"]]
+      prefixIndex <- regexpr(prefix, fileHref)
+      if (prefixIndex > -1) {
+        fileHref <- substr(fileHref, prefixIndex, nchar(fileHref))
+      }
+
+      relativeToRemoteRoot <- sub(prefix, "", fileHref)
+      relativeToDownloadStart <- sub(paste0(prefix, remoteFilePath), "", fileHref)
 
       localPath <- file.path(localDir, relativeToDownloadStart)
       if (file[["isdirectory"]]) {
@@ -319,7 +326,7 @@ labkey.webdav.doDownloadFolder <- function(localDir, baseUrl=NULL, folderPath, r
         
         labkey.webdav.doDownloadFolder(localDir=localPath, baseUrl=baseUrl, folderPath=folderPath, fileSet=fileSet, remoteFilePath=relativeToRemoteRoot, overwriteFiles=overwriteFiles, mergeFolders=mergeFolders, showProgressBar=showProgressBar)
       } else {
-          url <- paste0(baseUrl, trimLeadingPath(file[["href"]]))
+          url <- paste0(baseUrl, trimLeadingPath(fileHref))
 
           logMessage(paste0("Downloading file: ", relativeToRemoteRoot))
           logMessage(paste0("to: ", localPath))
