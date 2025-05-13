@@ -1,5 +1,6 @@
 Changes in 3.4.3
   o Bugfix to labkey.selectRows when group_concat based field has a NULL value. Related to github issue #112
+  o Update documentation for experiment.createRun to include an example of inserting run level properties
   o Issue 53043: labkey.webdav.downloadFolder to account for contextPath in file href paths
 
 Changes in 3.4.2
