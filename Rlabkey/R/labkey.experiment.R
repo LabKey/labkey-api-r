@@ -74,6 +74,10 @@ labkey.experiment.createRun <- function(config, dataInputs = NULL, dataOutputs =
 
     run <- config
 
+    ## validate run properties if provided
+    if (!is.null(run$properties) && !is.list(run$properties))
+        stop (paste("run properties must be a list of key value pairs."))
+
     if (!is.null(dataInputs))
     {
         if (!is.list(dataInputs))
