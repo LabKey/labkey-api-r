@@ -16,7 +16,6 @@ buildscript {
             }
             content {
                 includeGroup "org.labkey.build"
-                includeGroup "org.labkey.versioning"
             }
         }
         if (gradlePluginsVersion.contains("SNAPSHOT"))
@@ -29,7 +28,6 @@ buildscript {
                 }
                 content {
                     includeGroup "org.labkey.build"
-                    includeGroup "org.labkey.versioning"
                 }
             }
 
