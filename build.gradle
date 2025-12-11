@@ -10,7 +10,7 @@ buildscript {
             }
         }
         maven {
-            url "${artifactory_contextUrl}/plugins-release-no-proxy"
+            url = "${artifactory_contextUrl}/plugins-release-no-proxy"
             mavenContent {
                 releasesOnly()
             }
@@ -49,8 +49,8 @@ String rExe = InstallRPackage.getRPath()
 
 project.tasks.register("check") {
     Task task ->
-        group GroupNames.VERIFICATION
-        description "Run validation checks on the Rlabkey package"
+        group = GroupNames.VERIFICATION
+        description = "Run validation checks on the Rlabkey package"
         task.outputs.dir project.layout.buildDirectory.file("Rlabkey.Rcheck")
         task.outputs.dir project.file("Rlabkey/src-i386")
         task.outputs.dir project.file("Rlabkey/src-x64")
@@ -68,7 +68,7 @@ project.tasks.register("check") {
                         executable: rExe,
                         output: buildOutputFile,
                         append: true,
-                        dir: BuildUtils.getBuildDir(project),
+                        dir: project.layout.buildDirectory,
                         logError: true
                 )
                         {
@@ -82,22 +82,22 @@ project.tasks.register("check") {
 
 project.tasks.register("build") {
     Task task ->
-        task.group GroupNames.BUILD
-        task.description "Build the Rlabkey package that can be installed and tested in R. Builds binary package on windows, source only on unix"
+        task.group = GroupNames.BUILD
+        task.description = "Build the Rlabkey package that can be installed and tested in R. Builds binary package on windows, source only on unix"
         task.inputs.files project.fileTree(dir: "Rlabkey", excludes: ["src-i386", "src-x64"]).files
-        task.outputs.dir project.layout.buildDirectory
+        task.inputs.property("directory", "${project.projectDir}/Rlabkey")
+        task.outputs.dir BuildUtils.getBuildDir(project)
         task.doFirst(
                 {
-                    BuildUtils.getBuildDir(project).mkdirs()
-                    project.ant.exec(
+                    task.ant.exec(
                             executable: rExe,
-                            dir: BuildUtils.getBuildDir(project),
+                            dir: outputs.files.singleFile,
                             output: buildOutputFile,
                             append: true,
                             logError: true
                     )
                             {
-                                arg(line: "CMD build ${project.projectDir}/Rlabkey")
+                                arg(line: "CMD build ${task.inputs.properties.get("directory")}")
                                 if (rLibsUserPath != null)
                                     env(key: "R_LIBS_USER", value: rLibsUserPath)
                             }
@@ -107,8 +107,8 @@ project.tasks.register("build") {
 
 
 project.tasks.register("clean", Delete) {
-        group GroupNames.BUILD
-        description "Deletes all non-versioned files generated during the build process"
+        group = GroupNames.BUILD
+        description = "Deletes all non-versioned files generated during the build process"
         delete project.tasks.check
         delete project.tasks.build
 }
