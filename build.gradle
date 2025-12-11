@@ -64,11 +64,11 @@ project.tasks.register("check") {
                 }
             })
             if (existingFiles.length > 0) {
-                project.ant.exec(
+                task.ant.exec(
                         executable: rExe,
                         output: buildOutputFile,
                         append: true,
-                        dir: project.layout.buildDirectory,
+                        dir: BuildUtils.getBuildDir(project),
                         logError: true
                 )
                         {
