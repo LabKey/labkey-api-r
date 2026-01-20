@@ -14,124 +14,141 @@
 #  limitations under the License.
 ##
 
- makeFilter <- function(...)
- {	
-
- fargs <- list(...)
- flen <- lapply(fargs, function(x) {len <- length(x); if(len<3){stop ("each filter must be of length 3")}})
+makeFilter <- function(..., asList=TRUE)
+{
+    fargs <- list(...)
+    flen <- lapply(fargs, function(x) {len <- length(x); if(len<3){stop ("each filter must be of length 3")}})
 
  	# Determine number of filters
  	fmat <- rbind(...)
  	fcount <- dim(fmat)[1]
  	# Construct filters
- 	filters <- array(0, dim=c(fcount,1))
- 	for(i in 1:fcount)
- 			{	# Match the operator
- 				fop  <- switch(EXPR=toupper(fmat[i,2]),
+ 	filters <- list()
+ 	for (i in 1:fcount)
+    {
+        # Match the operator
+        fop  <- switch(EXPR=toupper(fmat[i,2]),
+            #
+            # These operators require a data value
+            #
 
-								#
-								# These operators require a data value
-								#
+            "EQUALS"="eq",
+            "EQUAL"="eq",
+            "DATE_EQUAL"="dateeq",
 
- 								"EQUALS"="eq",
- 								"EQUAL"="eq",
- 								"DATE_EQUAL"="dateeq",
+            "NEQ"="neq",
+            "NOT_EQUALS"="neq",
+            "NOT_EQUAL"="neq",
+            "DATE_NOT_EQUAL"="dateneq",
 
- 								"NEQ"="neq",
- 								"NOT_EQUALS"="neq",
- 								"NOT_EQUAL"="neq",
- 								"DATE_NOT_EQUAL"="dateneq",
+            "NOT_EQUAL_OR_NULL"="neqornull",
+            "NOT_EQUAL_OR_MISSING"="neqornull",
 
- 								"NOT_EQUAL_OR_NULL"="neqornull",
- 								"NOT_EQUAL_OR_MISSING"="neqornull",
+            "GT"="gt",
+            "GREATER_THAN"="gt",
+            "DATE_GT"="dategt",
+            "DATE_GREATER_THAN"="dategt",
 
- 								"GT"="gt",
- 								"GREATER_THAN"="gt",
- 								"DATE_GT"="dategt",
- 								"DATE_GREATER_THAN"="dategt",
+            "LT"="lt",
+            "LESS_THAN"="lt",
+            "DATE_LT"="datelt",
+            "DATE_LESS_THAN"="datelt",
 
- 								"LT"="lt",
- 								"LESS_THAN"="lt",
- 								"DATE_LT"="datelt",
- 								"DATE_LESS_THAN"="datelt",
+            "GTE"="gte",
+            "GREATER_THAN_OR_EQUAL_TO"="gte",
+            "GREATER_THAN_OR_EQUAL"="gte",
+            "DATE_GTE"="dategte",
+            "DATE_GREATER_THAN_OR_EQUAL"="dategte",
 
- 								"GTE"="gte",
- 								"GREATER_THAN_OR_EQUAL_TO"="gte",
- 								"GREATER_THAN_OR_EQUAL"="gte",
- 								"DATE_GTE"="dategte",
- 								"DATE_GREATER_THAN_OR_EQUAL"="dategte",
+            "LTE"="lte",
+            "LESS_THAN_OR_EQUAL_TO"="lte",
+            "LESS_THAN_OR_EQUAL"="lte",
+            "DATE_LTE"="datelte",
+            "DATE_LESS_THAN_OR_EQUAL"="datelte",
 
- 								"LTE"="lte",
- 								"LESS_THAN_OR_EQUAL_TO"="lte",
- 								"LESS_THAN_OR_EQUAL"="lte",
- 								"DATE_LTE"="datelte",
- 								"DATE_LESS_THAN_OR_EQUAL"="datelte",
+            "STARTS_WITH"="startswith",
+            "DOES_NOT_START_WITH"="doesnotstartwith",
 
- 								"STARTS_WITH"="startswith",
- 								"DOES_NOT_START_WITH"="doesnotstartwith",
+            "CONTAINS"="contains",
+            "DOES_NOT_CONTAIN"="doesnotcontain",
 
- 								"CONTAINS"="contains",
- 								"DOES_NOT_CONTAIN"="doesnotcontain",
+            "CONTAINS_ONE_OF"="containsoneof",
+            "CONTAINS_NONE_OF"="containsnoneof",
 
-								"CONTAINS_ONE_OF"="containsoneof",
-								"CONTAINS_NONE_OF"="containsnoneof",
+            "IN"="in",
+            "EQUALS_ONE_OF"="in",
 
- 								"IN"="in",
- 								"EQUALS_ONE_OF"="in",
+            "NOT_IN"="notin",
+            "EQUALS_NONE_OF"="notin",
 
-								"NOT_IN"="notin",
-								"EQUALS_NONE_OF"="notin",
+            "BETWEEN"="between",
+            "NOT_BETWEEN"="notbetween",
 
-								"BETWEEN"="between",
-								"NOT_BETWEEN"="notbetween",
+            "MEMBER_OF"="memberof",
 
-								"MEMBER_OF"="memberof",
+            #
+            # These are the "no data value" operators
+            #
 
-								#
-								# These are the "no data value" operators
-								#
+            "ISBLANK"="isblank",
+            "IS_MISSING"="isblank",
+            "MISSING"="isblank",
+            "NON_BLANK"="isnonblank",
+            "IS_NOT_MISSING"="isnonblank",
+            "NOT_MISSING"="isnonblank",
 
- 								"ISBLANK"="isblank",
- 								"IS_MISSING"="isblank",
- 								"MISSING"="isblank",
- 								"NON_BLANK"="isnonblank",
- 								"IS_NOT_MISSING"="isnonblank",
- 								"NOT_MISSING"="isnonblank",
+            "MV_INDICATOR"="hasmvvalue",
+            "QC_VALUE"="hasmvvalue",
+            "NO_MV_INDICATOR"="nomvvalue",
+            "NOT_QC_VALUE"="nomvvalue",
 
-								"MV_INDICATOR"="hasmvvalue",
-								"QC_VALUE"="hasmvvalue",
-								"NO_MV_INDICATOR"="nomvvalue",
-								"NOT_QC_VALUE"="nomvvalue",
+            #
+            # Table/Query-wise operators
+            #
 
-								#
-								# Table/Query-wise operators
-								#
+            "Q"="q",
 
-								"Q"="q",
+            #
+            # Ontology operators
+            #
+            "ONTOLOGY_IN_SUBTREE"="concept:insubtree",
+            "ONTOLOGY_NOT_IN_SUBTREE"="concept:notinsubtree",
 
-								#
-								# Ontology operators
-								#
-								"ONTOLOGY_IN_SUBTREE"="concept:insubtree",
-								"ONTOLOGY_NOT_IN_SUBTREE"="concept:notinsubtree",
+            #
+            # Lineage operators
+            #
+            "EXP_CHILD_OF" = "exp:childof",
+            "EXP_PARENT_OF" = "exp:parentof",
+            "EXP_LINEAGE_OF" = "exp:lineageof",
+        )
 
-								#
-								# Lineage operators
-								#
-								"EXP_CHILD_OF" = "exp:childof",
-								"EXP_PARENT_OF" = "exp:parentof",
-								"EXP_LINEAGE_OF" = "exp:lineageof",
-								)
+        if (is.null(fop)==TRUE) stop ("Invalid operator name.")
+        # grab the column name and filter value
+        col <- fmat[i,1]
+        fvalue <- fmat[i,3]
 
- 				if(is.null(fop)==TRUE) stop ("Invalid operator name.")
- 				# url encode column name and value
- 				colnam <- URLencode(fmat[i,1], reserved = TRUE)
- 				fvalue <- URLencode(fmat[i,3], reserved = TRUE)
- 				filters[i] <- paste(colnam,"~",fop,"=",fvalue,sep="")
- 			}
+        # add the param pair to the parameter list
+        paramList <- list(fvalue)
+        names(paramList) <- paste("query.", col, "~", fop, sep="")
 
- 	return(filters)
- }
+        filters <- c(filters, paramList)
+    }
 
+    if (asList)
+    {
+     	return(filters)
+    }
+    else
+    {
+        # convert to URL encoded parameter list (legacy behavior)
+        url <- parse_url("")
+        url$query <- filters
+        myurl <- build_url(url)
 
-
+        idx <- regexpr("\\?.*", myurl)
+        if (idx != -1)
+            return (regmatches(myurl, idx))
+        else
+            return (NULL)
+    }
+}

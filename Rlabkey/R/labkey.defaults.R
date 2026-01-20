@@ -271,7 +271,6 @@ isWafEncoding <- function()
     return (.lkdefaults$wafEncode)
 }
 
-
 isRequestError <- function(response, status_code) 
 {
   status_code <- getStatusCode(response)
@@ -357,4 +356,33 @@ encodeURIComponent <- function(value)
     value <- gsub("%28", "(", value)
     value <- gsub("%29", ")", value)
     return (value)
+}
+
+# Construct a LabKey URL (path first format)
+buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL, parameters = NULL)
+{
+    baseUrl=labkey.getBaseUrl(baseUrl)
+
+    # check required parameters
+    if (missing(baseUrl) || missing(controller) || missing(action) || is.null(folderPath))
+        stop (paste("A value must be specified for each of baseUrl, controller, action and folderPath."))
+
+    # normalize the folder path
+    folderPath <- encodeFolderPath(folderPath)
+
+    myUrl <- paste(baseUrl, folderPath, controller, "-", action, sep="")
+
+    if (!is.null(parameters))
+    {
+        if (!is.list(parameters))
+            stop (paste("parameters must be a list data structure."))
+
+        # add the parameters as a query string
+        url <- parse_url(myUrl)
+        url$query = parameters
+
+        myUrl <- build_url(url)
+    }
+    print(myUrl)
+    return (myUrl)
 }
