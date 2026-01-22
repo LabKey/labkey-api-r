@@ -383,6 +383,5 @@ labkey.buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL,
 
         myUrl <- build_url(url)
     }
-    print(myUrl)
     return (myUrl)
 }

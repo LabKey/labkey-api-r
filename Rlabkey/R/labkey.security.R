@@ -40,7 +40,7 @@ labkey.security.createContainer <- function(baseUrl=NULL, parentPath, name = NUL
     if(is.null(description)==FALSE) {params <- c(params, list(description=description))}
     if(is.null(folderType)==FALSE) {params <- c(params, list(folderType=folderType))}
 
-    myurl <- labkey.buildURL(baseUrl, "core", "createContainer.api", parentPath)
+    url <- labkey.buildURL(baseUrl, "core", "createContainer.api", parentPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
