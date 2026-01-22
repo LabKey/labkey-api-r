@@ -25,11 +25,8 @@ labkey.executeSql <- function(baseUrl=NULL, folderPath, schemaName, sql, maxRows
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
     if (missing(sql)) stop (paste("A value must be specified for sql."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## Construct url
-    myurl <- paste(baseUrl, "query", folderPath, "executeSql.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", "executeSql.api", folderPath)
 
     ## Apply wafEncode, if requested
     if (isWafEncoding()) sql <- wafEncode(sql)

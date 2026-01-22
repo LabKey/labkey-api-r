@@ -27,9 +27,6 @@ labkey.moveRows <- function(baseUrl=NULL, folderPath, targetFolderPath, schemaNa
     if (!missing(options) & !is.list(options))
         stop (paste("The options parameter must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toMove <- convertFactorsToStrings(toMove);
 
@@ -39,7 +36,7 @@ labkey.moveRows <- function(baseUrl=NULL, folderPath, targetFolderPath, schemaNa
 
     pbody <- jsonEncodeRowsAndParams(toMove, params, NULL)
 
-    myurl <- paste(baseUrl, "query", folderPath, "moveRows.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", "moveRows.api", folderPath)
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)

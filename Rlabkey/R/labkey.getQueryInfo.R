@@ -47,20 +47,14 @@ getQueryInfo <- function(baseUrl=NULL, folderPath, schemaName, queryName, showDe
     if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
     if (missing(queryName)) stop (paste("A value must be specified for queryName."))
+	if (is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }
 
-	if(is.null(lookupKey)==FALSE) {char <- nchar(lookupKey); if(char<1) {lookupKey<-NULL} }
-
-	## URL encoding (if not already encoded)
-	if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
-	if(queryName==URLdecode(queryName)) {queryName <- URLencode(queryName)}
-	if(is.null(lookupKey)==FALSE) {if(lookupKey==URLdecode(lookupKey)) lookupKey <- URLencode(lookupKey)}
-
-	## normalize the folder path
-	folderPath <- encodeFolderPath(folderPath)
+    params <- list("schemaName"=schemaName, "query.queryName"=queryName, "apiVersion"="8.3")
+	if (!is.null(lookupKey))
+	    params <- c(params, list("fk"=lookupKey))
 
 	## Construct url
-	myurl <- paste(baseUrl,"query",folderPath,"getQueryDetails.api?schemaName=", schemaName, "&queryName=", queryName, "&apiVersion=8.3", sep="")
-	if(is.null(lookupKey)==FALSE) {myurl <- paste(myurl,"&fk=",lookupKey,sep="")}
+    myurl <- labkey.buildURL(baseUrl, "query", "getQueryDetails.api", folderPath, params)
 
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl)

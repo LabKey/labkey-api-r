@@ -29,11 +29,9 @@ labkey.getSchemas <- function(baseUrl=NULL, folderPath)
     ## Validate required parameters
     if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## Construct url
-    myurl <- paste(baseUrl,"query",folderPath,"getSchemas.view?apiVersion=9.3", sep="")
+    params <- list("apiVersion"="9.3")
+    myurl <- labkey.buildURL(baseUrl, "query", "getSchemas.api", folderPath, params)
 
     ## Execute via our standard GET function
     mydata <- labkey.get(myurl)

@@ -107,10 +107,7 @@ labkey.provenance.startRecording <- function(baseUrl=NULL, folderPath, provenanc
     if (is.null(provenanceParams))
         stop (paste("Provenance start recording must include the provenanceParams."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "provenance", folderPath, "startRecording.api", sep="")
+    url <- labkey.buildURL(baseUrl, "provenance", "startRecording.api", folderPath)
     response <- labkey.post(url, toJSON(provenanceParams, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -127,10 +124,7 @@ labkey.provenance.addRecordingStep <- function(baseUrl=NULL, folderPath, provena
     if (is.null(provenanceParams))
         stop (paste("Provenance start recording must include the provenanceParams."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "provenance", folderPath, "addRecordingStep.api", sep="")
+    url <- labkey.buildURL(baseUrl, "provenance", "addRecordingStep.api", folderPath)
     response <- labkey.post(url, toJSON(provenanceParams, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -147,10 +141,7 @@ labkey.provenance.stopRecording <- function(baseUrl=NULL, folderPath, provenance
     if (is.null(provenanceParams))
         stop (paste("Provenance start recording must include the provenanceParams."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "provenance", folderPath, "stopRecording.api", sep="")
+    url <- labkey.buildURL(baseUrl, "provenance", "stopRecording.api", folderPath)
     response <- labkey.post(url, toJSON(provenanceParams, auto_unbox=TRUE))
 
     return (fromJSON(response))

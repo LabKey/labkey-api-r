@@ -1,3 +1,8 @@
+Changes in 3.4.5
+  o Switch to using path first URLs for LabKey server requests.
+  o Utilize httr to generate request query parameters.
+  o labkey.makeFilter will produce a list of named elements using the asList parameter.
+
 Changes in 3.4.4
   o Issue 53481: additional validation for assay run configurations.
   o Improve validation when a zero-row dataframe is passed to insertRows/updateRows/deleteRows

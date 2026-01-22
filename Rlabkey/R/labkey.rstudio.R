@@ -23,7 +23,8 @@ labkey.rstudio.initSession <- function(requestId, baseUrl)
     if(missing(requestId) || missing(baseUrl))
         stop (paste("A value must be specified for each of requestId and baseUrl."))
 
-    url <- paste(baseUrl, "rstudio-fetchCmd.api?id=", requestId, sep="")
+    params <- list("id"=requestId)
+    url <- labkey.buildURL(baseUrl, "rstudio", "fetchCmd.api", "", params)
     response <- labkey.get(url)
     lkResult <- (fromJSON(response))
     if (lkResult$success == TRUE)
@@ -75,10 +76,7 @@ labkey.rstudio.initReport <- function(apiKey="", baseUrl="", folderPath, reportE
     if(missing(folderPath) || missing(reportEntityId))
         stop (paste("A value must be specified for each of folderPath and reportEntityId."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "rstudio", folderPath, "getRReportContent.api", sep="")
+    url <- labkey.buildURL(baseUrl, "rstudio", "getRReportContent.api", folderPath)
 
     params <- list(entityId=reportEntityId)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
@@ -163,13 +161,10 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
         }
     }
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     baseUrl=labkey.getBaseUrl(NULL)
 
     ## check valid report
-    url <- paste(baseUrl, "rstudio", folderPath, "ValidateRStudioReport.api", sep="")
+    url <- labkey.buildURL(baseUrl, "rstudio", "ValidateRStudioReport.api", folderPath)
     params <- list(entityId=reportEntityId)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
     lkResult <- (fromJSON(response))
@@ -191,7 +186,7 @@ labkey.rstudio.saveReport <- function(folderPath, reportEntityId, reportFilename
         {
             return("Skipped saving updated source to LabKey Server");
         }
-        url <- paste(baseUrl, "rstudio", folderPath, "SaveRReportContent.api", sep="")
+        url <- labkey.buildURL(baseUrl, "rstudio", "SaveRReportContent.api", folderPath)
 
         script <- readChar(reportFilename, file.info(reportFilename)$size)
 

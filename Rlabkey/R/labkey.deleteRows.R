@@ -30,9 +30,6 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options) & !is.list(options))
         stop (paste("The options parameter must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toDelete <- convertFactorsToStrings(toDelete);
 
@@ -43,8 +40,7 @@ labkey.deleteRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
         params <- c(params, options)
 
     pbody <- jsonEncodeRowsAndParams(toDelete, params, NULL)
-
-    myurl <- paste(baseUrl, "query", folderPath, "deleteRows.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", "deleteRows.api", folderPath)
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)
@@ -65,10 +61,7 @@ labkey.truncateTable <- function(baseUrl=NULL, folderPath, schemaName, queryName
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
     if (missing(queryName)) stop (paste("A value must be specified for queryName."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "query", folderPath, "truncateTable.api", sep="")
+    url <- labkey.buildURL(baseUrl, "query", "truncateTable.api", folderPath)
 
     params <- list(schemaName=schemaName, queryName=queryName)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))

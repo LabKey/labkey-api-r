@@ -34,36 +34,30 @@ labkey.getQueryViews <- function(baseUrl=NULL, folderPath, schemaName, queryName
 getQueryLists <- function(baseUrl=NULL, folderPath, schemaName, queryName=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
-    if((length(queryName)>0) && (queryName==URLdecode(queryName)) ) { queryName <- URLencode(queryName) }
 
     ## Validate required parameters
     if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
     if (missing(schemaName)) stop (paste("A value must be specified for schemaName."))
 
-	## URL encoding of schemaName (if not already encoded)
-	if(schemaName==URLdecode(schemaName)) {schemaName <- URLencode(schemaName)}
-
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
+    params <- list("schemaName"=schemaName, "apiVersion"="8.3")
 
 	## now setup the different columns for views vs queries
-	if(length(queryName)==0)
+	if (length(queryName)==0)
 	{
-		serverAction <- "getQueries.view?schemaName="
-		qParam <- ""
+		serverAction <- "getQueries.api"
 		queryObjType <- "queries"
 		columnNames <- c("queryName", "fieldName")
 	}
 	else
 	{
-		serverAction <- "getQueryViews.api?schemaName="  
-		qParam <- paste("&queryName=",queryName, sep="")
+		serverAction <- "getQueryViews.api"
+		params <- c(params, list("queryName"=queryName))
 		queryObjType <- "views"
 		columnNames <- c("viewName", "fieldName")
 	}
 
 	## Construct url
-	myurl <- paste(baseUrl, "query", folderPath, serverAction, schemaName, qParam, "&apiVersion=8.3", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", serverAction, folderPath, params)
 
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl);

@@ -30,9 +30,6 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     if (!missing(options) & !is.list(options))
         stop (paste("The options parameter must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toUpdate <- convertFactorsToStrings(toUpdate);
 
@@ -43,8 +40,7 @@ labkey.updateRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
         params <- c(params, options)
 
     pbody <- jsonEncodeRowsAndParams(toUpdate, params, NULL)
-
-    myurl <- paste(baseUrl, "query", folderPath, "updateRows.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", "updateRows.api", folderPath)
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)

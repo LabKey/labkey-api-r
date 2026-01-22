@@ -26,10 +26,7 @@ labkey.getModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
     if (missing(moduleName)) stop (paste("A value must be specified for moduleName."))
     if (missing(propName)) stop (paste("A value must be specified for propName."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "project", folderPath, "getContainers.api", sep="")
+    url <- labkey.buildURL(baseUrl, "project", "getContainers.api", folderPath)
     params <- list(moduleProperties=c(moduleName))
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
@@ -74,9 +71,6 @@ labkey.setModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
     if (missing(propName)) stop (paste("A value must be specified for propName."))
     if (missing(propValue)) stop (paste("A value must be specified for propValue."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     property <- list()
     property$moduleName = moduleName
     property$userId = 0 ## Ignored and no longer required, as of 21.7. Remove this parameter once compatibility with < 21.7 is no longer needed.
@@ -86,7 +80,7 @@ labkey.setModuleProperty <- function(baseUrl=NULL, folderPath, moduleName, propN
 
     params <- list(properties=list(property))
 
-    url <- paste(baseUrl, "core", folderPath, "saveModuleProperties.api", sep="")
+    url <- labkey.buildURL(baseUrl, "core", "saveModuleProperties.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
 	return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))

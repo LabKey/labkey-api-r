@@ -26,21 +26,33 @@ labkey.getFolders <- function(baseUrl=NULL, folderPath, includeEffectivePermissi
 	folderPath <- encodeFolderPath(folderPath)
 
 	## Formatting
-	if(includeSubfolders) {inclsf <- paste("1&depth=", depth, sep="")} else {inclsf <- "0"}
-	if(includeEffectivePermissions) {inclep <- "1"} else {inclep <- "0"}
-	if(includeChildWorkbooks) {inclcw <- "1"} else {inclcw <- "0"}
+    params <- list()
+	if (includeSubfolders)
+        params <- c(params, list("includeSubfolders"=1, "depth"=depth))
+    else
+        params <- c(params, list("includeSubfolders"=0))
 
-	inclsp <- "0"
+	if (includeEffectivePermissions)
+        params <- c(params, list("includeEffectivePermissions"=1))
+    else
+        params <- c(params, list("includeEffectivePermissions"=0))
+
+	if (includeChildWorkbooks)
+        params <- c(params, list("includeChildWorkbooks"=1))
+    else
+        params <- c(params, list("includeChildWorkbooks"=0))
+
 	resultCols = c("name", "path", "id", "effectivePermissions")
-	if(includeStandardProperties) {
-	    inclsp <- "1"
+	if (includeStandardProperties)
+	{
+        params <- c(params, list("includeStandardProperties"=1))
 	    resultCols = c("name", "path", "id", "title", "type", "folderType", "effectivePermissions")
 	}
+	else
+        params <- c(params, list("includeStandardProperties"=0))
 
 	## Construct url
-	myurl <- paste(baseUrl,"project",folderPath,"getContainers.view?","includeSubfolders=",inclsf,
-	    "&includeEffectivePermissions=",inclep,"&includeChildWorkbooks=",inclcw,"&includeStandardProperties=",inclsp,
-	    sep="")
+    myurl <- labkey.buildURL(baseUrl, "project", "getContainers.api", folderPath, params)
 
 	## Execute via our standard GET function
 	mydata <- labkey.get(myurl);

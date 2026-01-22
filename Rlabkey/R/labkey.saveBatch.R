@@ -25,11 +25,8 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
     if (missing(assayName)) stop (paste("A value must be specified for assayName."))
     if (missing(resultDataFrame)) stop (paste("A value must be specified for resultDataFrame."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
 	## Translate assay name to an ID
-	myurl <- paste(baseUrl,"assay",folderPath,"assayList.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "assay", "assayList.api", folderPath)
     params <- list(name=assayName)
     assayInfoJSON <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
 	assayDef <- NULL
@@ -68,7 +65,7 @@ labkey.saveBatch <- function(baseUrl=NULL, folderPath, assayName, resultDataFram
 	baseAssayList <- c(baseAssayList, list(batch=batchPropertyList))
 
 	## Now post form with batch object filled out
-	myurl <- paste(baseUrl, "assay", folderPath, "saveAssayBatch.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "assay", "saveAssayBatch.api", folderPath)
 	pbody <- toJSON(baseAssayList, auto_unbox=TRUE)
 
 	## Execute via our standard POST function

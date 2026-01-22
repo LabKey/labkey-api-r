@@ -156,11 +156,8 @@ labkey.experiment.saveBatch <- function(baseUrl=NULL, folderPath, assayConfig = 
     if (is.null(assayConfig) && is.null(protocolName))
         stop (paste("Either an assay config list or protocolName must be specified. The assay configuration must contain either an assayId or both assayName and providerName"))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
 	## Now post form with batch object filled out
-    url <- paste(baseUrl, "assay", folderPath, "saveAssayBatch.api", sep="")
+    url <- labkey.buildURL(baseUrl, "assay", "saveAssayBatch.api", folderPath)
 
     if (!is.null(assayConfig))
         params = assayConfig
@@ -185,11 +182,8 @@ labkey.experiment.saveRuns <- function(baseUrl=NULL, folderPath, protocolName, r
     if (missing(protocolName)) stop (paste("A value must be specified for protocolName."))
     if (missing(runList)) stop (paste("A value must be specified for runList."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## Now post form with runs object filled out
-    url <- paste(baseUrl, "assay", folderPath, "saveAssayRuns.api", sep="")
+    url <- labkey.buildURL(baseUrl, "assay", "saveAssayRuns.api", folderPath)
 
     if (!is.null(runList))
     {
@@ -234,10 +228,7 @@ labkey.experiment.lineage <- function(baseUrl=NULL, folderPath, lsids, options =
     if (!missing(options))
         params <- c(params, options)
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "experiment", folderPath, "lineage.api", sep="")
+    url <- labkey.buildURL(baseUrl, "experiment", "lineage.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))

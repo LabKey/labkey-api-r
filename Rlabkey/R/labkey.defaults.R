@@ -359,7 +359,7 @@ encodeURIComponent <- function(value)
 }
 
 # Construct a LabKey URL (path first format)
-buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL, parameters = NULL)
+labkey.buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL, parameters = NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 

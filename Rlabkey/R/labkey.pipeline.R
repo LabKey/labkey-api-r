@@ -22,10 +22,7 @@ labkey.pipeline.getPipelineContainer <- function(baseUrl=NULL, folderPath)
     if (missing(baseUrl) || is.null(baseUrl)) stop (paste("A value must be specified for baseUrl."))
     if (missing(folderPath)) stop (paste("A value must be specified for folderPath."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "pipeline", folderPath, "getPipelineContainer.api", sep="")
+    url <- labkey.buildURL(baseUrl, "pipeline", "getPipelineContainer.api", folderPath)
     response <- labkey.get(url)
 
     return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
@@ -41,12 +38,9 @@ labkey.pipeline.getProtocols <- function(baseUrl=NULL, folderPath, taskId, path,
     if (missing(taskId) || is.null(taskId)) stop (paste("A value must be specified for taskId."))
     if (missing(path) || is.null(path)) stop (paste("A value must be specified for path."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(taskId = taskId, path = path, includeWorkbooks = includeWorkbooks)
 
-    url <- paste(baseUrl, "pipeline-analysis", folderPath, "getSavedProtocols.api", sep="")
+    url <- labkey.buildURL(baseUrl, "pipeline-analysis", "getSavedProtocols.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
@@ -67,12 +61,9 @@ labkey.pipeline.getFileStatus <- function(baseUrl=NULL, folderPath, taskId, prot
     ## check parameter types
     if (!is.list(files)) stop (paste("The files parameter must be a list of strings."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(taskId = taskId, protocolName = protocolName, path = path, file = files)
 
-    url <- paste(baseUrl, "pipeline-analysis", folderPath, "getFileStatus.api", sep="")
+    url <- labkey.buildURL(baseUrl, "pipeline-analysis", "getFileStatus.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response, simplifyVector=FALSE, simplifyDataFrame=FALSE))
@@ -100,9 +91,6 @@ labkey.pipeline.startAnalysis <- function(baseUrl=NULL, folderPath, taskId, prot
     if (!is.null(jsonParameters) && !(is.list(jsonParameters) || is.character(jsonParameters)))
         stop (paste("The jsonParameters parameter must be a list of key / value pairs or a string representation of that list created using toJSON."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(taskId = taskId, protocolName = protocolName, path = path, file = files, fileIds = fileIds,
         allowNonExistentFiles = allowNonExistentFiles, saveProtocol = saveProtocol)
 
@@ -120,7 +108,7 @@ labkey.pipeline.startAnalysis <- function(baseUrl=NULL, folderPath, taskId, prot
             params$configureJson = toJSON(jsonParameters, auto_unbox=TRUE)
     }
 
-    url <- paste(baseUrl, "pipeline-analysis", folderPath, "startAnalysis.api", sep="")
+    url <- labkey.buildURL(baseUrl, "pipeline-analysis", "startAnalysis.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE), haltOnError = FALSE)
 
     ## a successful response from this API call will contain a "status" property, so key off of that

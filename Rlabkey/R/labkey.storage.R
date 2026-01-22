@@ -25,11 +25,8 @@ labkey.storage.create <- function(baseUrl=NULL, folderPath, type, props)
     if (!is.list(props))
         stop (paste("Storage API props must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(type = type, props = props)
-    url <- paste(baseUrl, "storage", folderPath, "create.api", sep="")
+    url <- labkey.buildURL(baseUrl, "storage", "create.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -46,11 +43,8 @@ labkey.storage.update <- function(baseUrl=NULL, folderPath, type, props)
     if (!is.list(props))
         stop (paste("Storage API props must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(type = type, props = props)
-    url <- paste(baseUrl, "storage", folderPath, "update.api", sep="")
+    url <- labkey.buildURL(baseUrl, "storage", "update.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -64,11 +58,8 @@ labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId)
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(type) || missing(rowId))
         stop (paste("A value must be specified for each of baseUrl, folderPath, type, and rowId."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(type = type, props = list(rowId = rowId))
-    url <- paste(baseUrl, "storage", folderPath, "delete.api", sep="")
+    url <- labkey.buildURL(baseUrl, "storage", "delete.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))

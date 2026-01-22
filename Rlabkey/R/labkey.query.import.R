@@ -24,9 +24,6 @@ labkey.query.import <- function(baseUrl=NULL, folderPath, schemaName, queryName,
     if (!missing(options) & !is.list(options))
         stop (paste("The options parameter must be a list data structure."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## write the dataframe to a tempfile to post to the server
     tf <- tempfile(fileext=".tsv")
     write.table(toImport, file=tf, sep="\t", quote=FALSE, row.names=FALSE)
@@ -37,7 +34,7 @@ labkey.query.import <- function(baseUrl=NULL, folderPath, schemaName, queryName,
     options <- c(options, list(schemaName=schemaName, queryName=queryName, file=upload_file(tf)))
 
     ## Execute via our standard POST function
-    url <- paste(baseUrl, "query", folderPath, "import.api", sep="")
+    url <- labkey.buildURL(baseUrl, "query", "import.api", folderPath)
     rawdata <- labkey.post(url, options, encoding="multipart")
     response <- fromJSON(rawdata, simplifyVector=FALSE, simplifyDataFrame=FALSE)
 

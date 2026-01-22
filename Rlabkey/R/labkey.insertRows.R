@@ -30,9 +30,6 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
     ## Default showAllRows=TRUE
     showAllRows=TRUE
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     ## URL encode folder path, JSON encode post body (if not already encoded)
     toInsert <- convertFactorsToStrings(toInsert);
 
@@ -44,7 +41,7 @@ labkey.insertRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, t
 
     pbody <- jsonEncodeRowsAndParams(toInsert, params, na)
 
-    myurl <- paste(baseUrl, "query", folderPath, "insertRows.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "query", "insertRows.api", folderPath)
 
     ## Execute via our standard POST function
     mydata <- labkey.post(myurl, pbody)

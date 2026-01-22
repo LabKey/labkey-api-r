@@ -19,7 +19,6 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
         containerFilter=NULL, parameters=NULL, includeDisplayValues=FALSE, method='POST')
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
-    apiVersion = "8.3"
 
     # Empty string/NULL checking
     if (!is.null(viewName)) {char <- nchar(viewName); if(char<1){viewName<-NULL}}
@@ -54,7 +53,7 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
     }
 
     # Construct the query parameter list of named elements (key / value pairs)
-    params <- list("schemaName"=schemaName, "query.queryName"=queryName, "apiVersion"=apiVersion)
+    params <- list("schemaName"=schemaName, "query.queryName"=queryName, "apiVersion"="8.3")
     if (!is.null(includeDisplayValues) && includeDisplayValues == TRUE)
         params <- c(params, list("includeDisplayValues"=includeDisplayValues))
     if (!is.null(viewName))
@@ -71,28 +70,25 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
         params <- c(params, list("query.sort"=colSort))
     if (!is.null(colFilter))
     {
-        if (is.list(colFilter))
+        if (is.list(colFilter) && !is.null(names(colFilter)))
+        {
+            # preferred list with named elements format
             params <- c(params, colFilter)
+        }
+        else if (length(colFilter) > 0)
+        {
+            # Legacy format of URL encoded key / value pairs, convert to a list of named elements
+            # which can be processed by buildURL
+            params <- c(params, parseToList(colFilter, dataRegionName="", urlDecode=TRUE))
+        }
         else
-            stop (paste("Argument colFilter must be a list generated from makeFilter"))
+            stop (paste("Argument colFilter must be a list or vector generated from makeFilter"))
     }
     if (!is.null(parameters))
     {
         # Support the legacy format. TODO: require a list with named elements that can
         # be passed directly to the larger param list without needing to parse
-        for (k in 1:length(parameters))
-        {
-            parts <- strsplit(parameters[k], "=")[[1]]
-            if (length(parts) == 2)
-            {
-                # add each parameter name / value pair to the select rows parameter list
-                paramList <- list(parts[2])
-                names(paramList) <- paste("query.param.", parts[1], sep="")
-                params <- c(params, paramList)
-            }
-            else
-                stop (paste("Argument parameters is incorrectly formatted, it needs to be a list of string value pairs delimited by '='"))
-        }
+        params <- c(params, parseToList(parameters, dataRegionName="query.param."))
     }
     if (!is.null(containerFilter))
         params <- c(params, list("containerFilter"=containerFilter))
@@ -100,13 +96,13 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
     if (!is.null(method) && method == "GET")
     {
         # Execute via our standard GET function
-        myurl <- buildURL(baseUrl, "query", "selectRows.api", folderPath, params)
+        myurl <- labkey.buildURL(baseUrl, "query", "selectRows.api", folderPath, params)
         mydata <- labkey.get(myurl);
     }
     else
     {
         # Execute via our standard POST function
-        myurl <- buildURL(baseUrl, "query", "selectRows.api", folderPath)
+        myurl <- labkey.buildURL(baseUrl, "query", "selectRows.api", folderPath)
         mydata <- labkey.post(myurl, toJSON(params, auto_unbox=TRUE))
     }
 
@@ -117,4 +113,29 @@ labkey.selectRows <- function(baseUrl=NULL, folderPath, schemaName, queryName, v
 
     return(newdata)
 }
+
+# Utility to convert a vector of parameter values of the form : "foo=bar" into a list with
+# named elements which is the format that buildURL requires for parameters.
+#
+parseToList <- function(parameters, dataRegionName="query.", urlDecode=FALSE)
+{
+    params <- list()
+    for (i in 1:length(parameters))
+    {
+        parts <- strsplit(parameters[i], "=")[[1]]
+        if (length(parts) == 2)
+        {
+            key <- if (urlDecode) URLdecode(parts[1]) else parts[1]
+            value <- if (urlDecode) URLdecode(parts[2]) else parts[2]
+
+            paramList <- list(value)
+            names(paramList) <- paste(dataRegionName, key, sep="")
+            params <- c(params, paramList)
+        }
+        else
+            stop (paste("Argument parameters is incorrectly formatted, it needs to be a list of string value pairs delimited by '='"))
+    }
+    return (params)
+}
+
 

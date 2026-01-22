@@ -6,10 +6,11 @@ This function takes inputs of column name, filter value and filter operator and
 returns an array of filters to be used in \code{labkey.selectRows} and \code{getRows}.
 }
 \usage{
-makeFilter(...)
+makeFilter(..., asList=FALSE)
 }
 \arguments{
-\item{...}{Arguments in c("colname","operator","value") form, used to create a filter.}
+  \item{...}{Arguments in c("colname","operator","value") form, used to create a filter.}
+  \item{asList}{Boolean flag when set to TRUE will format the return value as a list with named elements.}
 }
 \details{
 These filters are applied to the data prior to import into R. The user can specify as many 
@@ -64,7 +65,11 @@ See example below.
 
 \value{
 The function returns either a single string or an array of strings to be use in the
-\code{colFilter} argument of the \code{labkey.selectRows} function.
+\code{colFilter} argument of the \code{labkey.selectRows} function. By default, this function will return an array
+of LabKey filter parameters/values that are URL encoded and can be directly applied to a request URL. If the asList argument
+is set to TRUE, the function will return a list with named elements where the name is the parameter name and the element
+value is the filter value. This format can be useful when needing to build URLs that need to be combined with other
+parameters or can be converted directly to JSON posted parameters.
 }
 \references{http://www.omegahat.net/RCurl/, \cr
 https://www.labkey.org/home/project-begin.view}

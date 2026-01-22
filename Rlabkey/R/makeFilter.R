@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-makeFilter <- function(..., asList=TRUE)
+makeFilter <- function(..., asList=FALSE)
 {
     fargs <- list(...)
     flen <- lapply(fargs, function(x) {len <- length(x); if(len<3){stop ("each filter must be of length 3")}})
@@ -140,15 +140,18 @@ makeFilter <- function(..., asList=TRUE)
     }
     else
     {
-        # convert to URL encoded parameter list (legacy behavior)
-        url <- parse_url("")
-        url$query <- filters
-        myurl <- build_url(url)
+        # convert to URL encoded vector of parameters (legacy behavior)
+        filterVec <- c()
+        for (i in 1:length(filters))
+        {
+            url <- parse_url("")
+            url$query <- filters[i]
+            myurl <- build_url(url)
 
-        idx <- regexpr("\\?.*", myurl)
-        if (idx != -1)
-            return (regmatches(myurl, idx))
-        else
-            return (NULL)
+            idx <- regexpr("\\?.*", myurl)
+            if (idx != -1)
+                filterVec <- c(filterVec, regmatches(myurl, idx+1))
+        }
+        return (filterVec)
     }
 }

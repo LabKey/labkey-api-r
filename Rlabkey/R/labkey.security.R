@@ -34,16 +34,13 @@ labkey.security.createContainer <- function(baseUrl=NULL, parentPath, name = NUL
     if (missing(baseUrl) || is.null(baseUrl) || missing(parentPath))
         stop (paste("A value must be specified for both baseUrl and parentPath."))
 
-    ## normalize the folder path
-    parentPath <- encodeFolderPath(parentPath)
-
     params <- list(isWorkbook = isWorkbook)
     if(is.null(name)==FALSE) {params <- c(params, list(name=name))}
     if(is.null(title)==FALSE) {params <- c(params, list(title=title))}
     if(is.null(description)==FALSE) {params <- c(params, list(description=description))}
     if(is.null(folderType)==FALSE) {params <- c(params, list(folderType=folderType))}
 
-    url <- paste(baseUrl, "core", parentPath, "createContainer.api", sep="")
+    myurl <- labkey.buildURL(baseUrl, "core", "createContainer.api", parentPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -59,12 +56,9 @@ labkey.security.deleteContainer <- function(baseUrl=NULL, folderPath)
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath))
         stop (paste("A value must be specified for both baseUrl and folderPath."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list(folderPath = folderPath) # no params for this action but need an object for the post body
 
-    url <- paste(baseUrl, "core", folderPath, "deleteContainer.api", sep="")
+    url <- labkey.buildURL(baseUrl, "core", "deleteContainer.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -83,10 +77,7 @@ labkey.security.moveContainer <- function(baseUrl=NULL, folderPath, destinationP
     params <- list(container = folderPath, parent = destinationParent)
     if(is.null(addAlias)==FALSE) {params <- c(params, list(addAlias=addAlias))}
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "core", folderPath, "moveContainer.api", sep="")
+    url <- labkey.buildURL(baseUrl, "core", "moveContainer.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -110,10 +101,7 @@ labkey.security.renameContainer <- function(baseUrl=NULL, folderPath, name=NULL,
     if(is.null(title)==FALSE) {params <- c(params, list(title=title))}
     if(is.null(addAlias)==FALSE) {params <- c(params, list(addAlias=addAlias))}
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
-    url <- paste(baseUrl, "admin", folderPath, "renameContainer.api", sep="")
+    url <- labkey.buildURL(baseUrl, "admin", "renameContainer.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
@@ -129,14 +117,11 @@ labkey.security.impersonateUser <- function(baseUrl = NULL, folderPath, userId =
     if (missing(userId) && missing(email))
         stop (paste("A value must be specified for either userId or email."))
 
-    ## normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
-
     params <- list()
     if(!missing(userId)) {params <- c(params, list(userId = userId))}
     if(!missing(email)) {params <- c(params, list(email = email))}
 
-    url <- paste(baseUrl, "user", folderPath, "impersonateUser.api", sep="")
+    url <- labkey.buildURL(baseUrl, "user", "impersonateUser.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (labkey.whoAmI())
@@ -150,7 +135,7 @@ labkey.security.stopImpersonating <- function(baseUrl = NULL)
     if (missing(baseUrl) || is.null(baseUrl))
         stop (paste("A value must be specified for baseUrl."))
 
-    url <- paste(baseUrl, "login/", "stopImpersonating.api", sep="")
+    url <- labkey.buildURL(baseUrl, "login", "stopImpersonating.api", "/")
     labkey.post(url, toJSON(list()))
 
     return (labkey.whoAmI())
