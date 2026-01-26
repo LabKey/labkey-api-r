@@ -122,12 +122,20 @@ parseToList <- function(parameters, dataRegionName="query.", urlDecode=FALSE)
     params <- list()
     for (i in 1:length(parameters))
     {
-        parts <- strsplit(parameters[i], "=")[[1]]
-        if (length(parts) == 2)
-        {
-            key <- if (urlDecode) URLdecode(parts[1]) else parts[1]
-            value <- if (urlDecode) URLdecode(parts[2]) else parts[2]
+        # find the last occurrence of "=" to split on
+        parts <- gregexpr("=", parameters[i], fixed = TRUE)[[1]]
+        idx <- parts[length(parts)]
 
+        if (idx != -1)
+        {
+            key <- substr(parameters[i], 1, idx - 1)
+            value <- substr(parameters[i], idx + 1, nchar(parameters[i]))
+
+            if (urlDecode)
+            {
+                key <- URLdecode(key)
+                value <- URLdecode(key)
+            }
             paramList <- list(value)
             names(paramList) <- paste(dataRegionName, key, sep="")
             params <- c(params, paramList)
