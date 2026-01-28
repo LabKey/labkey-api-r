@@ -134,7 +134,7 @@ parseToList <- function(parameters, dataRegionName="query.", urlDecode=FALSE)
             if (urlDecode)
             {
                 key <- URLdecode(key)
-                value <- URLdecode(key)
+                value <- URLdecode(value)
             }
             paramList <- list(value)
             names(paramList) <- paste(dataRegionName, key, sep="")
