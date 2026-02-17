@@ -1,3 +1,6 @@
+Changes in 3.4.6
+  o Incorporate new filter types for Array (Multi-value text choice) fields
+
 Changes in 3.4.5
   o Switch to using path first URLs for LabKey server requests.
   o Utilize httr to generate request query parameters.

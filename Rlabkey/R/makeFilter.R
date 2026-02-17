@@ -32,6 +32,13 @@ makeFilter <- function(..., asList=FALSE)
             # These operators require a data value
             #
 
+            # Array-valued column operators
+            "ARRAY_CONTAINS_ALL"="arraycontainsall",
+            "ARRAY_CONTAINS_ANY"="arraycontainsany",
+            "ARRAY_CONTAINS_EXACT"="arraymatches",
+            "ARRAY_CONTAINS_NOT_EXACT"="arraynotmatches",
+            "ARRAY_CONTAINS_NONE"="arraycontainsnone",
+
             "EQUALS"="eq",
             "EQUAL"="eq",
             "DATE_EQUAL"="dateeq",
@@ -89,6 +96,9 @@ makeFilter <- function(..., asList=FALSE)
             #
             # These are the "no data value" operators
             #
+
+            "ARRAY_ISEMPTY"="arrayisempty",
+            "ARRAY_ISNOTEMPTY"="arrayisnotempty",
 
             "ISBLANK"="isblank",
             "IS_MISSING"="isblank",

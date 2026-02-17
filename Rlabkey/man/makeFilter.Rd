@@ -23,6 +23,13 @@ the column name, operator and value.
 }
 
 Operator values:\cr
+ARRAY_CONTAINS_ALL\cr
+ARRAY_CONTAINS_ANY\cr
+ARRAY_CONTAINS_EXACT\cr
+ARRAY_CONTAINS_NOT_EXACT\cr
+ARRAY_CONTAINS_NONE\cr
+ARRAY_ISEMPTY\cr
+ARRAY_ISNOTEMPTY\cr
 EQUAL\cr
 DATE_EQUAL\cr
 NOT_EQUAL\cr
@@ -58,7 +65,7 @@ EXP_CHILD_OF\cr
 EXP_PARENT_OF\cr
 EXP_LINEAGE_OF\cr
 
-When using the MISSING, NOT_MISSING, MV_INDICATOR, or NO_MV_INDICATOR operators, an empty string should be supplied as the value.
+When using the MISSING, NOT_MISSING, MV_INDICATOR, NO_MV_INDICATOR, ARRAY_ISEMPTY, or ARRAY_ISNOTEMPTY operators, an empty string should be supplied as the value.
 See example below.
 }
 
