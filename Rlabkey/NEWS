@@ -1,5 +1,6 @@
 Changes in 3.4.6
   o Incorporate new filter types for Array (Multi-value text choice) fields
+  o Update listToMatrix to handle cases where the list elements are an array of strings, which will return a comma separated string in the response
 
 Changes in 3.4.5
   o Switch to using path first URLs for LabKey server requests.

@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <string>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -35,11 +36,30 @@ CharacterMatrix listToMatrix(List data, List names) {
         }
         else
         {
-          // only try to parse the first vector element as a string if it is non-null
+          // only try to parse the vector elements if the first element is not null
           GenericVector gv = as<GenericVector>((as<List>(data[i]))[as<int>(indexList[j])]);
           if(gv.size() > 0 && !Rf_isNull(gv[0]))
           {
-            cMatrix(i,j) = as<CharacterVector>(gv[0])[0];
+            // Check if first element is a string - if so, concatenate all elements
+            if(TYPEOF(gv[0]) == STRSXP)
+            {
+              std::string result;
+              for(int k = 0; k < gv.size(); k++)
+              {
+                if(!Rf_isNull(gv[k]) && TYPEOF(gv[k]) == STRSXP)
+                {
+                  String s = as<String>(gv[k]);
+                  if(k > 0) result += ",";
+                  result += s.get_cstring();
+                }
+              }
+              cMatrix(i,j) = result;
+            }
+            else
+            {
+              // Fallback to just returning the first element
+              cMatrix(i,j) = as<CharacterVector>(gv[0])[0];
+            }
           }
         }
       }
