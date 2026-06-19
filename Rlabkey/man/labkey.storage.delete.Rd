@@ -9,13 +9,14 @@ Storage items can be of the following types: Physical Location, Freezer, Primary
 Storage Unit Type, or Terminal Storage Location.
 }
 \usage{
-labkey.storage.delete(baseUrl=NULL, folderPath, type, rowId)
+labkey.storage.delete(baseUrl=NULL, folderPath, type, rowId, auditUserComment=NULL)
 }
 \arguments{
   \item{baseUrl}{a string specifying the \code{baseUrl}for the LabKey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{type}{a string specifying the type of storage item to delete }
   \item{rowId}{the primary key of the storage item to delete }
+  \item{auditUserComment}{optional reason text that will be attached to the audit log record for this storage change. }
 }
 \value{
 A list containing a data element with the property values for the deleted storage item.
@@ -74,6 +75,16 @@ freezer <- labkey.storage.delete(
     folderPath="home",
     type="Freezer",
     rowId=freezer$data$rowId
+)
+
+## supply an auditUserComment ("reason for change") that will be attached to the
+## audit log record for this delete
+plateType <- labkey.storage.delete(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Storage Unit Type",
+    rowId=plateType$data$rowId,
+    auditUserComment="Retiring this plate type per lab SOP-42"
 )
 }
 }

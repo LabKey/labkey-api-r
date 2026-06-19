@@ -14,7 +14,7 @@
 #  limitations under the License.
 ##
 
-labkey.storage.create <- function(baseUrl=NULL, folderPath, type, props)
+labkey.storage.create <- function(baseUrl=NULL, folderPath, type, props, auditUserComment=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -26,13 +26,15 @@ labkey.storage.create <- function(baseUrl=NULL, folderPath, type, props)
         stop (paste("Storage API props must be a list data structure."))
 
     params <- list(type = type, props = props)
+    if (!is.null(auditUserComment))
+        params$auditUserComment <- auditUserComment
     url <- labkey.buildURL(baseUrl, "storage", "create.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
 }
 
-labkey.storage.update <- function(baseUrl=NULL, folderPath, type, props)
+labkey.storage.update <- function(baseUrl=NULL, folderPath, type, props, auditUserComment=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -44,13 +46,15 @@ labkey.storage.update <- function(baseUrl=NULL, folderPath, type, props)
         stop (paste("Storage API props must be a list data structure."))
 
     params <- list(type = type, props = props)
+    if (!is.null(auditUserComment))
+        params$auditUserComment <- auditUserComment
     url <- labkey.buildURL(baseUrl, "storage", "update.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
     return (fromJSON(response))
 }
 
-labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId)
+labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId, auditUserComment=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -59,6 +63,8 @@ labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId)
         stop (paste("A value must be specified for each of baseUrl, folderPath, type, and rowId."))
 
     params <- list(type = type, props = list(rowId = rowId))
+    if (!is.null(auditUserComment))
+        params$auditUserComment <- auditUserComment
     url <- labkey.buildURL(baseUrl, "storage", "delete.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
