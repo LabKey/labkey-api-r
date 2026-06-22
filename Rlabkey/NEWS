@@ -1,5 +1,6 @@
 Changes in 3.4.7
-  o Add auditUserComment parameter to labkey.storage.create, labkey.storage.update, and labkey.storage.delete for attaching a reason to the audit log record
+  o Pass auditUserComment to labkey.storage.delete for attaching a reason to the audit log record
+  o labkey.storage.create and labkey.storage.update now accept an optional auditUserComment entry inside the props list (recorded as the "Reason" on the resulting audit event)
 
 Changes in 3.4.6
   o Incorporate new filter types for Array (Multi-value text choice) fields
