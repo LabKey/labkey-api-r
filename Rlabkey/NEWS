@@ -1,3 +1,7 @@
+Changes in 3.X
+  o Pass auditUserComment to labkey.storage.delete for attaching a reason to the audit log record
+  o labkey.storage.create and labkey.storage.update now accept an optional auditUserComment entry inside the props list (recorded as the "Reason" on the resulting audit event)
+
 Changes in 3.4.6
   o Incorporate new filter types for Array (Multi-value text choice) fields
   o Update listToMatrix to handle cases where the list elements are an array of strings, which will return a comma separated string in the response

@@ -13,7 +13,7 @@ labkey.storage.update(baseUrl=NULL, folderPath, type, props)
   \item{baseUrl}{a string specifying the \code{baseUrl}for the LabKey server}
   \item{folderPath}{a string specifying the \code{folderPath} }
   \item{type}{a string specifying the type of storage item to update }
-  \item{props}{a list properties for the storage item (i.e. name, description, etc.), must include the RowId primary key }
+  \item{props}{a list properties for the storage item (i.e. name, description, etc.), must include the RowId primary key. May also include an optional \code{auditUserComment} entry, which is recorded as the "Reason" on the resulting audit event. }
 }
 \value{
 A list containing a data element with the property values for the updated storage item.
@@ -42,6 +42,19 @@ plateType = labkey.storage.update(
     folderPath="home",
     type="Storage Unit Type",
     props=list(rowId=plateType$data$rowId, positionFormat="NumAlpha", positionOrder="ColumnRow" )
+)
+
+## include an auditUserComment in the props list to attach a "Reason" to
+## the audit log record for this update
+plateType = labkey.storage.update(
+    baseUrl="http://labkey/",
+    folderPath="home",
+    type="Storage Unit Type",
+    props=list(
+        rowId=plateType$data$rowId,
+        description="Switched to AlphaNum positions",
+        auditUserComment="Switching to AlphaNum positioning per lab SOP-42"
+    )
 )
 }
 }

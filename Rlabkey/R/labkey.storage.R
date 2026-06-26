@@ -50,7 +50,7 @@ labkey.storage.update <- function(baseUrl=NULL, folderPath, type, props)
     return (fromJSON(response))
 }
 
-labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId)
+labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId, auditUserComment=NULL)
 {
     baseUrl=labkey.getBaseUrl(baseUrl)
 
@@ -58,7 +58,10 @@ labkey.storage.delete <- function(baseUrl=NULL, folderPath, type, rowId)
     if (missing(baseUrl) || is.null(baseUrl) || missing(folderPath) || missing(type) || missing(rowId))
         stop (paste("A value must be specified for each of baseUrl, folderPath, type, and rowId."))
 
-    params <- list(type = type, props = list(rowId = rowId))
+    props <- list(rowId = rowId)
+    if (!is.null(auditUserComment))
+        props$auditUserComment <- auditUserComment
+    params <- list(type = type, props = props)
     url <- labkey.buildURL(baseUrl, "storage", "delete.api", folderPath)
     response <- labkey.post(url, toJSON(params, auto_unbox=TRUE))
 
