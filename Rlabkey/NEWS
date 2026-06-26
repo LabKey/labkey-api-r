@@ -1,4 +1,4 @@
-Changes in 3.4.7
+Changes in 3.X
   o Pass auditUserComment to labkey.storage.delete for attaching a reason to the audit log record
   o labkey.storage.create and labkey.storage.update now accept an optional auditUserComment entry inside the props list (recorded as the "Reason" on the resulting audit event)
 
