@@ -15,4 +15,4 @@
 ##
 
 source("install-util.R")
-install.dependencies("Rlabkey", c("rjson", "bitops", "Rcpp", "httr"))
+install.dependencies("Rlabkey", c("rjson", "bitops", "Rcpp", "httr", "bit64"))
