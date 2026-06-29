@@ -20,4 +20,4 @@ Copyright: Copyright (c) 2010-2018 LabKey Corporation
 LazyLoad: true
 Depends: httr, jsonlite
 LinkingTo: Rcpp
-Imports: Rcpp (>= 0.11.0)
+Imports: Rcpp (>= 0.11.0), bit64
