@@ -93,14 +93,14 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
 }
 
 ## helper to encode and normalize the folder path parameter
-encodeFolderPath <- function(folderPath=NULL)
+encodeFolderPath <- function(folderPath=NULL, leading = T, trailing = T)
 {
     if (!is.null(folderPath))
     {
         ## URL encoding of folderPath
         folderPath <- URLencode(folderPath)
 
-        folderPath <- normalizeSlash(folderPath)
+        folderPath <- normalizeSlash(folderPath, leading = leading, trailing = trailing)
     }
     return (folderPath)
 }
@@ -367,8 +367,8 @@ labkey.buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL,
     if (missing(baseUrl) || missing(controller) || missing(action) || is.null(folderPath))
         stop (paste("A value must be specified for each of baseUrl, controller, action and folderPath."))
 
-    # normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
+    # normalize the folder path (GitHub Issue 1710: prevent double slash)
+    folderPath <- encodeFolderPath(folderPath, leading = F)
 
     myUrl <- paste(baseUrl, folderPath, controller, "-", action, sep="")
 
