@@ -100,6 +100,9 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         response <- PUT(url=url, config=options, body=pbody)
     }
 
+    # NOTE: httr does not automatically close this:
+    close(pbody)
+
     processResponse(response, responseType="text/plain; charset=utf-8")
 
     return(TRUE)
