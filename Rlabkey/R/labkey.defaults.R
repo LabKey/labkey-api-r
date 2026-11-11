@@ -211,7 +211,7 @@ labkey.getRequestOptions <- function(method='GET', encoding=NULL)
     }
 
     if (isDebug())
-        options <- c(options, debugOptions())
+        options <- c(options, verbose(data_out=FALSE, info=TRUE))
 
     return (c(options, add_headers(headerFields)))
 }
@@ -232,12 +232,18 @@ labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL, haltOnEr
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
     verboseOutput("OPTIONS", options)
+    if (is.character(pbody))
+        verboseOutput("REQUEST", pbody)
     response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response, responseType = responseType, haltOnError = haltOnError)
 }
 
 processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 {
+    # write_disk responses hold a file path, not a body worth printing
+    if (isDebug() && !inherits(response$content, "path"))
+        verboseOutput("RESPONSE", content(response, as = "text", type = responseType))
+
     if(isRequestError(response))
     {
       handleError(response, haltOnError)
@@ -248,24 +254,6 @@ processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 labkey.setDebugMode <- function(debug=FALSE)
 {
     .lkdefaults$debug = debug;
-}
-
-## httr::verbose() logs gzip-compressed bodies and raw TLS records, and splits each entry across stderr and stdout
-debugOptions <- function()
-{
-    debug <- function(type, msg)
-    {
-        prefix <- switch(type + 1, "*  ", "<- ", "-> ", "<< ", ">> ")
-        if (is.null(prefix) || length(msg) == 0)
-            return()
-        if (type >= 3 && (any(msg == as.raw(0)) || !validUTF8(rawToChar(msg))))
-            text <- paste0("[", length(msg), " bytes of binary data]")
-        else
-            text <- sub("\\s+$", "", rawToChar(msg))
-        message(paste0(prefix, strsplit(text, "\r?\n")[[1]], collapse="\n"))
-    }
-    # identity encoding keeps response bodies readable
-    config(debugfunction=debug, verbose=TRUE, accept_encoding="identity")
 }
 
 isDebug <- function()
@@ -341,7 +329,7 @@ verboseOutput <- function(title, content)
 {
     if (isDebug()) {
         print(paste("*******************BEGIN ",title,"*******************", sep=""))
-        print(content)
+        if (is.character(content)) cat(content, sep="\n") else print(content)
         print(paste("*******************END ",title,"*********************", sep=""))
     }
 }
