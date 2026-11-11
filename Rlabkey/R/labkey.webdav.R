@@ -95,13 +95,12 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
 
     if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
         print(paste0("URL: ", url))
-        response <- PUT(url=url, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+        # NOTE: providing pbody as a list / encode=multipart is a workaround to an httr 1.0 bug:
+        # https://stackoverflow.com/questions/64890632/httr-post-request-error-upstream-connect-error-or-disconnect-reset-before-heade
+        response <- PUT(url=url, config=options, body=list(file = pbody), encode = 'multipart', verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
     } else {
-        response <- PUT(url=url, config=options, body=pbody)
+        response <- PUT(url=url, config=options, body=list(file = pbody), encode = 'multipart')
     }
-
-    # NOTE: httr does not automatically close this:
-    close(pbody)
 
     processResponse(response, responseType="text/plain; charset=utf-8")
 
