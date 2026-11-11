@@ -64,12 +64,9 @@ labkey.webdav.getByUrl <- function(url, localFilePath, overwrite=TRUE, showProgr
       progressBar <- httr::progress()
     }
 
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE){
+    if (isDebug())
         print(paste0("URL: ", url))
-        response <- GET(url=url, write_disk(localFilePath, overwrite=overwrite), config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE), progressBar)
-    } else {
-        response <- GET(url=url, write_disk(localFilePath, overwrite=overwrite), config=options, progressBar)
-    }
+    response <- GET(url=url, write_disk(localFilePath, overwrite=overwrite), config=options, progressBar)
 
     processResponse(response)
 }
@@ -93,12 +90,9 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
         url <- paste0(url, "?description=", URLencode(description))
     }
 
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+    if (isDebug())
         print(paste0("URL: ", url))
-        response <- PUT(url=url, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
-    } else {
-        response <- PUT(url=url, config=options, body=pbody)
-    }
+    response <- PUT(url=url, config=options, body=pbody)
 
     processResponse(response, responseType="text/plain; charset=utf-8")
 
@@ -111,12 +105,9 @@ labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSe
 
     options <- labkey.getRequestOptions(method="POST")
 
-    if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
+    if (isDebug())
         print(paste0("URL: ", url))
-        response <- VERB("MKCOL", url=url, config=options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
-    } else {
-        response <- VERB("MKCOL", url=url, config=options)
-    }
+    response <- VERB("MKCOL", url=url, config=options)
 
     processResponse(response, responseType="text/plain; charset=utf-8")
 
