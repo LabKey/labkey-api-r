@@ -95,16 +95,35 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
 
     if (!is.null(.lkdefaults[["debug"]]) && .lkdefaults[["debug"]] == TRUE) {
         print(paste0("URL: ", url))
-        # NOTE: providing pbody as a list / encode=multipart is a workaround to an httr 1.0 bug:
-        # https://stackoverflow.com/questions/64890632/httr-post-request-error-upstream-connect-error-or-disconnect-reset-before-heade
-        response <- PUT(url=url, config=options, body=list(file = pbody), encode = 'multipart', verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+        response <- PUT(url=url, config=options, body=pbody, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
     } else {
-        response <- PUT(url=url, config=options, body=list(file = pbody), encode = 'multipart')
+        response <- PUT(url=url, config=options, body=pbody)
     }
 
     processResponse(response, responseType="text/plain; charset=utf-8")
 
+    .closeOpenFileConnections(localFile)
+
     return(TRUE)
+}
+
+# NOTE: this is due to an httr bug, which leaves open connections under some cases:
+# Is Rlabkey is migrated to httr2, this can likely be removed.
+.closeOpenFileConnections <- function(fileName) {
+  cons <- showConnections(all = TRUE)
+  if (length(cons) > 0) {
+    target_file <- normalizePath(fileName, mustWork = FALSE)
+    open_paths <- normalizePath(cons[, "description"], mustWork = FALSE)
+    if (target_file %in% open_paths) {
+      con_ids <- as.integer(rownames(cons)[open_paths == target_file])
+      for (con_id  in con_ids) {
+        if (isDebug()) {
+          print(paste0('Closing open connection: ', con_id))
+        }
+        close(getConnection(con_id))
+      }
+    }
+  }
 }
 
 labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
