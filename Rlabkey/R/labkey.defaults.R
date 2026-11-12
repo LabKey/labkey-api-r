@@ -93,14 +93,14 @@ labkey.getBaseUrl <- function(baseUrl=NULL)
 }
 
 ## helper to encode and normalize the folder path parameter
-encodeFolderPath <- function(folderPath=NULL)
+encodeFolderPath <- function(folderPath=NULL, leading = T, trailing = T)
 {
     if (!is.null(folderPath))
     {
         ## URL encoding of folderPath
         folderPath <- URLencode(folderPath)
 
-        folderPath <- normalizeSlash(folderPath)
+        folderPath <- normalizeSlash(folderPath, leading = leading, trailing = trailing)
     }
     return (folderPath)
 }
@@ -211,7 +211,7 @@ labkey.getRequestOptions <- function(method='GET', encoding=NULL)
     }
 
     if (isDebug())
-        options <- c(options, verbose(data_in=TRUE, info=TRUE, ssl=TRUE))
+        options <- c(options, verbose(data_out=FALSE, info=TRUE))
 
     return (c(options, add_headers(headerFields)))
 }
@@ -232,12 +232,18 @@ labkey.post <- function(myurl, pbody, encoding=NULL, responseType=NULL, haltOnEr
     ## HTTP POST form
     options <- labkey.getRequestOptions(method="POST", encoding=encoding)
     verboseOutput("OPTIONS", options)
+    if (is.character(pbody))
+        verboseOutput("REQUEST", pbody)
     response <- POST(url=myurl, config=options, body=pbody)
     processResponse(response, responseType = responseType, haltOnError = haltOnError)
 }
 
 processResponse <- function(response, haltOnError=TRUE, responseType = NULL)
 {
+    # write_disk responses hold a file path, not a body worth printing
+    if (isDebug() && !inherits(response$content, "path"))
+        verboseOutput("RESPONSE", content(response, as = "text", type = responseType))
+
     if(isRequestError(response))
     {
       handleError(response, haltOnError)
@@ -323,7 +329,7 @@ verboseOutput <- function(title, content)
 {
     if (isDebug()) {
         print(paste("*******************BEGIN ",title,"*******************", sep=""))
-        print(content)
+        if (is.character(content)) cat(content, sep="\n") else print(content)
         print(paste("*******************END ",title,"*********************", sep=""))
     }
 }
@@ -367,8 +373,8 @@ labkey.buildURL <- function(baseUrl=NULL, controller, action, folderPath = NULL,
     if (missing(baseUrl) || missing(controller) || missing(action) || is.null(folderPath))
         stop (paste("A value must be specified for each of baseUrl, controller, action and folderPath."))
 
-    # normalize the folder path
-    folderPath <- encodeFolderPath(folderPath)
+    # normalize the folder path (GitHub Issue 1710: prevent double slash)
+    folderPath <- encodeFolderPath(folderPath, leading = F)
 
     myUrl <- paste(baseUrl, folderPath, controller, "-", action, sep="")
 

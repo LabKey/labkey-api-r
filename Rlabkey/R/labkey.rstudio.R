@@ -57,8 +57,8 @@ labkey.rstudio.initRStudio <- function(apiKey="", baseUrl="", folderPath, skipVi
     {
         if (!is.null(.lkdefaults[["baseUrl"]]))
         {
-            folderPath <- encodeFolderPath(folderPath)
-            get(".rs.api.viewer")(paste(.lkdefaults[["baseUrl"]], folderPath, "rstudio-viewer.view", sep=""))
+            if (is.null(folderPath)) folderPath <- "/"
+            get(".rs.api.viewer")(labkey.buildURL(controller = "rstudio", action = "viewer.view", folderPath = folderPath))
         }
     }
 

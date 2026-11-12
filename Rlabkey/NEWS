@@ -1,3 +1,7 @@
+Changes in 3.5.1
+  o GitHub Issue 1710: labkey.buildURL no longer produces a doubled slash between the base URL and folder path
+  o labkey.setDebugMode output now shows decoded request and response bodies instead of raw transfer bytes
+
 Changes in 3.5.0
   o Pass auditUserComment to labkey.storage.delete for attaching a reason to the audit log record
   o labkey.storage.create and labkey.storage.update now accept an optional auditUserComment entry inside the props list (recorded as the "Reason" on the resulting audit event)
