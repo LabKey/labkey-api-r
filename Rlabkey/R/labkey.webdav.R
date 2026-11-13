@@ -96,7 +96,28 @@ labkey.webdav.put <- function(localFile, baseUrl=NULL, folderPath, remoteFilePat
 
     processResponse(response, responseType="text/plain; charset=utf-8")
 
+    .closeOpenFileConnections(localFile)
+
     return(TRUE)
+}
+
+# NOTE: this is due to an httr bug, which leaves open connections under some cases:
+# Is Rlabkey is migrated to httr2, this can likely be removed.
+.closeOpenFileConnections <- function(fileName) {
+  cons <- showConnections(all = TRUE)
+  if (length(cons) > 0) {
+    target_file <- normalizePath(fileName, mustWork = FALSE)
+    open_paths <- normalizePath(cons[, "description"], mustWork = FALSE)
+    if (target_file %in% open_paths) {
+      con_ids <- as.integer(rownames(cons)[open_paths == target_file])
+      for (con_id  in con_ids) {
+        if (isDebug()) {
+          print(paste0('Closing open connection: ', con_id))
+        }
+        close(getConnection(con_id))
+      }
+    }
+  }
 }
 
 labkey.webdav.mkDir <- function(baseUrl=NULL, folderPath, remoteFilePath, fileSet="@files")
