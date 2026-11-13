@@ -3,12 +3,18 @@
 \title{Modify the current set of Curl options that are being used in the existing session}
 \description{
 Rlabkey uses the package httr to connect to the LabKey Server.}
+\usage{
+labkey.setCurlOptions(...)
+}
 \arguments{
-  \item{options args}{a variable list of arguments to set the RCurl options}
-  \item{ssl_verifyhost}{check the existence of a common name and also verify that it matches the hostname provided}
-  \item{ssl_verifypeer}{specifies whether curl will verify the peer's certificate}
-  \item{followlocation}{specify is curl should follow any location header that is sent in the HTTP request}
-  \item{sslversion}{the SSL version to use}
+  \item{\dots}{a variable list of named curl options to set, for example:
+    \describe{
+      \item{ssl_verifyhost}{check the existence of a common name and also verify that it matches the hostname provided}
+      \item{ssl_verifypeer}{specifies whether curl will verify the peer's certificate}
+      \item{followlocation}{specify is curl should follow any location header that is sent in the HTTP request}
+      \item{sslversion}{the SSL version to use}
+    }
+  }
 }
 
 \details{
